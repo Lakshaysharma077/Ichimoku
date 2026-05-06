@@ -16,7 +16,11 @@ export default function Button({
   className,
   variant = 'solid',
   size = 'md',
+  // Strip all props that conflict with Framer Motion's types
   onAnimationStart: _onAnimationStart,
+  onDragStart: _onDragStart,
+  onDrag: _onDrag,
+  onDragEnd: _onDragEnd,
   ...props
 }: ButtonProps) {
   const variants = {
