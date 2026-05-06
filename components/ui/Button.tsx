@@ -1,5 +1,4 @@
 'use client';
-
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { motion } from 'framer-motion';
@@ -17,6 +16,7 @@ export default function Button({
   className,
   variant = 'solid',
   size = 'md',
+  onAnimationStart: _onAnimationStart,
   ...props
 }: ButtonProps) {
   const variants = {
@@ -24,7 +24,6 @@ export default function Button({
     outline: 'border border-border text-text-primary hover:bg-bg-secondary',
     ghost: 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary',
   };
-
   const sizes = {
     sm: 'px-3 py-1.5 text-xs',
     md: 'px-6 py-2.5 text-sm font-semibold',
