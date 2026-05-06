@@ -7,9 +7,10 @@ import { useRef } from 'react';
 interface ScrollRevealProps {
   children: React.ReactNode;
   width?: "fit-content" | "100%";
+  delay?: number;
 }
 
-export default function ScrollReveal({ children, width = "100%" }: ScrollRevealProps) {
+export default function ScrollReveal({ children, width = "100%", delay = 0.25 }: ScrollRevealProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "0px" });
 
@@ -22,7 +23,7 @@ export default function ScrollReveal({ children, width = "100%" }: ScrollRevealP
         }}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
-        transition={{ duration: 0.5, delay: 0.25 }}
+        transition={{ duration: 0.5, delay }}
       >
         {children}
       </motion.div>
