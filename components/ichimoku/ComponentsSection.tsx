@@ -59,7 +59,7 @@ export default function ComponentsSection() {
           <span className="syne font-bold text-xs uppercase tracking-[0.3em] text-[#fbe178]">The Five Lines</span>
         </div>
 
-        <h2 className="syne font-extrabold text-4xl lg:text-5xl text-text-primary tracking-tighter leading-tight">
+        <h2 className="syne font-extrabold text-4xl lg:text-5xl text-text-primary leading-tight">
           Anatomy of the <span className="text-[#fbe178]">Indicator Suite.</span>
         </h2>
 

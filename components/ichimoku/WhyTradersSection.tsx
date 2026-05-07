@@ -45,7 +45,7 @@ export default function WhyTradersSection() {
           <span className="syne font-bold text-xs uppercase tracking-[0.3em] text-[#fbe178]">Edge</span>
         </div>
 
-        <h2 className="syne font-extrabold text-4xl lg:text-5xl text-text-primary tracking-tighter leading-tight">
+        <h2 className="syne font-extrabold text-4xl lg:text-5xl text-text-primary leading-tight">
           Why Professional Traders <br /> <span className="text-[#fbe178]">Rely on Ichimoku.</span>
         </h2>
 

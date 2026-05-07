@@ -24,7 +24,7 @@ export default function HeroSection() {
             Professional Trading Tools — Since 2021
           </motion.span>
           
-          <h1 className="syne font-extrabold text-[clamp(2.5rem,8vw,5.5rem)] leading-[0.95] text-text-primary tracking-tighter mb-6">
+          <h1 className="syne font-extrabold text-[clamp(2.5rem,8vw,5.5rem)] leading-[0.95] text-text-primary mb-6">
             {words.map((word, i) => (
               <motion.span
                 key={i}

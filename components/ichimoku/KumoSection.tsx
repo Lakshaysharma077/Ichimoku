@@ -36,7 +36,7 @@ export default function KumoSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           <div className="lg:col-span-5 space-y-8">
-            <h2 className="syne font-extrabold text-4xl lg:text-5xl text-text-primary tracking-tighter leading-tight">
+            <h2 className="syne font-extrabold text-4xl lg:text-5xl text-text-primary leading-tight">
               The Soul of the System: <br /> <span className="text-[#fbe178]">The Kumo Cloud.</span>
             </h2>
             <p className="text-lg text-text-secondary leading-relaxed">
@@ -50,7 +50,7 @@ export default function KumoSection() {
                 <div key={i} className="p-4 bg-bg-secondary/50 border border-border rounded-xl flex gap-4 items-start">
                    <div className={`w-1 h-full rounded-full bg-${insight.color === 'text-muted' ? 'bg-tertiary' : insight.color}`} />
                    <div>
-                     <h4 className="syne font-bold text-sm text-text-primary mb-1 uppercase tracking-tight">{insight.title}</h4>
+                     <h4 className="syne font-bold text-sm text-text-primary mb-1 uppercase">{insight.title}</h4>
                      <p className="text-xs text-text-secondary leading-relaxed">{insight.desc}</p>
                    </div>
                 </div>

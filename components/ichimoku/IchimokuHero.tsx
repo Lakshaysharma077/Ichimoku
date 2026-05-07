@@ -25,7 +25,7 @@ export default function IchimokuHero() {
           className="mb-6 flex flex-col items-center"
         >
           <span className="shippori-mincho text-[#fbe178] text-xl lg:text-2xl mb-4 tracking-[0.2em]">一目均衡表</span>
-          <h1 className="syne font-extrabold text-text-primary leading-[0.85] tracking-tighter uppercase">
+          <h1 className="syne font-extrabold text-text-primary leading-[0.85] uppercase">
             <span className="block text-[clamp(3rem,10vw,7rem)]">ICHIMOKU</span>
             <span className="block text-[clamp(2.5rem,8vw,6rem)] text-transparent bg-clip-text bg-gradient-to-r from-text-primary via-[#fbe178] to-text-primary">KINKŌ HYŌ</span>
           </h1>
@@ -35,7 +35,7 @@ export default function IchimokuHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="syne font-bold text-xl lg:text-3xl text-text-muted mb-8 tracking-tight"
+          className="syne font-bold text-xl lg:text-3xl text-text-muted mb-8"
         >
           See Market Balance at a Glance
         </motion.p>

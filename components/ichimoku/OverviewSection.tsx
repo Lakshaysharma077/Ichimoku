@@ -12,7 +12,7 @@ export default function OverviewSection() {
         </div>
 
         <div className="space-y-12">
-          <h2 className="syne font-extrabold text-4xl lg:text-5xl text-text-primary tracking-tighter leading-tight">
+          <h2 className="syne font-extrabold text-4xl lg:text-5xl text-text-primary leading-tight">
             The Philosophy of <span className="text-[#fbe178]">One Look</span> Equilibrium.
           </h2>
 

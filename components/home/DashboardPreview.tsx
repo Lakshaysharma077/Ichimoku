@@ -132,7 +132,7 @@ export default function DashboardPreview() {
           </div>
           <div>
             <ScrollReveal>
-              <h3 className="syne font-bold text-3xl text-text-primary mb-6 uppercase tracking-tighter">
+              <h3 className="syne font-bold text-3xl text-text-primary mb-6 uppercase">
                 Premium Indicator Visuals
               </h3>
               <p className="text-text-secondary text-lg leading-relaxed mb-8">

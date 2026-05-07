@@ -19,7 +19,7 @@ export default function EducationPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center pt-32 pb-24 relative overflow-hidden">
-      <KanjiWatermark kanji="教育" className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.05]" size="40vw" />
+      <KanjiWatermark kanji="資料" className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.05]" size="40vw" />
       
       <div className="max-w-2xl mx-auto px-4 sm:px-8 text-center relative z-10">
         <ScrollReveal>
@@ -27,15 +27,15 @@ export default function EducationPage() {
             <Youtube className="w-12 h-12 text-rose-500" />
           </div>
           
-          <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tighter">
-            Education Hub — Coming Soon
+          <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tight" style={{ wordSpacing: '0.2em' }}>
+            Resources Hub
           </h1>
           <p className="shippori-mincho text-2xl text-text-muted mb-8">
-            「教育ハブ — 近日公開」
+            「資料ハブ」
           </p>
           
           <p className="text-xl text-text-secondary leading-relaxed mb-12">
-            Free Ichimoku trading tutorials, strategy breakdowns, and live analysis videos. Subscribe to our YouTube channel to be notified when the first course drops.
+            Free Ichimoku trading tutorials, strategy breakdowns, and live analysis videos. Subscribe to our YouTube channel to be notified when new resources drop.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -44,7 +44,7 @@ export default function EducationPage() {
             </Button>
             <Link href="/">
               <Button variant="outline" size="lg" className="flex gap-2 items-center">
-                <ArrowLeft className="w-4 h-4" /> Back to Home
+                <ArrowLeft className="w-4 h-4" /> Back to Philosophy
               </Button>
             </Link>
           </div>

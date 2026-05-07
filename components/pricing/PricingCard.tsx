@@ -52,7 +52,7 @@ export default function PricingCard({
 
       <div className="mb-8">
         <div className="flex items-baseline justify-between mb-2">
-          <h3 className="syne font-bold text-2xl text-text-primary uppercase tracking-tight">{name}</h3>
+          <h3 className="syne font-bold text-2xl text-text-primary uppercase">{name}</h3>
           <span className="shippori-mincho text-xl text-text-muted">{kanji}</span>
         </div>
         <p className="text-sm text-text-secondary mb-6">{tagline}</p>

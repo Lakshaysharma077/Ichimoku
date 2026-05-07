@@ -4,13 +4,15 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import KanjiWatermark from '@/components/shared/KanjiWatermark';
 import Button from '@/components/ui/Button';
-import { Mail, Lock, Eye, EyeOff, User, CheckCircle2 } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User, CheckCircle2, ShieldCheck, Zap, Globe } from 'lucide-react';
 import Link from 'next/link';
+import TradingViewIcon from '@/components/ui/TradingViewIcon';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
+  const [tvUsername, setTvUsername] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
   const getPasswordStrength = () => {
@@ -30,19 +32,31 @@ export default function AuthPage() {
 
   if (isSuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center pt-20">
+      <div className="min-h-screen flex items-center justify-center pt-20 px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="max-w-md w-full p-12 bg-bg-secondary border border-border rounded-3xl text-center"
+          className="max-w-md w-full p-12 bg-bg-secondary border border-border rounded-[2rem] text-center relative overflow-hidden group shadow-2xl"
         >
-          <div className="inline-flex p-4 bg-emerald-500/10 rounded-full mb-6">
-            <CheckCircle2 className="w-12 h-12 text-emerald-500" />
+          {/* Decorative background glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50" />
+          
+          <div className="inline-flex p-5 bg-emerald-500/10 rounded-full mb-8 relative">
+            <CheckCircle2 className="w-14 h-14 text-emerald-500" />
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full"
+            />
           </div>
-          <h2 className="syne font-bold text-3xl text-text-primary mb-4 uppercase">Verify your email</h2>
-          <p className="text-text-secondary mb-8">We've sent a verification link to your email address. Please check your inbox to activate your account.</p>
+          <h2 className="syne font-extrabold text-3xl text-text-primary mb-4 uppercase tracking-tight">Verify your email</h2>
+          <p className="text-text-secondary mb-10 leading-relaxed">
+            We've sent a secure verification link to your email address. Please activate your account to begin your 14-day trial.
+          </p>
           <Link href="/">
-            <Button variant="outline" className="w-full">Return Home</Button>
+            <Button variant="outline" size="lg" className="w-full border-accent/20 hover:border-accent/50">
+              Return to Philosophy
+            </Button>
           </Link>
         </motion.div>
       </div>
@@ -50,48 +64,77 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 pt-40 lg:pt-0">
-      {/* Left Side - Decorative */}
-      <div className="hidden lg:flex flex-col justify-center p-24 bg-bg-secondary relative overflow-hidden">
-        <KanjiWatermark kanji="入" className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.08]" size="40vw" />
-        <div className="relative z-10 max-w-sm">
-          <h2 className="syne font-extrabold text-5xl text-text-primary mb-4 uppercase tracking-tighter">
-            See the market clearly.
-          </h2>
-          <p className="shippori-mincho text-2xl text-text-muted mb-12">「市場を明確に見る」</p>
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 relative overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-[-10%] right-[-5%] w-[40vw] h-[40vw] bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[-5%] w-[30vw] h-[30vw] bg-blue-500/5 blur-[100px] rounded-full pointer-events-none" />
+
+      {/* Left Side - Institutional Value Prop */}
+      <div className="hidden lg:flex flex-col justify-center p-24 bg-bg-secondary/50 border-r border-border relative overflow-hidden pt-32">
+        <KanjiWatermark kanji="一目" className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.05]" size="35vw" />
+        
+        <div className="relative z-10 max-w-lg">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10px] font-bold uppercase tracking-widest mb-8"
+          >
+            <ShieldCheck className="w-3 h-3" />
+            Institutional Grade Analysis
+          </motion.div>
           
-          <ul className="space-y-6">
+          <h2 className="syne font-extrabold text-6xl text-text-primary mb-6 uppercase tracking-tight leading-[0.9]">
+            Professional <br /> <span className="text-accent">Market Clarity.</span>
+          </h2>
+          <p className="shippori-mincho text-2xl text-text-muted mb-16">「プロフェッショナルな市場の透明性」</p>
+          
+          <div className="space-y-10">
             {[
-              "Full access during 14-day trial",
-              "No credit card required",
-              "Cancel anytime"
-            ].map((text, i) => (
-              <motion.li
+              { icon: Zap, title: "Invite-Only Access", desc: "Get direct access to our premium TradingView scripts." },
+              { icon: Globe, title: "Multi-Timeframe Context", desc: "See the bigger picture across all major liquid markets." },
+              { icon: ShieldCheck, title: "14-Day Full Trial", desc: "Test the complete Samurai Vision system, no strings attached." }
+            ].map((item, i) => (
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 + i * 0.1 }}
-                className="flex items-center gap-4 text-text-secondary font-medium"
+                transition={{ delay: 0.3 + i * 0.1 }}
+                className="flex gap-6 items-start group"
               >
-                <CheckCircle2 className="w-5 h-5 text-accent" />
-                <span>{text}</span>
-              </motion.li>
+                <div className="p-3 rounded-2xl bg-bg-tertiary border border-border group-hover:border-accent/30 transition-colors">
+                  <item.icon className="w-6 h-6 text-accent" />
+                </div>
+                <div>
+                  <h4 className="syne font-bold text-lg text-text-primary uppercase tracking-tight mb-1">{item.title}</h4>
+                  <p className="text-sm text-text-secondary leading-relaxed">{item.desc}</p>
+                </div>
+              </motion.div>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
 
-      {/* Right Side - Form */}
-      <div className="flex flex-col justify-center p-8 sm:p-24 bg-bg-primary pt-52 lg:pt-32">
+      {/* Right Side - Auth Form */}
+      <div className="flex flex-col justify-center p-6 sm:p-24 bg-bg-primary relative z-10 pt-32">
         <div className="max-w-md w-full mx-auto">
+          {/* Header */}
+          <div className="mb-12 text-center lg:text-left">
+            <h1 className="syne font-extrabold text-4xl text-text-primary uppercase tracking-tight mb-3">
+              {isLogin ? "Welcome Back" : "Join the Edge"}
+            </h1>
+            <p className="text-text-secondary text-sm">
+              {isLogin ? "Enter your credentials to access your dashboard." : "Create your account to unlock premium indicators."}
+            </p>
+          </div>
+
           {/* Tab Toggle */}
-          <div className="flex gap-2 mb-12 p-1.5 bg-bg-secondary border border-border rounded-2xl">
+          <div className="flex gap-1 mb-10 p-1 bg-bg-secondary/50 border border-border rounded-2xl">
             <button
               type="button"
               onClick={() => setIsLogin(true)}
-              className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl transition-all duration-300 ${
+              className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl transition-all duration-500 ${
                 isLogin 
-                  ? 'bg-bg-primary text-text-primary shadow-lg ring-1 ring-border' 
+                  ? 'bg-bg-primary text-text-primary shadow-[0_4px_20px_rgba(0,0,0,0.3)] border border-border' 
                   : 'text-text-muted hover:text-text-primary'
               }`}
             >
@@ -100,9 +143,9 @@ export default function AuthPage() {
             <button
               type="button"
               onClick={() => setIsLogin(false)}
-              className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl transition-all duration-300 ${
+              className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl transition-all duration-500 ${
                 !isLogin 
-                  ? 'bg-bg-primary text-text-primary shadow-lg ring-1 ring-border' 
+                  ? 'bg-bg-primary text-text-primary shadow-[0_4px_20px_rgba(0,0,0,0.3)] border border-border' 
                   : 'text-text-muted hover:text-text-primary'
               }`}
             >
@@ -116,55 +159,81 @@ export default function AuthPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.3 }}
             >
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 {!isLogin && (
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-mono text-text-muted uppercase tracking-widest ml-1">Full Name</label>
-                    <div className="relative">
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-                      <input
-                        required
-                        type="text"
-                        placeholder="Musashi Miyamoto"
-                        className="w-full bg-bg-secondary border border-border rounded-xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-accent transition-colors"
-                      />
+                  <>
+                    {/* Full Name */}
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-mono text-text-muted uppercase tracking-widest ml-1">Full Name</label>
+                      <div className="relative group">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-accent transition-colors" />
+                        <input
+                          required
+                          type="text"
+                          placeholder="Musashi Miyamoto"
+                          className="w-full bg-bg-secondary border border-border rounded-xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all"
+                        />
+                      </div>
                     </div>
-                  </div>
+
+                    {/* TradingView Username */}
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-mono text-text-muted uppercase tracking-widest ml-1 flex justify-between">
+                        TradingView Username
+                        <span className="text-[8px] text-accent/70 lowercase tracking-normal font-sans">Required for indicator access</span>
+                      </label>
+                      <div className="relative group">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 flex items-center justify-center">
+                          <TradingViewIcon className="w-4 h-4 text-text-muted group-focus-within:text-accent transition-colors" />
+                        </div>
+                        <input
+                          required
+                          type="text"
+                          value={tvUsername}
+                          onChange={(e) => setTvUsername(e.target.value)}
+                          placeholder="your_tv_username"
+                          className="w-full bg-bg-secondary border border-border rounded-xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all"
+                        />
+                      </div>
+                    </div>
+                  </>
                 )}
 
-                <div className="space-y-2">
+                {/* Email */}
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-mono text-text-muted uppercase tracking-widest ml-1">Email Address</label>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                  <div className="relative group">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-accent transition-colors" />
                     <input
                       required
                       type="email"
                       placeholder="name@example.com"
-                      className="w-full bg-bg-secondary border border-border rounded-xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-accent transition-colors"
+                      className="w-full bg-bg-secondary border border-border rounded-xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-2">
+                {/* Password */}
+                <div className="space-y-1.5">
                   <div className="flex justify-between items-center px-1">
                     <label className="text-[10px] font-mono text-text-muted uppercase tracking-widest">Password</label>
                     {isLogin && (
-                      <Link href="#" className="text-[10px] font-mono text-accent uppercase tracking-widest hover:underline">
-                        Forgot Password?
+                      <Link href="#" className="text-[10px] font-mono text-accent/70 uppercase tracking-widest hover:text-accent hover:underline transition-colors">
+                        Forgot?
                       </Link>
                     )}
                   </div>
-                  <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                  <div className="relative group">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-accent transition-colors" />
                     <input
                       required
                       type={showPassword ? "text" : "password"}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full bg-bg-secondary border border-border rounded-xl py-4 pl-12 pr-12 text-sm focus:outline-none focus:border-accent transition-colors"
+                      className="w-full bg-bg-secondary border border-border rounded-xl py-4 pl-12 pr-12 text-sm focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all"
                     />
                     <button
                       type="button"
@@ -178,7 +247,7 @@ export default function AuthPage() {
                   {!isLogin && password.length > 0 && (
                     <div className="pt-2">
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-[8px] font-mono uppercase text-text-muted tracking-widest">Strength: {strength.label}</span>
+                        <span className="text-[8px] font-mono uppercase text-text-muted tracking-widest">Security: {strength.label}</span>
                       </div>
                       <div className="h-1 w-full bg-bg-tertiary rounded-full overflow-hidden">
                         <motion.div
@@ -190,33 +259,38 @@ export default function AuthPage() {
                   )}
                 </div>
 
+                {/* Checkboxes */}
                 {isLogin ? (
-                  <div className="flex items-center gap-2 px-1">
-                    <input type="checkbox" id="remember" className="rounded border-border bg-bg-secondary text-accent" />
-                    <label htmlFor="remember" className="text-xs text-text-secondary cursor-pointer">Remember me for 30 days</label>
+                  <div className="flex items-center gap-2.5 px-1 py-1">
+                    <input type="checkbox" id="remember" className="w-4 h-4 rounded border-border bg-bg-secondary text-accent focus:ring-accent" />
+                    <label htmlFor="remember" className="text-xs text-text-secondary cursor-pointer hover:text-text-primary transition-colors">Keep me signed in</label>
                   </div>
                 ) : (
-                  <div className="flex items-start gap-2 px-1">
-                    <input required type="checkbox" id="terms" className="mt-0.5 rounded border-border bg-bg-secondary text-accent" />
-                    <label htmlFor="terms" className="text-xs text-text-secondary leading-relaxed cursor-pointer">
+                  <div className="flex items-start gap-2.5 px-1 py-1">
+                    <input required type="checkbox" id="terms" className="mt-0.5 w-4 h-4 rounded border-border bg-bg-secondary text-accent focus:ring-accent" />
+                    <label htmlFor="terms" className="text-xs text-text-secondary leading-relaxed cursor-pointer hover:text-text-primary transition-colors">
                       I agree to the <Link href="#" className="text-accent hover:underline">Terms of Service</Link> and <Link href="#" className="text-accent hover:underline">Privacy Policy</Link>
                     </label>
                   </div>
                 )}
 
-                <Button type="submit" className="w-full" size="lg">
-                  {isLogin ? "Log In" : "Create Account & Start Trial"}
-                </Button>
+                {/* Submit Button */}
+                <div className="pt-4">
+                  <Button type="submit" className="w-full !rounded-xl !py-7 !text-xs !tracking-[0.2em]" size="lg">
+                    {isLogin ? "LOG IN TO ACCOUNT" : "START YOUR 14-DAY TRIAL"}
+                  </Button>
+                </div>
 
-                <div className="relative py-4 flex items-center">
+                {/* Social Login */}
+                <div className="relative py-2 flex items-center">
                   <div className="flex-1 h-px bg-border" />
-                  <span className="px-4 text-[10px] font-mono text-text-muted uppercase tracking-widest">or continue with</span>
+                  <span className="px-4 text-[10px] font-mono text-text-muted uppercase tracking-widest">or</span>
                   <div className="flex-1 h-px bg-border" />
                 </div>
 
                 <button
                   type="button"
-                  className="w-full flex items-center justify-center gap-3 py-4 border border-border rounded-xl hover:bg-bg-secondary transition-colors"
+                  className="w-full flex items-center justify-center gap-3 py-4 border border-border rounded-xl hover:bg-bg-secondary/80 hover:border-accent/20 transition-all duration-300"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path
@@ -236,17 +310,17 @@ export default function AuthPage() {
                       fill="#EA4335"
                     />
                   </svg>
-                  <span className="text-sm font-bold syne text-text-primary uppercase tracking-widest">Google</span>
+                  <span className="text-[10px] font-bold syne text-text-primary uppercase tracking-[0.2em]">Continue with Google</span>
                 </button>
 
-                <p className="text-center text-sm text-text-secondary">
-                  {isLogin ? "No account? " : "Already have an account? "}
+                <p className="text-center text-xs text-text-secondary mt-8">
+                  {isLogin ? "Don't have access? " : "Already an edge trader? "}
                   <button
                     type="button"
                     onClick={() => setIsLogin(!isLogin)}
-                    className="text-accent font-bold hover:underline"
+                    className="text-accent font-bold hover:underline transition-all"
                   >
-                    {isLogin ? "Start your free trial →" : "Log in →"}
+                    {isLogin ? "Start your free trial →" : "Log in to dashboard →"}
                   </button>
                 </p>
               </form>

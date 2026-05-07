@@ -23,7 +23,7 @@ export default function IchimokuPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-8 mb-24">
         <ScrollReveal>
           <div className="flex flex-col mb-12">
-            <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tighter leading-[0.9]">
+            <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
               Ichimoku Kinkō Hyō
             </h1>
             <p className="shippori-mincho text-2xl text-text-muted mb-8">
@@ -39,7 +39,7 @@ export default function IchimokuPage() {
       {/* 5 Components */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 mb-32">
         <ScrollReveal>
-          <h2 className="syne font-bold text-3xl text-text-primary uppercase tracking-tight">The 5 Lines of Ichimoku</h2>
+          <h2 className="syne font-bold text-3xl text-text-primary uppercase">The 5 Lines of Ichimoku</h2>
           <p className="shippori-mincho text-xl text-text-muted mt-2 mb-12">「一目の五線」</p>
         </ScrollReveal>
 
@@ -65,7 +65,7 @@ export default function IchimokuPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-8 mb-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <ScrollReveal>
-            <h2 className="syne font-bold text-4xl text-text-primary mb-8 uppercase tracking-tight">How to Read the Cloud</h2>
+            <h2 className="syne font-bold text-4xl text-text-primary mb-8 uppercase">How to Read the Cloud</h2>
             <div className="space-y-6 text-lg text-text-secondary leading-relaxed">
               <p>The <BilingualHover english="Kumo" japanese="雲" /> (Cloud) is the heart of the system. Formed by Senkou Span A and B, it represents a dynamic zone of support and resistance.</p>
               <ul className="space-y-4">
@@ -124,7 +124,7 @@ export default function IchimokuPage() {
       {/* Settings Table */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 mb-32">
         <ScrollReveal>
-          <h2 className="syne font-bold text-3xl text-text-primary mb-12 uppercase tracking-tight">Ichimoku Settings</h2>
+          <h2 className="syne font-bold text-3xl text-text-primary mb-12 uppercase">Ichimoku Settings</h2>
           <div className="overflow-x-auto rounded-2xl border border-border">
             <table className="w-full text-left text-sm">
               <thead className="bg-bg-secondary text-text-muted font-mono uppercase text-[10px] tracking-widest border-b border-border">
@@ -159,7 +159,7 @@ export default function IchimokuPage() {
       {/* SEO Section */}
       <div className="max-w-4xl mx-auto px-4 sm:px-8">
         <ScrollReveal>
-          <h2 className="syne font-bold text-3xl text-text-primary mb-8 uppercase tracking-tight">What is Ichimoku Kinkō Hyō?</h2>
+          <h2 className="syne font-bold text-3xl text-text-primary mb-8 uppercase">What is Ichimoku Kinkō Hyō?</h2>
           <div className="prose prose-invert prose-p:text-text-secondary prose-p:leading-relaxed space-y-6">
             <p>Developed in the late 1930s by Goichi Hosoda, a Japanese journalist who used to be known as Ichimoku Sanjin, Ichimoku Kinkō Hyō translates to "one-look equilibrium chart." Hosoda spent 30 years perfecting the system before releasing it to the public in 1968.</p>
             <p>Unlike traditional technical indicators that focus on a single aspect of market behavior, Ichimoku is a comprehensive framework. It provides a holistic view of price action, trend strength, and potential reversal points. Many traders find it superior to standard moving average crossovers because it accounts for the element of time, not just price.</p>

@@ -39,7 +39,7 @@ export default function KeyConceptsSection() {
           <span className="syne font-bold text-xs uppercase tracking-[0.3em] text-[#fbe178]">Foundations</span>
         </div>
 
-        <h2 className="syne font-extrabold text-4xl lg:text-5xl text-text-primary tracking-tighter leading-tight">
+        <h2 className="syne font-extrabold text-4xl lg:text-5xl text-text-primary leading-tight">
           The Five Pillars of <br /> <span className="text-[#fbe178]">Market Structure.</span>
         </h2>
 
@@ -52,7 +52,7 @@ export default function KeyConceptsSection() {
             >
               <div>
                 <span className="shippori-mincho text-2xl text-[#fbe178]/40 group-hover:text-[#fbe178] transition-colors block mb-6">{concept.kanji}</span>
-                <h3 className="syne font-bold text-lg text-text-primary mb-4 uppercase tracking-tighter">{concept.title}</h3>
+                <h3 className="syne font-bold text-lg text-text-primary mb-4 uppercase">{concept.title}</h3>
                 <p className="text-xs text-text-secondary leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">
                   {concept.desc}
                 </p>

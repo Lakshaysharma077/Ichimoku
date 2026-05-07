@@ -13,11 +13,10 @@ import XIcon from '../ui/XIcon';
 import TradingViewIcon from '../ui/TradingViewIcon';
 
 const navLinks = [
-  { name: 'Home', href: '/', label: 'ホーム' },
-  { name: 'Ichimoku Kinkō Hyō', href: '/ichimoku', label: '一目均衡表' },
-  { name: 'Education', href: '/education', badge: 'Coming Soon' },
+  { name: 'Philosophy', href: '/', label: 'ホーム' },
+  { name: 'Ichimoku', href: '/ichimoku', label: '一目均衡表' },
+  { name: 'Resources', href: '/education', label: '教育' },
   { name: 'Tools', href: '/tools', label: '道具' },
-  { name: 'FAQ', href: '/faq', label: 'よくある質問' },
 ];
 
 export default function Navbar() {
@@ -42,19 +41,19 @@ export default function Navbar() {
           : 'bg-transparent py-5'
           }`}
       >
-        <nav className="max-w-7xl mx-auto px-2 sm:px-4 flex items-center justify-between flex-nowrap">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-4 flex items-center justify-between flex-nowrap">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group whitespace-nowrap -ml-1">
-            <div className="w-12 h-12 rounded-full overflow-hidden shrink-0">
+          <Link href="/" className="flex items-center gap-2 sm:gap-3 group whitespace-nowrap -ml-1">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden shrink-0">
               <img src="/logo.png" alt="Ichimoku Edge Logo" className="object-cover w-full h-full scale-[1.2]" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-baseline gap-0.5">
-                <span className="text-[20px] font-black tracking-tight text-text-primary uppercase syne group-hover:text-accent transition-colors duration-300">
+                <span className="text-[16px] sm:text-[20px] font-black text-text-primary uppercase syne group-hover:text-accent transition-colors duration-300" style={{ wordSpacing: '0.15em', letterSpacing: '0.02em' }}>
                   ICHIMOKU EDGE
                 </span>
               </div>
-              <span className="text-[10px] shippori-mincho text-text-muted mt-[-3px] tracking-wider">
+              <span className="text-[8px] sm:text-[10px] shippori-mincho text-text-muted mt-[-3px] tracking-wider">
                 「一目均衡表」
               </span>
             </div>
@@ -75,11 +74,6 @@ export default function Navbar() {
                       layoutId="nav-underline"
                       className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent rounded-full"
                     />
-                  )}
-                  {link.badge && (
-                    <span className="ml-2 px-1.5 py-0.5 text-[8px] bg-amber-500/20 text-amber-500 rounded-full animate-pulse uppercase shrink-0">
-                      {link.badge}
-                    </span>
                   )}
                 </Link>
                 {link.label && (

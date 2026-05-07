@@ -17,7 +17,7 @@ export default function FinalCTA() {
           transition={{ duration: 0.8 }}
           className="space-y-8"
         >
-          <h2 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary tracking-tighter leading-tight uppercase">
+          <h2 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary leading-tight uppercase">
             Master Structure. <br /> <span className="text-[#fbe178]">Remove Noise.</span>
           </h2>
           

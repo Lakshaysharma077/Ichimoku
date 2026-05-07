@@ -67,6 +67,25 @@
   font-family: var(--font-syne);
 }
 
+/* Typography spacing for major headings */
+h1.syne,
+h2.syne,
+h3.syne,
+.syne-title {
+  word-spacing: 0.12em;
+  letter-spacing: 0.01em;
+}
+
+h1.syne {
+  word-spacing: 0.18em;
+  letter-spacing: 0.02em;
+}
+
+h2.syne {
+  word-spacing: 0.14em;
+  letter-spacing: 0.015em;
+}
+
 .jetbrains-mono {
   font-family: var(--font-mono);
 }

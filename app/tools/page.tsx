@@ -47,7 +47,7 @@ export default function ToolsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <ScrollReveal>
           <div className="flex flex-col mb-12">
-            <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tighter leading-[0.9]">
+            <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
               Tools & Indicators
             </h1>
             <p className="shippori-mincho text-2xl text-text-muted mb-6">

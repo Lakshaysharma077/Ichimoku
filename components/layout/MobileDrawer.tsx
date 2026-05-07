@@ -13,7 +13,7 @@ import TradingViewIcon from '../ui/TradingViewIcon';
 interface MobileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  links: { name: string; href: string; label?: string; badge?: string }[];
+  links: { name: string; href: string; label?: string }[];
 }
 
 export default function MobileDrawer({ isOpen, onClose, links }: MobileDrawerProps) {
@@ -68,11 +68,6 @@ export default function MobileDrawer({ isOpen, onClose, links }: MobileDrawerPro
                   >
                     <div className="flex items-center justify-between">
                       <span>{link.name}</span>
-                      {link.badge && (
-                        <span className="px-1.5 py-0.5 text-[8px] bg-amber-500/20 text-amber-500 rounded-full">
-                          {link.badge}
-                        </span>
-                      )}
                     </div>
                     {link.label && (
                       <span className="block text-xs shippori-mincho text-text-muted mt-1">
@@ -96,14 +91,14 @@ export default function MobileDrawer({ isOpen, onClose, links }: MobileDrawerPro
             </div>
 
             <div className="p-8 border-t border-border bg-bg-secondary flex justify-center gap-8">
+              <a href="https://www.tradingview.com/u/IchimokuEdge/" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-text-primary transition-colors">
+                <TradingViewIcon className="w-5 h-5" />
+              </a>
               <a href="https://www.youtube.com/@IchimokuEdge" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-text-primary transition-colors">
                 <Youtube className="w-5 h-5" />
               </a>
               <a href="https://x.com/IchimokuEdge" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-text-primary transition-colors">
                 <XIcon className="w-5 h-5" />
-              </a>
-              <a href="https://www.tradingview.com/u/IchimokuEdge/" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-text-primary transition-colors">
-                <TradingViewIcon className="w-5 h-5" />
               </a>
             </div>
           </motion.div>
