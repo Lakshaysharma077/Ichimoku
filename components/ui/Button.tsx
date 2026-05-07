@@ -1,13 +1,13 @@
 'use client';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag' | 'onScroll'> {
+interface ButtonProps extends HTMLMotionProps<'button'> {
   variant?: 'solid' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
 }
@@ -16,11 +16,6 @@ export default function Button({
   className,
   variant = 'solid',
   size = 'md',
-  // Strip all props that conflict with Framer Motion's types
-  onAnimationStart: _onAnimationStart,
-  onDragStart: _onDragStart,
-  onDrag: _onDrag,
-  onDragEnd: _onDragEnd,
   ...props
 }: ButtonProps) {
   const variants = {
