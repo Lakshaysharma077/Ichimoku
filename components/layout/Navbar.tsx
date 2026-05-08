@@ -29,6 +29,7 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -42,6 +43,18 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Background Backdrop Blur Overlay */}
+      <AnimatePresence>
+        {hoveredLink && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[90] bg-black/10 backdrop-blur-[2px] pointer-events-none"
+          />
+        )}
+      </AnimatePresence>
+
       <header
         className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${isScrolled
           ? 'bg-bg-primary/80 backdrop-blur-xl border-b border-border py-3'
@@ -69,7 +82,12 @@ export default function Navbar() {
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navLinks.map((link) => (
-              <div key={link.name} className="relative group">
+              <div 
+                key={link.name} 
+                className="relative"
+                onMouseEnter={() => setHoveredLink(link.name)}
+                onMouseLeave={() => setHoveredLink(null)}
+              >
                 <Link
                   href={link.href}
                   className={`text-sm font-medium transition-all duration-300 whitespace-nowrap flex items-center gap-1 ${pathname === link.href ? 'text-accent' : 'text-text-secondary hover:text-text-primary'
@@ -77,7 +95,7 @@ export default function Navbar() {
                 >
                   <span className="relative z-10">{link.name}</span>
                   {link.submenu && (
-                    <ChevronDown className="w-3 h-3 opacity-50 group-hover:opacity-100 transition-all duration-300 group-hover:rotate-180" />
+                    <ChevronDown className={`w-3 h-3 opacity-50 transition-all duration-300 ${hoveredLink === link.name ? 'rotate-180 opacity-100' : ''}`} />
                   )}
                   {pathname === link.href && (
                     <motion.div
@@ -88,73 +106,89 @@ export default function Navbar() {
                 </Link>
 
                 {/* Dropdown Menu */}
-                {link.submenu && (
-                  <div className="absolute top-full left-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50">
-                    {link.name === 'Resources' ? (
-                      /* Glossary Mega-Menu */
-                      <div className="bg-bg-primary/95 backdrop-blur-2xl border border-white/10 rounded-[28px] p-8 shadow-[0_40px_100px_rgba(0,0,0,0.6)] w-[680px] overflow-hidden">
-                        <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
-                          <div className="flex flex-col gap-1">
-                            <h5 className="syne font-bold text-sm text-text-primary uppercase tracking-[0.2em]">Ichimoku Glossary</h5>
-                            <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest">Main Technical Terms — 用語集</span>
+                <AnimatePresence>
+                  {link.submenu && hoveredLink === link.name && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 15, scale: 0.95, filter: 'blur(10px)' }}
+                      animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95, filter: 'blur(10px)' }}
+                      transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+                      className="absolute top-full left-0 pt-4 z-[110]"
+                    >
+                      {link.name === 'Resources' ? (
+                        /* Glossary Mega-Menu - Ultimate Liquid Glass */
+                        <div className="bg-[#0c101f]/90 backdrop-blur-[100px] border border-white/10 rounded-[28px] p-8 shadow-[0_40px_120px_rgba(0,0,0,0.8)] w-[680px] overflow-hidden relative">
+                          {/* Inner glass highlights */}
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.1] via-transparent to-white/[0.05] pointer-events-none" />
+                          
+                          <div className="relative z-10">
+                            <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
+                              <div className="flex flex-col gap-1">
+                                <h5 className="syne font-bold text-sm text-text-primary uppercase tracking-[0.2em]">Ichimoku Glossary</h5>
+                                <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest">Main Technical Terms — 用語集</span>
+                              </div>
+                              <Link href="/glossary?mode=extended" className="text-[10px] font-mono font-bold text-accent uppercase tracking-widest hover:brightness-125 transition-all">
+                                View Full Library →
+                              </Link>
+                            </div>
+
+                            <div className="flex flex-col">
+                              {/* Table Headers */}
+                              <div className="grid grid-cols-[1.5fr_1fr_1.5fr] gap-4 mb-4 px-4 text-[9px] font-mono text-text-muted uppercase tracking-[0.2em]">
+                                <span>Romanized</span>
+                                <span>Japanese</span>
+                                <span>Translation</span>
+                              </div>
+
+                              {/* Table Body */}
+                              <div className="flex flex-col">
+                                {[
+                                  { r: "Ichimoku Kinkō Hyō", j: "一目均衡表", e: "One-Glance Equilibrium" },
+                                  { r: "Tenkan-sen", j: "転換線", e: "Conversion Line" },
+                                  { r: "Kijun-sen", j: "基準線", e: "Base Line" },
+                                  { r: "Senkō Span A", j: "先行スパンA", e: "Leading Span A" },
+                                  { r: "Senkō Span B", j: "先行スパンB", e: "Leading Span B" },
+                                  { r: "Chikō Span", j: "遅行スパン", e: "Lagging Span" },
+                                  { r: "Kumo", j: "雲", e: "The Cloud" }
+                                ].map((item, i) => (
+                                  <Link 
+                                    key={item.r} 
+                                    href="/glossary?mode=extended" 
+                                    className="grid grid-cols-[1.5fr_1fr_1.5fr] gap-4 items-center px-4 py-3 rounded-xl hover:bg-white/[0.06] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] transition-all duration-300 group/item"
+                                  >
+                                    <span className="text-[11px] font-bold text-text-primary uppercase tracking-tight group-hover/item:text-accent transition-colors">{item.r}</span>
+                                    <span className="shippori-mincho text-[13px] text-text-muted opacity-50 group-hover/item:opacity-100 transition-opacity">{item.j}</span>
+                                    <span className="text-[10px] text-text-secondary line-clamp-1">{item.e}</span>
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
                           </div>
-                          <Link href="/glossary?mode=extended" className="text-[10px] font-mono font-bold text-accent uppercase tracking-widest hover:brightness-125 transition-all">
-                            View Full Library →
-                          </Link>
                         </div>
-
-                        <div className="flex flex-col">
-                          {/* Table Headers */}
-                          <div className="grid grid-cols-[1.5fr_1fr_1.5fr] gap-4 mb-4 px-4 text-[9px] font-mono text-text-muted uppercase tracking-[0.2em]">
-                            <span>Romanized</span>
-                            <span>Japanese</span>
-                            <span>Translation</span>
-                          </div>
-
-                          {/* Table Body */}
-                          <div className="flex flex-col">
-                            {[
-                              { r: "Ichimoku Kinkō Hyō", j: "一目均衡表", e: "One-Glance Equilibrium" },
-                              { r: "Tenkan-sen", j: "転換線", e: "Conversion Line" },
-                              { r: "Kijun-sen", j: "基準線", e: "Base Line" },
-                              { r: "Senkō Span A", j: "先行スパンA", e: "Leading Span A" },
-                              { r: "Senkō Span B", j: "先行スパンB", e: "Leading Span B" },
-                              { r: "Chikō Span", j: "遅行スパン", e: "Lagging Span" },
-                              { r: "Kumo", j: "雲", e: "The Cloud" }
-                            ].map((item, i) => (
-                              <Link 
-                                key={item.r} 
-                                href="/glossary?mode=extended" 
-                                className="grid grid-cols-[1.5fr_1fr_1.5fr] gap-4 items-center px-4 py-3 rounded-xl hover:bg-white/[0.03] transition-all duration-300 group/item"
+                      ) : (
+                        /* Standard Dropdown - Premium Liquid Glass */
+                        <div className="bg-[#0c101f]/90 backdrop-blur-[60px] border border-white/10 rounded-2xl p-1.5 shadow-[0_20px_60px_rgba(0,0,0,0.6)] min-w-[200px] overflow-hidden relative">
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.1] to-transparent pointer-events-none" />
+                          <div className="relative z-10">
+                            {link.submenu.map((sub) => (
+                              <Link
+                                key={sub.name}
+                                href={sub.href}
+                                className="flex items-center px-4 py-3 text-xs font-bold tracking-widest uppercase text-text-secondary hover:text-accent hover:bg-white/[0.03] rounded-xl transition-all duration-300 group/sub"
                               >
-                                <span className="text-[11px] font-bold text-text-primary uppercase tracking-tight group-hover/item:text-accent transition-colors">{item.r}</span>
-                                <span className="shippori-mincho text-[13px] text-text-muted opacity-50 group-hover/item:opacity-100 transition-opacity">{item.j}</span>
-                                <span className="text-[10px] text-text-secondary line-clamp-1">{item.e}</span>
+                                <span className="relative z-10">{sub.name}</span>
+                                <div className="absolute left-0 w-1 h-0 bg-accent rounded-full group-hover/sub:h-4 transition-all duration-300" />
                               </Link>
                             ))}
                           </div>
                         </div>
-                      </div>
-                    ) : (
-                      /* Standard Dropdown */
-                      <div className="bg-bg-primary/95 backdrop-blur-2xl border border-border/50 rounded-2xl p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] min-w-[200px] overflow-hidden relative">
-                        {link.submenu.map((sub) => (
-                          <Link
-                            key={sub.name}
-                            href={sub.href}
-                            className="flex items-center px-4 py-3 text-xs font-bold tracking-widest uppercase text-text-secondary hover:text-accent hover:bg-white/[0.03] rounded-xl transition-all duration-300 group/sub"
-                          >
-                            <span className="relative z-10">{sub.name}</span>
-                            <div className="absolute left-0 w-1 h-0 bg-accent rounded-full group-hover/sub:h-4 transition-all duration-300" />
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {link.label && !link.submenu && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 pointer-events-none">
+                  <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 transition-all duration-300 transform ${hoveredLink === link.name ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'} pointer-events-none`}>
                     <span className="text-[10px] shippori-mincho text-text-muted whitespace-nowrap">
                       {link.label}
                     </span>

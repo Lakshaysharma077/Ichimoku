@@ -107,13 +107,18 @@ export default function DashboardPreview() {
           {previews.map((preview, i) => (
             <ScrollReveal key={i}>
               <div className="flex flex-col h-full">
-                <div className="aspect-square bg-bg-secondary border border-border rounded-2xl relative overflow-hidden group mb-6">
+                <div className="aspect-square bg-[#0c101f]/80 backdrop-blur-[30px] border border-white/10 rounded-2xl relative overflow-hidden group mb-6 shadow-xl">
+                  {/* Inner glass highlight */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent pointer-events-none" />
+                  
                   <div className="absolute top-4 right-4 z-10">
                     <span className="px-2 py-1 text-[8px] font-mono font-bold bg-accent/10 text-accent border border-accent/20 rounded uppercase tracking-widest">
                       LIVE PREVIEW
                     </span>
                   </div>
-                  {preview.content}
+                  <div className="relative z-0 h-full">
+                    {preview.content}
+                  </div>
                 </div>
                 <h4 className="syne font-bold text-xl text-text-primary">{preview.title}</h4>
               </div>

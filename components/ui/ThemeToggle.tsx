@@ -9,9 +9,9 @@ export default function ThemeToggle() {
 
   const getIcon = () => {
     switch (theme) {
-      case 'light': return <Sun className="w-[15.5px] h-[15.5px]" />;
-      case 'dark': return <Moon className="w-[15.5px] h-[15.5px]" />;
-      case 'signature': return <Sparkles className="w-[15.5px] h-[15.5px]" />;
+      case 'light': return <Sun className="w-[18px] h-[18px]" />;
+      case 'dark': return <Moon className="w-[18px] h-[18px]" />;
+      case 'signature': return <Sparkles className="w-[18px] h-[18px]" />;
     }
   };
 
@@ -20,7 +20,7 @@ export default function ThemeToggle() {
       <motion.button
         whileTap={{ scale: 0.9 }}
         onClick={toggleTheme}
-        className="p-2 rounded-full hover:bg-bg-secondary text-text-primary transition-colors flex items-center justify-center"
+        className="p-1.5 rounded-full hover:bg-bg-secondary text-text-primary transition-colors flex items-center justify-center"
         aria-label="Toggle theme"
       >
         <AnimatePresence mode="wait">

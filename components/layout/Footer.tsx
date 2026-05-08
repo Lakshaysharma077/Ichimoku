@@ -30,7 +30,7 @@ export default function Footer() {
             <div className="flex gap-3">
               <div className="relative group/tip flex flex-col items-center">
                 <a href="https://www.tradingview.com/u/IchimokuEdge/" target="_blank" rel="noopener noreferrer" className="p-2 bg-bg-secondary rounded-xl hover:bg-bg-tertiary transition-colors border border-white/5">
-                  <TradingViewIcon className="w-4 h-4" />
+                  <TradingViewIcon className="w-[18px] h-[18px]" />
                 </a>
                 <div className="absolute bottom-full mb-2 opacity-0 group-hover/tip:opacity-100 transition-all duration-300 transform -translate-y-2 group-hover/tip:translate-y-0 pointer-events-none z-50">
                   <span className="text-[9px] whitespace-nowrap text-text-muted font-bold tracking-tighter uppercase px-1.5 py-0.5 bg-bg-primary/80 backdrop-blur-md rounded border border-white/5">TradingView</span>
@@ -38,7 +38,7 @@ export default function Footer() {
               </div>
               <div className="relative group/tip flex flex-col items-center">
                 <a href="https://www.youtube.com/@IchimokuEdge" target="_blank" rel="noopener noreferrer" className="p-2 bg-bg-secondary rounded-xl hover:bg-bg-tertiary transition-colors border border-white/5">
-                  <Youtube className="w-4 h-4" />
+                  <Youtube className="w-[18px] h-[18px]" />
                 </a>
                 <div className="absolute bottom-full mb-2 opacity-0 group-hover/tip:opacity-100 transition-all duration-300 transform -translate-y-2 group-hover/tip:translate-y-0 pointer-events-none z-50">
                   <span className="text-[9px] whitespace-nowrap text-text-muted font-bold tracking-tighter uppercase px-1.5 py-0.5 bg-bg-primary/80 backdrop-blur-md rounded border border-white/5">YouTube</span>
@@ -46,7 +46,7 @@ export default function Footer() {
               </div>
               <div className="relative group/tip flex flex-col items-center">
                 <a href="https://x.com/IchimokuEdge" target="_blank" rel="noopener noreferrer" className="p-2 bg-bg-secondary rounded-xl hover:bg-bg-tertiary transition-colors border border-white/5">
-                  <XIcon className="w-4 h-4" />
+                  <XIcon className="w-[18px] h-[18px]" />
                 </a>
                 <div className="absolute bottom-full mb-2 opacity-0 group-hover/tip:opacity-100 transition-all duration-300 transform -translate-y-2 group-hover/tip:translate-y-0 pointer-events-none z-50">
                   <span className="text-[9px] whitespace-nowrap text-text-muted font-bold tracking-tighter uppercase px-1.5 py-0.5 bg-bg-primary/80 backdrop-blur-md rounded border border-white/5">X / Twitter</span>
@@ -90,15 +90,15 @@ export default function Footer() {
           </div>
 
           {/* Settings */}
-          <div className="flex flex-col">
+          <div className="flex flex-col items-start lg:col-start-5">
             <h4 className="syne font-bold text-xs uppercase tracking-widest text-text-primary mb-6">Settings</h4>
-            <div className="space-y-5">
-              <div className="flex flex-col gap-2">
-                <span className="text-[11px] font-mono text-text-muted uppercase tracking-wider">Language</span>
-                <LanguageSwitcher />
+            <div className="w-full space-y-4">
+              <div className="flex flex-row items-center justify-between lg:justify-start lg:gap-8">
+                <span className="text-[11px] font-mono text-text-muted uppercase tracking-wider whitespace-nowrap">Language</span>
+                <LanguageSwitcher variant="minimal" />
               </div>
-              <div className="flex flex-col gap-2">
-                <span className="text-[11px] font-mono text-text-muted uppercase tracking-wider">Display Mode</span>
+              <div className="flex flex-row items-center justify-between lg:justify-start lg:gap-4">
+                <span className="text-[11px] font-mono text-text-muted uppercase tracking-wider whitespace-nowrap">Display Mode</span>
                 <FooterThemeSelector />
               </div>
             </div>

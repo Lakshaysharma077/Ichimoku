@@ -140,9 +140,9 @@ export default function MobileDrawer({ isOpen, onClose, links }: MobileDrawerPro
                 </Link>
               </div>
 
-              <div className="flex flex-col gap-4">
-                <span className="text-xs uppercase tracking-widest text-text-muted font-mono">Language</span>
-                <LanguageSwitcher />
+              <div className="flex flex-row items-center justify-between pt-4">
+                <span className="text-[11px] font-mono text-text-muted uppercase tracking-wider">Language</span>
+                <LanguageSwitcher variant="minimal" />
               </div>
             </div>
 

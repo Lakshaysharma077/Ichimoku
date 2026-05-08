@@ -9,10 +9,19 @@ const languages = [
   { code: 'JA', label: 'Japan', flagUrl: 'https://em-content.zobj.net/source/apple/237/flag-for-japan_1f1ef-1f1f5.png' },
 ];
 
-export default function LanguageSwitcher() {
+interface LanguageSwitcherProps {
+  variant?: 'default' | 'minimal';
+}
+
+export default function LanguageSwitcher({ variant = 'default' }: LanguageSwitcherProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState(languages[0]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const iconSize = variant === 'minimal' ? 'w-[14px] h-[14px]' : 'w-[18px] h-[18px]';
+  const fontSize = variant === 'minimal' ? 'text-[11px]' : 'text-[13px]';
+  const chevronSize = variant === 'minimal' ? 'w-3 h-3' : 'w-3.5 h-3.5';
+  const padding = variant === 'minimal' ? 'px-1 py-1' : 'px-2 py-1.5';
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -30,18 +39,18 @@ export default function LanguageSwitcher() {
       {/* Top Bar Selector */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="group flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-300 hover:bg-white/5"
+        className={`group flex items-center gap-1.5 rounded-xl transition-all duration-300 hover:bg-white/5 ${padding}`}
       >
         <Globe 
-          className={`w-[15.5px] h-[15.5px] transition-all duration-300 ${
+          className={`${iconSize} transition-all duration-300 ${
             isOpen ? 'text-[#fbe178] scale-110' : 'text-[#fbe178]/80 group-hover:text-[#fbe178]'
           }`} 
         />
-        <span className="text-[13px] font-bold font-mono tracking-wider text-[#fbe178]">
+        <span className={`${fontSize} font-bold font-mono tracking-wider text-[#fbe178]`}>
           {currentLang.code}
         </span>
         <ChevronDown 
-          className={`w-3.5 h-3.5 transition-all duration-500 ease-out ${
+          className={`${chevronSize} transition-all duration-500 ease-out ${
             isOpen ? 'rotate-180 text-[#fbe178]' : 'text-[#fbe178]/60 group-hover:text-[#fbe178]'
           }`} 
         />

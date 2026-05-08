@@ -114,8 +114,8 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="relative z-10"
           >
-            {/* Stylized Dashboard Mockup */}
-            <div className="aspect-[4/5] bg-bg-tertiary rounded-2xl border border-border shadow-2xl p-6 relative overflow-hidden group">
+            {/* Stylized Dashboard Mockup - Liquid Glass Style */}
+            <div className="aspect-[4/5] bg-[#0c101f]/80 backdrop-blur-[30px] rounded-2xl border border-white/10 shadow-2xl p-6 relative overflow-hidden group">
               {/* Fake Chart Background */}
               <div className="absolute inset-0 opacity-10 flex items-end gap-1 p-4">
                 {[...Array(20)].map((_, i) => (
@@ -126,6 +126,9 @@ export default function HeroSection() {
                   />
                 ))}
               </div>
+
+              {/* Inner glass highlight */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent pointer-events-none" />
               
               {/* Stat Cards Overlay */}
               <div className="relative space-y-4">
@@ -151,10 +154,13 @@ export default function HeroSection() {
                     initial={{ opacity: 0, x: -30 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 1.2 + i * 0.2 }}
-                    className="bg-bg-primary/80 backdrop-blur-md p-4 border border-border rounded-xl"
+                    className="bg-[#0c101f]/60 backdrop-blur-xl p-4 border border-white/10 rounded-xl shadow-xl hover:bg-[#0c101f]/80 transition-all duration-300 group/card relative overflow-hidden"
                   >
-                    <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest block mb-1">{stat.label}</span>
-                    <div className="flex items-center justify-between">
+                    {/* Inner glass glow */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent pointer-events-none opacity-0 group-hover/card:opacity-100 transition-opacity" />
+                    
+                    <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest block mb-1 relative z-10">{stat.label}</span>
+                    <div className="flex items-center justify-between relative z-10">
                       <span className={`text-lg font-bold syne ${stat.color}`}>{stat.value}</span>
                       <span className="text-xs text-text-secondary">{stat.sub}</span>
                     </div>

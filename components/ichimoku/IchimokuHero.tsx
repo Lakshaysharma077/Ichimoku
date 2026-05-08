@@ -25,8 +25,8 @@ export default function IchimokuHero() {
           className="mb-6 flex flex-col items-center"
         >
           <span className="shippori-mincho text-[#fbe178] text-xl lg:text-2xl mb-4 tracking-[0.2em]">一目均衡表</span>
-          <h1 className="syne font-extrabold text-text-primary leading-[0.85] uppercase">
-            <span className="block text-[clamp(3rem,10vw,7rem)]">ICHIMOKU</span>
+          <h1 className="syne font-extrabold text-text-primary leading-[1.2] lg:leading-[0.85] uppercase">
+            <span className="block text-[clamp(3rem,10vw,7rem)] mb-2 lg:mb-0">ICHIMOKU</span>
             <span className="block text-[clamp(2.5rem,8vw,6rem)] text-transparent bg-clip-text bg-gradient-to-r from-text-primary via-[#fbe178] to-text-primary">KINKŌ HYŌ</span>
           </h1>
         </motion.div>
