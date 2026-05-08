@@ -1,81 +1,199 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import KanjiWatermark from '@/components/shared/KanjiWatermark';
 import ScrollReveal from '@/components/shared/ScrollReveal';
 
-const glossaryItems = [
-  {
-    term: "Tenkan-sen",
-    translation: "転換線",
-    definition: "Often called the Conversion Line. It is calculated as the mid-point of the highest high and lowest low over the last 9 periods. It represents short-term momentum and minor support or resistance."
-  },
-  {
-    term: "Kijun-sen",
-    translation: "基準線",
-    definition: "Often called the Base Line. It is calculated as the mid-point of the highest high and lowest low over the last 26 periods. It represents medium-term momentum and is considered a key level of equilibrium."
-  },
-  {
-    term: "Senkou Span A",
-    translation: "先行スパンA",
-    definition: "The average of the Tenkan-sen and Kijun-sen, projected forward 26 periods. It forms one boundary of the Kumo (Cloud) and reflects shorter-term trend momentum."
-  },
-  {
-    term: "Senkou Span B",
-    translation: "先行スパンB",
-    definition: "The mid-point of the highest high and lowest low over the last 52 periods, projected forward 26 periods. It forms the second boundary of the Kumo (Cloud) and represents longer-term equilibrium."
-  },
-  {
-    term: "Kumo",
-    translation: "雲",
-    definition: "The 'Cloud' formed by the space between Senkou Span A and Senkou Span B. It represents a multidimensional zone of support and resistance that varies in strength based on its thickness."
-  },
-  {
-    term: "Chikou Span",
-    translation: "遅行スパン",
-    definition: "The Lagging Span. It is the current closing price projected backwards 26 periods. It is used to compare current price action with historical data to confirm trend direction."
-  }
+const mainWords = [
+  "Ichimoku Kinkō Hyō",
+  "Tenkan-sen",
+  "Kijun-sen",
+  "Senkō Span A",
+  "Senkō Span B",
+  "Chikō Span",
+  "Kumo"
+];
+
+const glossaryData = [
+  { romanized: "Ichimoku Kinkō Hyō", japanese: "一目均衡表", english: "One-Glance Equilibrium Chart" },
+  { romanized: "Tenkan-sen", japanese: "転換線", english: "Conversion Line" },
+  { romanized: "Kijun-sen", japanese: "基準線", english: "Base Line" },
+  { romanized: "Senkō Span A", japanese: "先行スパンA", english: "Leading Span A" },
+  { romanized: "Senkō Span B", japanese: "先行スパンB", english: "Leading Span B" },
+  { romanized: "Chikō Span", japanese: "遅行スパン", english: "Lagging Span" },
+  { romanized: "Kumo", japanese: "雲", english: "Cloud" },
+  { romanized: "Kumo no nejire", japanese: "雲のねじれ", english: "Cloud Twist" },
+  { romanized: "Kumo-nuke", japanese: "雲抜け", english: "Cloud Breakout" },
+  { romanized: "Tenkan-sen to Kijun-sen no kurosu", japanese: "転換線と基準線のクロス", english: "Tenkan-Kijun Cross" },
+  { romanized: "Kōten", japanese: "好転", english: "Bullish Turn / Positive Turn" },
+  { romanized: "Gyakuten", japanese: "逆転", english: "Bearish Turn / Reversal" },
+  { romanized: "Kijun-sen hanpatsu", japanese: "基準線反発", english: "Kijun Bounce" },
+  { romanized: "Tenkan-sen hanpatsu", japanese: "転換線反発", english: "Tenkan Bounce" },
+  { romanized: "Jōshō-gumo", japanese: "上昇雲", english: "Bullish Cloud / Rising Cloud" },
+  { romanized: "Kakō-gumo", japanese: "下降雲", english: "Bearish Cloud / Falling Cloud" },
+  { romanized: "Taira na kumo", japanese: "平らな雲", english: "Flat Cloud" },
+  { romanized: "Kinkō", japanese: "均衡", english: "Equilibrium / Balance" },
+  { romanized: "Torendo", japanese: "トレンド", english: "Trend" },
+  { romanized: "Ikioi", japanese: "勢い", english: "Momentum / Force" },
+  { romanized: "Shiji-sen", japanese: "支持線", english: "Support Line" },
+  { romanized: "Teikō-sen", japanese: "抵抗線", english: "Resistance Line" },
+  { romanized: "Jōshō torendo", japanese: "上昇トレンド", english: "Uptrend" },
+  { romanized: "Kakō torendo", japanese: "下降トレンド", english: "Downtrend" },
+  { romanized: "Mochiai", japanese: "持ち合い", english: "Range / Consolidation" },
+  { romanized: "Hōkō-kan", japanese: "方向感", english: "Directional Bias" },
+  { romanized: "Kyōjaku", japanese: "強弱", english: "Strength / Weakness" },
+  { romanized: "Senkō", japanese: "先行", english: "Leading / Ahead" },
+  { romanized: "Chikō", japanese: "遅行", english: "Lagging / Delayed" },
+  { romanized: "Sen", japanese: "線", english: "Line" },
+  { romanized: "Supan", japanese: "スパン", english: "Span" },
+  { romanized: "Hen’i", japanese: "変位", english: "Displacement" },
+  { romanized: "Shifuto", japanese: "シフト", english: "Shift" },
+  { romanized: "Mirai", japanese: "未来", english: "Future" },
+  { romanized: "Kako", japanese: "過去", english: "Past" },
+  { romanized: "Genzaichi", japanese: "現在値", english: "Current Price" },
+  { romanized: "Owarine", japanese: "終値", english: "Closing Price" },
+  { romanized: "Takane", japanese: "高値", english: "High Price" },
+  { romanized: "Yasune", japanese: "安値", english: "Low Price" },
+  { romanized: "Saikōne", japanese: "最高値", english: "Highest High" },
+  { romanized: "Saiyasune", japanese: "最安値", english: "Lowest Low" },
+  { romanized: "Chūkan-chi", japanese: "中間値", english: "Midpoint / Middle Value" },
+  { romanized: "Kikan", japanese: "期間", english: "Period" },
+  { romanized: "Kyū-kikan", japanese: "9期間", english: "9 Periods" },
+  { romanized: "Nijūroku-kikan", japanese: "26期間", english: "26 Periods" },
+  { romanized: "Gojūni-kikan", japanese: "52期間", english: "52 Periods" },
+  { romanized: "Keisan", japanese: "計算", english: "Calculation" },
+  { romanized: "Neugoki", japanese: "値動き", english: "Price Movement" },
+  { romanized: "Kakaku", japanese: "価格", english: "Price" },
+  { romanized: "Uwa-nuke", japanese: "上抜け", english: "Break Above" },
+  { romanized: "Shita-nuke", japanese: "下抜け", english: "Break Below" },
+  { romanized: "Hane-kaeri", japanese: "跳ね返り", english: "Bounce / Rejection" },
+  { romanized: "Oshime", japanese: "押し目", english: "Pullback" },
+  { romanized: "Modori", japanese: "戻り", english: "Retracement / Return" },
+  { romanized: "Uwari", japanese: "上回り", english: "Move Above" },
+  { romanized: "Shitamawari", japanese: "下回り", english: "Move Below" },
+  { romanized: "Meikaku na torendo", japanese: "明確なトレンド", english: "Clear Trend" },
 ];
 
 export default function GlossaryPage() {
+  const searchParams = useSearchParams();
+  const [isExtended, setIsExtended] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get('mode') === 'extended') {
+      setIsExtended(true);
+    }
+  }, [searchParams]);
+
+  const filteredData = isExtended 
+    ? glossaryData 
+    : glossaryData.filter(item => mainWords.includes(item.romanized));
+
   return (
     <div className="pt-40 pb-24 relative overflow-hidden min-h-screen">
       <KanjiWatermark kanji="用語" className="bottom-10 left-[-5%] opacity-[0.04]" size="30vw" />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-8">
-        <div className="flex flex-col mb-16">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <ScrollReveal>
             <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
               Ichimoku Glossary
             </h1>
-            <p className="shippori-mincho text-2xl text-text-muted mb-6">
+            <p className="shippori-mincho text-2xl text-text-muted mb-0">
               用語集
             </p>
-            <p className="text-xl text-text-secondary leading-relaxed max-w-2xl">
-              Master the terminology of the cloud. A comprehensive guide to the core components of the Ichimoku Kinkō Hyō system.
-            </p>
+          </ScrollReveal>
+
+          {/* Toggle Switch */}
+          <ScrollReveal delay={0.1}>
+            <div className="flex flex-col gap-3">
+              <span className="text-[10px] font-mono font-bold text-text-muted uppercase tracking-[0.2em] ml-1">
+                Version Select
+              </span>
+              <div 
+                onClick={() => setIsExtended(!isExtended)}
+                className="relative w-48 h-12 bg-bg-secondary/50 backdrop-blur-md rounded-2xl border border-border/50 p-1 cursor-pointer group"
+              >
+                <div className="absolute inset-0 flex">
+                  <div className="flex-1 flex items-center justify-center z-10">
+                    <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors duration-300 ${!isExtended ? 'text-[#0c101f]' : 'text-text-muted group-hover:text-text-primary'}`}>
+                      Main
+                    </span>
+                  </div>
+                  <div className="flex-1 flex items-center justify-center z-10">
+                    <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors duration-300 ${isExtended ? 'text-[#0c101f]' : 'text-text-muted group-hover:text-text-primary'}`}>
+                      Extended
+                    </span>
+                  </div>
+                </div>
+                
+                <motion.div 
+                  className="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-[#fbe178] rounded-[12px] shadow-[0_0_15px_rgba(251,225,120,0.3)]"
+                  animate={{ x: isExtended ? '100%' : '0%' }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              </div>
+            </div>
           </ScrollReveal>
         </div>
 
-        <div className="space-y-6">
-          {glossaryItems.map((item, i) => (
-            <ScrollReveal key={item.term} delay={i * 0.1}>
-              <div className="group bg-bg-secondary/30 hover:bg-bg-secondary/50 border border-border/50 rounded-3xl p-8 sm:p-10 transition-all duration-500 hover:scale-[1.01] hover:shadow-2xl hover:shadow-accent/5">
-                <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-4 mb-4">
-                  <h2 className="syne font-bold text-2xl sm:text-3xl text-text-primary uppercase tracking-tight group-hover:text-accent transition-colors">
-                    {item.term}
-                  </h2>
-                  <span className="shippori-mincho text-lg text-text-muted opacity-60 group-hover:opacity-100 transition-opacity">
-                    {item.translation}
-                  </span>
-                </div>
-                <div className="h-px w-12 bg-accent/30 mb-6 group-hover:w-full transition-all duration-700" />
-                <p className="text-text-secondary text-lg leading-relaxed max-w-2xl">
-                  {item.definition}
-                </p>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
+        {/* Content List */}
+        <ScrollReveal delay={0.2}>
+          <div className="bg-bg-secondary/20 backdrop-blur-2xl border border-white/5 rounded-[32px] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.4)]">
+            {/* Headers */}
+            <div className="hidden sm:flex items-center justify-between px-8 py-5 bg-white/[0.02] border-b border-white/5">
+              <span className="text-[10px] font-mono font-bold text-text-muted uppercase tracking-[0.25em]">
+                Romanized Japanese / Common English Translation
+              </span>
+              <span className="text-[10px] font-mono font-bold text-text-muted uppercase tracking-[0.25em]">
+                Japanese
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <AnimatePresence mode="popLayout">
+                {filteredData.map((item, i) => (
+                  <motion.div 
+                    key={item.romanized}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.3, delay: isExtended ? 0 : i * 0.05 }}
+                    className="group relative flex items-center justify-between px-8 py-6 border-b border-white/[0.03] last:border-0 hover:bg-white/[0.02] transition-all duration-300"
+                  >
+                    <div className="flex flex-col gap-1 relative z-10">
+                      <span className="text-[16px] font-bold text-text-primary uppercase tracking-tight group-hover:text-accent transition-colors duration-300">
+                        {item.romanized}
+                      </span>
+                      <span className="text-[12px] text-text-secondary group-hover:text-accent/80 transition-colors duration-300 leading-relaxed max-w-md">
+                        {item.english}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-6 relative z-10">
+                      <span className="shippori-mincho text-2xl text-text-muted opacity-30 group-hover:opacity-100 group-hover:text-accent group-hover:scale-110 transition-all duration-500">
+                        {item.japanese}
+                      </span>
+                    </div>
+
+                    {/* Subtle hover accent */}
+                    <div className="absolute left-0 w-1 h-0 bg-accent rounded-full group-hover:h-8 transition-all duration-300 top-1/2 -translate-y-1/2" />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </div>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.4}>
+          <div className="mt-12 text-center">
+            <p className="text-[10px] font-mono text-text-muted uppercase tracking-[0.3em]">
+              Showing {filteredData.length} Terms
+            </p>
+          </div>
+        </ScrollReveal>
       </div>
     </div>
   );

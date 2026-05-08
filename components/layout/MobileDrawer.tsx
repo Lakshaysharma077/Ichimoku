@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -13,11 +14,17 @@ import TradingViewIcon from '../ui/TradingViewIcon';
 interface MobileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  links: { name: string; href: string; label?: string }[];
+  links: { 
+    name: string; 
+    href: string; 
+    label?: string;
+    submenu?: { name: string; href: string }[];
+  }[];
 }
 
 export default function MobileDrawer({ isOpen, onClose, links }: MobileDrawerProps) {
   const pathname = usePathname();
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
   return (
     <AnimatePresence>
@@ -56,25 +63,74 @@ export default function MobileDrawer({ isOpen, onClose, links }: MobileDrawerPro
             </div>
 
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
-              <div className="space-y-4">
+              <div className="space-y-2">
                 {links.map((link) => (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    onClick={onClose}
-                    className={`block py-2 text-lg font-semibold syne transition-colors ${
-                      pathname === link.href ? 'text-accent' : 'text-text-secondary hover:text-text-primary'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span>{link.name}</span>
-                    </div>
-                    {link.label && (
-                      <span className="block text-xs shippori-mincho text-text-muted mt-1">
-                        {link.label}
-                      </span>
+                  <div key={link.name} className="flex flex-col">
+                    {link.submenu ? (
+                      <div className="flex flex-col">
+                        <button
+                          onClick={() => setOpenSubmenu(openSubmenu === link.name ? null : link.name)}
+                          className={`flex items-center justify-between py-3 text-lg font-semibold syne transition-colors ${
+                            openSubmenu === link.name ? 'text-accent' : 'text-text-secondary'
+                          }`}
+                        >
+                          <div className="flex flex-col items-start">
+                            <span>{link.name}</span>
+                            {link.label && (
+                              <span className="text-[10px] shippori-mincho text-text-muted tracking-wider leading-none mt-1">
+                                {link.label}
+                              </span>
+                            )}
+                          </div>
+                          <motion.div
+                            animate={{ rotate: openSubmenu === link.name ? 180 : 0 }}
+                          >
+                            <svg className="w-4 h-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </motion.div>
+                        </button>
+                        <AnimatePresence>
+                          {openSubmenu === link.name && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              className="overflow-hidden bg-bg-secondary/30 rounded-xl px-4"
+                            >
+                              {link.submenu.map((sub) => (
+                                <Link
+                                  key={sub.name}
+                                  href={sub.href}
+                                  onClick={onClose}
+                                  className="block py-4 text-sm font-bold text-text-secondary hover:text-accent uppercase tracking-widest border-b border-white/5 last:border-0"
+                                >
+                                  {sub.name}
+                                </Link>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        onClick={onClose}
+                        className={`block py-3 text-lg font-semibold syne transition-colors ${
+                          pathname === link.href ? 'text-accent' : 'text-text-secondary hover:text-text-primary'
+                        }`}
+                      >
+                        <div className="flex flex-col">
+                          <span>{link.name}</span>
+                          {link.label && (
+                            <span className="text-[10px] shippori-mincho text-text-muted tracking-wider leading-none mt-1">
+                              {link.label}
+                            </span>
+                          )}
+                        </div>
+                      </Link>
                     )}
-                  </Link>
+                  </div>
                 ))}
               </div>
 

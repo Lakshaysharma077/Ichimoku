@@ -2,14 +2,14 @@
 
 import { useThemeStore } from '@/store/themeStore';
 import { motion } from 'framer-motion';
-import { Sun, Moon, Star } from 'lucide-react';
+import { Sun, Moon, Sparkles } from 'lucide-react';
 
 type Theme = 'light' | 'dark' | 'signature';
 
 const themes: { id: Theme; label: string; icon: React.ReactNode }[] = [
   { id: 'light', label: 'Light', icon: <Sun className="w-4 h-4" /> },
   { id: 'dark', label: 'Dark', icon: <Moon className="w-4 h-4" /> },
-  { id: 'signature', label: 'Ichimoku Edge', icon: <Star className="w-4 h-4" /> },
+  { id: 'signature', label: 'Ichimoku Edge', icon: <Sparkles className="w-4 h-4" /> },
 ];
 
 export default function FooterThemeSelector() {

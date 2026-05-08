@@ -90,19 +90,66 @@ export default function Navbar() {
                 {/* Dropdown Menu */}
                 {link.submenu && (
                   <div className="absolute top-full left-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50">
-                    <div className="bg-bg-primary/95 backdrop-blur-2xl border border-border/50 rounded-2xl p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] min-w-[200px] overflow-hidden relative">
-                      {/* Sub-menu items */}
-                      {link.submenu.map((sub) => (
-                        <Link
-                          key={sub.name}
-                          href={sub.href}
-                          className="flex items-center px-4 py-3 text-xs font-bold tracking-widest uppercase text-text-secondary hover:text-accent hover:bg-white/[0.03] rounded-xl transition-all duration-300 group/sub"
-                        >
-                          <span className="relative z-10">{sub.name}</span>
-                          <div className="absolute left-0 w-1 h-0 bg-accent rounded-full group-hover/sub:h-4 transition-all duration-300" />
-                        </Link>
-                      ))}
-                    </div>
+                    {link.name === 'Resources' ? (
+                      /* Glossary Mega-Menu */
+                      <div className="bg-bg-primary/95 backdrop-blur-2xl border border-white/10 rounded-[28px] p-8 shadow-[0_40px_100px_rgba(0,0,0,0.6)] w-[680px] overflow-hidden">
+                        <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
+                          <div className="flex flex-col gap-1">
+                            <h5 className="syne font-bold text-sm text-text-primary uppercase tracking-[0.2em]">Ichimoku Glossary</h5>
+                            <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest">Main Technical Terms — 用語集</span>
+                          </div>
+                          <Link href="/glossary?mode=extended" className="text-[10px] font-mono font-bold text-accent uppercase tracking-widest hover:brightness-125 transition-all">
+                            View Full Library →
+                          </Link>
+                        </div>
+
+                        <div className="flex flex-col">
+                          {/* Table Headers */}
+                          <div className="grid grid-cols-[1.5fr_1fr_1.5fr] gap-4 mb-4 px-4 text-[9px] font-mono text-text-muted uppercase tracking-[0.2em]">
+                            <span>Romanized</span>
+                            <span>Japanese</span>
+                            <span>Translation</span>
+                          </div>
+
+                          {/* Table Body */}
+                          <div className="flex flex-col">
+                            {[
+                              { r: "Ichimoku Kinkō Hyō", j: "一目均衡表", e: "One-Glance Equilibrium" },
+                              { r: "Tenkan-sen", j: "転換線", e: "Conversion Line" },
+                              { r: "Kijun-sen", j: "基準線", e: "Base Line" },
+                              { r: "Senkō Span A", j: "先行スパンA", e: "Leading Span A" },
+                              { r: "Senkō Span B", j: "先行スパンB", e: "Leading Span B" },
+                              { r: "Chikō Span", j: "遅行スパン", e: "Lagging Span" },
+                              { r: "Kumo", j: "雲", e: "The Cloud" }
+                            ].map((item, i) => (
+                              <Link 
+                                key={item.r} 
+                                href="/glossary?mode=extended" 
+                                className="grid grid-cols-[1.5fr_1fr_1.5fr] gap-4 items-center px-4 py-3 rounded-xl hover:bg-white/[0.03] transition-all duration-300 group/item"
+                              >
+                                <span className="text-[11px] font-bold text-text-primary uppercase tracking-tight group-hover/item:text-accent transition-colors">{item.r}</span>
+                                <span className="shippori-mincho text-[13px] text-text-muted opacity-50 group-hover/item:opacity-100 transition-opacity">{item.j}</span>
+                                <span className="text-[10px] text-text-secondary line-clamp-1">{item.e}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      /* Standard Dropdown */
+                      <div className="bg-bg-primary/95 backdrop-blur-2xl border border-border/50 rounded-2xl p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] min-w-[200px] overflow-hidden relative">
+                        {link.submenu.map((sub) => (
+                          <Link
+                            key={sub.name}
+                            href={sub.href}
+                            className="flex items-center px-4 py-3 text-xs font-bold tracking-widest uppercase text-text-secondary hover:text-accent hover:bg-white/[0.03] rounded-xl transition-all duration-300 group/sub"
+                          >
+                            <span className="relative z-10">{sub.name}</span>
+                            <div className="absolute left-0 w-1 h-0 bg-accent rounded-full group-hover/sub:h-4 transition-all duration-300" />
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -132,21 +179,41 @@ export default function Navbar() {
 
           {/* Right Icons */}
           <div className="hidden lg:flex items-center gap-4">
-            <div className="flex items-center gap-3">
-              <a href="https://www.tradingview.com/u/IchimokuEdge/" target="_blank" rel="noopener noreferrer" className="p-1.5 text-text-secondary hover:text-text-primary hover:scale-120 transition-all duration-300">
-                <TradingViewIcon className="w-[18px] h-[18px]" />
-              </a>
-              <a href="https://www.youtube.com/@IchimokuEdge" target="_blank" rel="noopener noreferrer" className="p-1.5 text-text-secondary hover:text-text-primary hover:scale-120 transition-all duration-300">
-                <Youtube className="w-[18px] h-[18px]" />
-              </a>
-              <a href="https://x.com/IchimokuEdge" target="_blank" rel="noopener noreferrer" className="p-1.5 text-text-secondary hover:text-text-primary hover:scale-120 transition-all duration-300">
-                <XIcon className="w-[15px] h-[15px]" />
-              </a>
+            <div className="flex items-center gap-1.5">
+              <div className="relative group/tip flex flex-col items-center">
+                <a href="https://www.tradingview.com/u/IchimokuEdge/" target="_blank" rel="noopener noreferrer" className="p-1.5 text-text-secondary hover:text-accent transition-colors">
+                  <TradingViewIcon className="w-[18px] h-[18px]" />
+                </a>
+                <div className="absolute top-full mt-1 opacity-0 group-hover/tip:opacity-100 transition-all duration-300 transform translate-y-2 group-hover/tip:translate-y-0 pointer-events-none z-50">
+                  <span className="text-[9px] whitespace-nowrap text-text-muted font-bold tracking-tighter uppercase px-1.5 py-0.5">TradingView</span>
+                </div>
+              </div>
+              <div className="relative group/tip flex flex-col items-center">
+                <a href="https://www.youtube.com/@IchimokuEdge" target="_blank" rel="noopener noreferrer" className="p-1.5 text-text-secondary hover:text-accent transition-colors">
+                  <Youtube className="w-[18px] h-[18px]" />
+                </a>
+                <div className="absolute top-full mt-1 opacity-0 group-hover/tip:opacity-100 transition-all duration-300 transform translate-y-2 group-hover/tip:translate-y-0 pointer-events-none z-50">
+                  <span className="text-[9px] whitespace-nowrap text-text-muted font-bold tracking-tighter uppercase px-1.5 py-0.5">YouTube</span>
+                </div>
+              </div>
+              <div className="relative group/tip flex flex-col items-center">
+                <a href="https://x.com/IchimokuEdge" target="_blank" rel="noopener noreferrer" className="p-1.5 text-text-secondary hover:text-accent transition-colors">
+                  <XIcon className="w-[18px] h-[18px]" />
+                </a>
+                <div className="absolute top-full mt-1 opacity-0 group-hover/tip:opacity-100 transition-all duration-300 transform translate-y-2 group-hover/tip:translate-y-0 pointer-events-none z-50">
+                  <span className="text-[9px] whitespace-nowrap text-text-muted font-bold tracking-tighter uppercase px-1.5 py-0.5">X / Twitter</span>
+                </div>
+              </div>
             </div>
             <div className="h-4 w-px bg-border mx-1" />
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <ThemeToggle />
-              <LanguageSwitcher />
+              <div className="relative group/tip flex flex-col items-center">
+                <LanguageSwitcher />
+                <div className="absolute top-full mt-1 opacity-0 group-hover/tip:opacity-100 transition-all duration-300 transform translate-y-2 group-hover/tip:translate-y-0 pointer-events-none z-50">
+                  <span className="text-[9px] whitespace-nowrap text-text-muted font-bold tracking-tighter uppercase px-1.5 py-0.5">Language</span>
+                </div>
+              </div>
             </div>
           </div>
 

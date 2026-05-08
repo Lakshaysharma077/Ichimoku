@@ -67,7 +67,7 @@ export default function DisclaimerPage() {
         <ScrollReveal>
           <div className="flex flex-col mb-12">
             <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
-              Risks Disclaimer
+              Risk Disclaimer
             </h1>
             <p className="shippori-mincho text-2xl text-text-muted mb-6">
               免責事項

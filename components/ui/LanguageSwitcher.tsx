@@ -33,7 +33,7 @@ export default function LanguageSwitcher() {
         className="group flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-300 hover:bg-white/5"
       >
         <Globe 
-          className={`w-4.5 h-4.5 transition-all duration-300 ${
+          className={`w-[15.5px] h-[15.5px] transition-all duration-300 ${
             isOpen ? 'text-[#fbe178] scale-110' : 'text-[#fbe178]/80 group-hover:text-[#fbe178]'
           }`} 
         />

@@ -2,16 +2,16 @@
 
 import { useThemeStore } from '@/store/themeStore';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon, Star } from 'lucide-react';
+import { Sun, Moon, Sparkles } from 'lucide-react';
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useThemeStore();
 
   const getIcon = () => {
     switch (theme) {
-      case 'light': return <Sun className="w-5 h-5" />;
-      case 'dark': return <Moon className="w-5 h-5" />;
-      case 'signature': return <Star className="w-5 h-5" />;
+      case 'light': return <Sun className="w-[15.5px] h-[15.5px]" />;
+      case 'dark': return <Moon className="w-[15.5px] h-[15.5px]" />;
+      case 'signature': return <Sparkles className="w-[15.5px] h-[15.5px]" />;
     }
   };
 
