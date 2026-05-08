@@ -51,7 +51,7 @@ export default function ToolsPage() {
               Tools & Indicators
             </h1>
             <p className="shippori-mincho text-2xl text-text-muted mb-6">
-              「道具と指標」
+              道具と指標
             </p>
             <p className="text-xl text-text-secondary max-w-2xl leading-relaxed">
               Precision-built Pine Script indicators for TradingView. Each tool is battle-tested on real markets.

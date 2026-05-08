@@ -27,7 +27,7 @@ export default function IchimokuPage() {
               Ichimoku Kinkō Hyō
             </h1>
             <p className="shippori-mincho text-2xl text-text-muted mb-8">
-              「一目均衡表 完全ガイド」
+              一目均衡表 完全ガイド
             </p>
           </div>
           <p className="text-xl text-text-secondary max-w-3xl leading-relaxed">
@@ -40,7 +40,7 @@ export default function IchimokuPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-8 mb-32">
         <ScrollReveal>
           <h2 className="syne font-bold text-3xl text-text-primary uppercase">The 5 Lines of Ichimoku</h2>
-          <p className="shippori-mincho text-xl text-text-muted mt-2 mb-12">「一目の五線」</p>
+          <p className="shippori-mincho text-xl text-text-muted mt-2 mb-12">一目の五線</p>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

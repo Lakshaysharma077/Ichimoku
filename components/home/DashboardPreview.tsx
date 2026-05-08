@@ -97,7 +97,7 @@ export default function DashboardPreview() {
               Time-Saving Dashboards
             </h2>
             <p className="shippori-mincho text-xl text-text-muted mb-4">
-              「時間節約ダッシュボード」
+              時間節約ダッシュボード
             </p>
             <p className="text-text-secondary">One glance. Full market context.</p>
           </ScrollReveal>

@@ -38,7 +38,7 @@ export default function RefundPage() {
               Refund Policy
             </h1>
             <p className="shippori-mincho text-2xl text-text-muted mb-6">
-              「返金ポリシー」
+              返金ポリシー
             </p>
             <p className="text-xl text-text-secondary leading-relaxed">
               Transparent rules for cancellations, trials, and subscription management.

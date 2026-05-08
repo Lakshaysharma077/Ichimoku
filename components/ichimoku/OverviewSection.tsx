@@ -30,7 +30,7 @@ export default function OverviewSection() {
             </div>
 
             <blockquote className="relative p-8 bg-bg-secondary/50 rounded-2xl border-l-4 border-[#fbe178] overflow-hidden group">
-              <div className="absolute top-0 right-0 p-4 opacity-10 text-8xl shippori-mincho text-[#fbe178] select-none group-hover:scale-110 transition-transform duration-700">「</div>
+              <div className="absolute top-0 right-0 p-4 opacity-10 text-8xl shippori-mincho text-[#fbe178] select-none group-hover:scale-110 transition-transform duration-700"></div>
               <p className="relative z-10 shippori-mincho text-xl text-text-primary leading-relaxed italic">
                 "The market is a reflection of human nature. To master the chart, one must first master the self and understand the balance of time."
               </p>

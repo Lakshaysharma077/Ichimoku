@@ -32,11 +32,6 @@ export default function Accordion({ items }: AccordionProps) {
             aria-expanded={openId === item.id}
           >
             <div className="flex flex-col gap-1.5 flex-1 pr-4">
-              {item.category && (
-                <span className="inline-flex self-start px-2.5 py-0.5 text-[9px] font-mono uppercase tracking-widest rounded-full bg-accent/10 text-accent border border-accent/20">
-                  {item.category}
-                </span>
-              )}
               <span className="text-lg font-medium syne text-text-primary group-hover:text-accent transition-colors">
                 {item.question}
               </span>

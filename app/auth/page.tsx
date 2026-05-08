@@ -86,7 +86,7 @@ export default function AuthPage() {
           <h2 className="syne font-extrabold text-6xl text-text-primary mb-6 uppercase tracking-tight leading-[0.9]">
             Professional <br /> <span className="text-accent">Market Clarity.</span>
           </h2>
-          <p className="shippori-mincho text-2xl text-text-muted mb-16">「プロフェッショナルな市場の透明性」</p>
+          <p className="shippori-mincho text-2xl text-text-muted mb-16">プロフェッショナルな市場の透明性</p>
           
           <div className="space-y-10">
             {[

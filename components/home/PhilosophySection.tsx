@@ -6,9 +6,9 @@ import ScrollReveal from '../shared/ScrollReveal';
 import BilingualHover from '../shared/BilingualHover';
 
 const pillars = [
-  { icon: '⚔', title: 'Discipline', subtitle: '「規律」', text: 'Follow the system, not your emotions.' },
-  { icon: '🎯', title: 'Structure', subtitle: '「構造」', text: 'The cloud never lies. The trend is clear.' },
-  { icon: '⏱', title: 'Speed', subtitle: '「速度」', text: 'Dashboards built to save you hours daily.' },
+  { icon: '⚔', title: 'Discipline', subtitle: '規律', text: 'Follow the system, not your emotions.' },
+  { icon: '🎯', title: 'Structure', subtitle: '構造', text: 'The cloud never lies. The trend is clear.' },
+  { icon: '⏱', title: 'Speed', subtitle: '速度', text: 'Dashboards built to save you hours daily.' },
 ];
 
 export default function PhilosophySection() {

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Youtube, Twitter, LineChart, LogIn } from 'lucide-react';
+import { Menu, X, Youtube, Twitter, LineChart, LogIn, ChevronDown } from 'lucide-react';
 import Button from '../ui/Button';
 import ThemeToggle from '../ui/ThemeToggle';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
@@ -15,7 +15,14 @@ import TradingViewIcon from '../ui/TradingViewIcon';
 const navLinks = [
   { name: 'Philosophy', href: '/', label: 'ホーム' },
   { name: 'Ichimoku', href: '/ichimoku', label: '一目均衡表' },
-  { name: 'Resources', href: '/education', label: '教育' },
+  { 
+    name: 'Resources', 
+    href: '/education', 
+    label: '教育',
+    submenu: [
+      { name: 'Ichimoku Glossary', href: '/glossary' }
+    ]
+  },
   { name: 'Tools', href: '/tools', label: '道具' },
 ];
 
@@ -54,7 +61,7 @@ export default function Navbar() {
                 </span>
               </div>
               <span className="text-[8px] sm:text-[10px] shippori-mincho text-text-muted mt-[-3px] tracking-wider">
-                「一目均衡表」
+                一目均衡表
               </span>
             </div>
           </Link>
@@ -65,10 +72,13 @@ export default function Navbar() {
               <div key={link.name} className="relative group">
                 <Link
                   href={link.href}
-                  className={`text-sm font-medium transition-all duration-300 whitespace-nowrap flex items-center ${pathname === link.href ? 'text-accent' : 'text-text-secondary hover:text-text-primary'
+                  className={`text-sm font-medium transition-all duration-300 whitespace-nowrap flex items-center gap-1 ${pathname === link.href ? 'text-accent' : 'text-text-secondary hover:text-text-primary'
                     }`}
                 >
                   <span className="relative z-10">{link.name}</span>
+                  {link.submenu && (
+                    <ChevronDown className="w-3 h-3 opacity-50 group-hover:opacity-100 transition-all duration-300 group-hover:rotate-180" />
+                  )}
                   {pathname === link.href && (
                     <motion.div
                       layoutId="nav-underline"
@@ -76,7 +86,27 @@ export default function Navbar() {
                     />
                   )}
                 </Link>
-                {link.label && (
+
+                {/* Dropdown Menu */}
+                {link.submenu && (
+                  <div className="absolute top-full left-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50">
+                    <div className="bg-bg-primary/95 backdrop-blur-2xl border border-border/50 rounded-2xl p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] min-w-[200px] overflow-hidden relative">
+                      {/* Sub-menu items */}
+                      {link.submenu.map((sub) => (
+                        <Link
+                          key={sub.name}
+                          href={sub.href}
+                          className="flex items-center px-4 py-3 text-xs font-bold tracking-widest uppercase text-text-secondary hover:text-accent hover:bg-white/[0.03] rounded-xl transition-all duration-300 group/sub"
+                        >
+                          <span className="relative z-10">{sub.name}</span>
+                          <div className="absolute left-0 w-1 h-0 bg-accent rounded-full group-hover/sub:h-4 transition-all duration-300" />
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {link.label && !link.submenu && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 pointer-events-none">
                     <span className="text-[10px] shippori-mincho text-text-muted whitespace-nowrap">
                       {link.label}

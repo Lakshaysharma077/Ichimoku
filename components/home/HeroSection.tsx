@@ -61,7 +61,7 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 0.8 }}
             className="shippori-mincho text-xl text-text-muted mb-6"
           >
-            「市場を明確に見る」
+            市場を明確に見る
           </motion.p>
           
           <motion.p

@@ -80,7 +80,7 @@ export default function PricingPage() {
               Simple, Transparent Pricing
             </h1>
             <p className="shippori-mincho text-2xl text-text-muted mb-6">
-              「価格設定」
+              価格設定
             </p>
             <p className="text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
               Start with 14 days completely free. No credit card required.
@@ -113,7 +113,7 @@ export default function PricingPage() {
                 14 Days. Full Access. Zero Risk.
               </h2>
               <p className="shippori-mincho text-xl text-text-muted mb-8">
-                「14日間。完全アクセス。ゼロリスク。」
+                14日間。完全アクセス。ゼロリスク。
               </p>
               <p className="text-text-secondary max-w-2xl mx-auto mb-10 text-lg leading-relaxed">
                 Try every premium indicator free for 14 days. If it's not the best Ichimoku toolset you've ever used, cancel with one click. No questions asked.

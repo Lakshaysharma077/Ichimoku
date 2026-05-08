@@ -158,8 +158,7 @@ export default function FAQPage() {
   const accordionItems = filteredFaqs.map(faq => ({
     id: faq.id,
     question: faq.question,
-    answer: faq.answer,
-    category: faq.categories.join(" / ") // Show all categories as the tag
+    answer: faq.answer
   }));
 
   return (
@@ -173,7 +172,7 @@ export default function FAQPage() {
               Frequently Asked Questions
             </h1>
             <p className="shippori-mincho text-2xl text-text-muted mb-6">
-              「よくある質問」
+              よくある質問
             </p>
           </ScrollReveal>
         </div>

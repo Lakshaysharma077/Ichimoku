@@ -38,7 +38,7 @@ export default function TermsPage() {
               Terms of Service
             </h1>
             <p className="shippori-mincho text-2xl text-text-muted mb-6">
-              「利用規約」
+              利用規約
             </p>
             <p className="text-xl text-text-secondary leading-relaxed">
               Please read these terms carefully before using the Ichimoku Edge platform and indicators.

@@ -31,7 +31,7 @@ export default function EducationPage() {
             Resources Hub
           </h1>
           <p className="shippori-mincho text-2xl text-text-muted mb-8">
-            「資料ハブ」
+            資料ハブ
           </p>
           
           <p className="text-xl text-text-secondary leading-relaxed mb-12">
