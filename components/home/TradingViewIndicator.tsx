@@ -33,7 +33,7 @@ export default function TradingViewIndicator() {
           ease: "easeOut",
           filter: { duration: 0.5 }
         }}
-        className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black ring-1 ring-white/5"
+        className="relative rounded-2xl overflow-hidden border border-border shadow-2xl bg-bg-primary ring-1 ring-border/5"
       >
         {/* Professional Gloss/Shine Overlay */}
         <div className="absolute inset-0 z-10 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
@@ -56,7 +56,7 @@ export default function TradingViewIndicator() {
           initial={{ y: 0 }}
           animate={{ y: [0, -4, 0] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-4 right-4 z-30 bg-[#fbe178] text-[#0c101f] px-4 py-1.5 rounded-full text-[10px] font-bold syne uppercase tracking-[0.15em] shadow-xl border border-white/20"
+          className="absolute bottom-4 right-4 z-30 bg-accent text-bg-primary px-4 py-1.5 rounded-full text-[10px] font-bold syne uppercase tracking-[0.15em] shadow-xl border border-border"
         >
           Live Indicator Preview
         </motion.div>

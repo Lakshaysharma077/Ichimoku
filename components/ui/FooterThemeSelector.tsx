@@ -2,41 +2,53 @@
 
 import { useThemeStore } from '@/store/themeStore';
 import { motion } from 'framer-motion';
-import { Sun, Moon, Sparkles } from 'lucide-react';
-
-type Theme = 'light' | 'dark' | 'signature';
-
-const themes: { id: Theme; label: string; icon: React.ReactNode }[] = [
-  { id: 'light', label: 'Light', icon: <Sun className="w-4 h-4" /> },
-  { id: 'dark', label: 'Dark', icon: <Moon className="w-4 h-4" /> },
-  { id: 'signature', label: 'Ichimoku Edge', icon: <Sparkles className="w-4 h-4" /> },
-];
 
 export default function FooterThemeSelector() {
   const { theme, setTheme } = useThemeStore();
 
   return (
-    <div className="flex items-center font-mono text-[10px] text-text-muted uppercase tracking-widest bg-bg-secondary/50 px-2 py-1 rounded-lg border border-border/30">
-      <div className="flex items-center gap-2.5">
+    <div className="flex items-center font-mono text-[9px] text-text-muted uppercase tracking-widest bg-bg-secondary/30 px-1 py-0.5 rounded-full border border-border">
+      <div className="flex items-center relative gap-1">
         <button 
           onClick={() => setTheme('signature')}
-          className={`hover:text-text-primary transition-colors ${theme === 'signature' ? 'text-accent font-bold' : ''}`}
+          className={`relative px-2 py-1 rounded-full transition-all duration-300 hover:text-text-primary ${theme === 'signature' ? 'text-accent font-bold' : ''}`}
         >
-          Edge
+          <span className="relative z-10">Edge</span>
+          {theme === 'signature' && (
+            <motion.div 
+              layoutId="footer-active-pill"
+              className="absolute inset-0 bg-text-primary/10 border border-border rounded-full"
+              transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+            />
+          )}
         </button>
-        <div className="w-[1px] h-2.5 bg-text-muted/20" />
+        <div className="w-px h-3.5 bg-border" />
         <button 
           onClick={() => setTheme('light')}
-          className={`hover:text-text-primary transition-colors ${theme === 'light' ? 'text-accent font-bold' : ''}`}
+          className={`relative px-2 py-1 rounded-full transition-all duration-300 hover:text-text-primary ${theme === 'light' ? 'text-accent font-bold' : ''}`}
         >
-          Light
+          <span className="relative z-10">Light</span>
+          {theme === 'light' && (
+            <motion.div 
+              layoutId="footer-active-pill"
+              className="absolute inset-0 bg-text-primary/10 border border-border rounded-full"
+              transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+            />
+          )}
         </button>
-        <div className="w-[1px] h-2.5 bg-text-muted/20" />
+        <div className="w-px h-3.5 bg-border" />
         <button 
           onClick={() => setTheme('dark')}
-          className={`hover:text-text-primary transition-colors ${theme === 'dark' ? 'text-accent font-bold' : ''}`}
+          className={`relative px-2 py-1 rounded-full transition-all duration-300 hover:text-text-primary ${theme === 'dark' ? 'text-accent font-bold' : ''}`}
         >
-          Dark
+          <span className="relative z-10">Dark</span>
+          {theme === 'dark' && (
+            <motion.div 
+              layoutId="footer-active-pill"
+              className="absolute inset-0 bg-text-primary/10 border border-border rounded-full"
+              transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+            />
+          )}
         </button>
       </div>
     </div>

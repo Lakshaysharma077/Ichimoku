@@ -26,8 +26,8 @@ export default function IchimokuPage() {
             <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
               Ichimoku Kinkō Hyō
             </h1>
-            <p className="shippori-mincho text-2xl text-text-muted mb-8">
-              一目均衡表 完全ガイド
+            <p className="shippori-mincho text-[clamp(1.75rem,5vw,3rem)] text-text-muted mb-8 leading-none transform scale-y-[1.1] origin-left">
+              一目均衡表
             </p>
           </div>
           <p className="text-xl text-text-secondary max-w-3xl leading-relaxed">
@@ -40,7 +40,6 @@ export default function IchimokuPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-8 mb-32">
         <ScrollReveal>
           <h2 className="syne font-bold text-3xl text-text-primary uppercase">The 5 Lines of Ichimoku</h2>
-          <p className="shippori-mincho text-xl text-text-muted mt-2 mb-12">一目の五線</p>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

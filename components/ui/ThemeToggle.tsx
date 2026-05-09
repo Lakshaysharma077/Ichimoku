@@ -36,11 +36,21 @@ export default function ThemeToggle() {
         </AnimatePresence>
       </motion.button>
 
-      {/* Hover Info */}
-      <div className="absolute top-full mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 pointer-events-none z-50">
-        <span className="text-[9px] whitespace-nowrap text-text-muted font-bold tracking-tighter uppercase px-1.5 py-0.5">
-          ( Edge / Light / Dark )
-        </span>
+      {/* Hover Info - Premium Pill Frame */}
+      <div className="absolute top-full mt-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0 pointer-events-none z-50">
+        <div className="bg-bg-primary border border-border px-3 py-1.5 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex items-center gap-2 whitespace-nowrap">
+          <span className={`text-[9px] font-black syne uppercase tracking-wider ${theme === 'signature' ? 'text-accent' : 'text-text-muted/50'}`}>
+            Edge
+          </span>
+          <div className="w-px h-3 bg-border mx-0.5" />
+          <span className={`text-[9px] font-black syne uppercase tracking-wider ${theme === 'light' ? 'text-accent' : 'text-text-muted/50'}`}>
+            Light
+          </span>
+          <div className="w-px h-3 bg-border mx-0.5" />
+          <span className={`text-[9px] font-black syne uppercase tracking-wider ${theme === 'dark' ? 'text-accent' : 'text-text-muted/50'}`}>
+            Dark
+          </span>
+        </div>
       </div>
     </div>
   );

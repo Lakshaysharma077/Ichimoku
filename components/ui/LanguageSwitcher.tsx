@@ -43,15 +43,15 @@ export default function LanguageSwitcher({ variant = 'default' }: LanguageSwitch
       >
         <Globe 
           className={`${iconSize} transition-all duration-300 ${
-            isOpen ? 'text-[#fbe178] scale-110' : 'text-[#fbe178]/80 group-hover:text-[#fbe178]'
+            isOpen ? 'text-accent scale-110' : 'text-accent/80 group-hover:text-accent'
           }`} 
         />
-        <span className={`${fontSize} font-bold font-mono tracking-wider text-[#fbe178]`}>
+        <span className={`${fontSize} font-bold font-mono tracking-wider text-accent`}>
           {currentLang.code}
         </span>
         <ChevronDown 
           className={`${chevronSize} transition-all duration-500 ease-out ${
-            isOpen ? 'rotate-180 text-[#fbe178]' : 'text-[#fbe178]/60 group-hover:text-[#fbe178]'
+            isOpen ? 'rotate-180 text-accent' : 'text-accent/60 group-hover:text-accent'
           }`} 
         />
       </button>
@@ -64,11 +64,11 @@ export default function LanguageSwitcher({ variant = 'default' }: LanguageSwitch
             animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
             exit={{ opacity: 0, y: 8, scale: 0.95, filter: 'blur(4px)' }}
             transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-            className="absolute right-0 mt-3 w-52 overflow-hidden rounded-[20px] bg-[#0c101f]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_0_1px_rgba(251,225,120,0.05)] z-[110]"
+            className="absolute right-0 mt-3 w-52 overflow-hidden rounded-[20px] bg-bg-secondary/95 backdrop-blur-2xl border border-border shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-[110]"
           >
             {/* Header section */}
-            <div className="px-5 py-3.5 border-b border-white/5">
-              <p className="text-[10px] font-mono font-bold text-[#fbe178]/50 uppercase tracking-[0.2em]">
+            <div className="px-5 py-3.5 border-b border-border/50">
+              <p className="text-[10px] font-mono font-bold text-accent/50 uppercase tracking-[0.2em]">
                 Select Language
               </p>
             </div>
@@ -87,7 +87,7 @@ export default function LanguageSwitcher({ variant = 'default' }: LanguageSwitch
                     className={`w-full flex items-center justify-between px-3.5 py-3 rounded-[14px] transition-all duration-300 group relative overflow-hidden ${
                       isActive 
                         ? 'bg-transparent' 
-                        : 'hover:bg-white/5'
+                        : 'hover:bg-bg-tertiary/50'
                     }`}
                   >
                     <div className="flex items-center gap-3.5 z-10">
@@ -102,7 +102,7 @@ export default function LanguageSwitcher({ variant = 'default' }: LanguageSwitch
                         />
                       </div>
                       <span className={`text-[14px] font-medium transition-colors duration-300 ${
-                        isActive ? 'text-[#fbe178]' : 'text-text-secondary group-hover:text-text-primary'
+                        isActive ? 'text-accent' : 'text-text-secondary group-hover:text-text-primary'
                       }`}>
                         {lang.label}
                       </span>
@@ -111,7 +111,7 @@ export default function LanguageSwitcher({ variant = 'default' }: LanguageSwitch
                     {isActive && (
                       <motion.div 
                         layoutId="active-glow"
-                        className="absolute inset-0 bg-gradient-to-r from-[#fbe178]/0 via-[#fbe178]/5 to-[#fbe178]/0"
+                        className="absolute inset-0 bg-gradient-to-r from-accent/0 via-accent/5 to-accent/0"
                         initial={{ x: '-100%' }}
                         animate={{ x: '100%' }}
                         transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
@@ -119,9 +119,9 @@ export default function LanguageSwitcher({ variant = 'default' }: LanguageSwitch
                     )}
 
                     {isActive ? (
-                      <Check className="w-4 h-4 text-[#fbe178] z-10" strokeWidth={3} />
+                      <Check className="w-4 h-4 text-accent z-10" strokeWidth={3} />
                     ) : (
-                      <div className="w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-[#fbe178]/30 transition-colors z-10" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-text-muted/20 group-hover:bg-accent/30 transition-colors z-10" />
                     )}
                   </button>
                 );
@@ -129,7 +129,7 @@ export default function LanguageSwitcher({ variant = 'default' }: LanguageSwitch
             </div>
 
             {/* Subtle bottom accent */}
-            <div className="h-1 w-full bg-gradient-to-r from-transparent via-[#fbe178]/20 to-transparent opacity-50" />
+            <div className="h-1 w-full bg-gradient-to-r from-transparent via-accent/20 to-transparent opacity-50" />
           </motion.div>
         )}
       </AnimatePresence>

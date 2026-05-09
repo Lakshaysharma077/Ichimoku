@@ -40,7 +40,7 @@ export default function HeroSection() {
                     animate={{ pathLength: 1 }}
                     transition={{ duration: 1, delay: 1 }}
                     viewBox="0 0 100 10"
-                    className="absolute -bottom-2 left-0 w-full h-2 text-[#fbe178]"
+                    className="absolute -bottom-2 left-0 w-full h-2 text-accent"
                   >
                     <path
                       d="M0 5 Q 50 10 100 5"
@@ -115,7 +115,7 @@ export default function HeroSection() {
             className="relative z-10"
           >
             {/* Stylized Dashboard Mockup - Liquid Glass Style */}
-            <div className="aspect-[4/5] bg-[#0c101f]/80 backdrop-blur-[30px] rounded-2xl border border-white/10 shadow-2xl p-6 relative overflow-hidden group">
+            <div className="aspect-[4/5] bg-bg-secondary/80 backdrop-blur-[30px] rounded-2xl border border-border shadow-2xl p-6 relative overflow-hidden group">
               {/* Fake Chart Background */}
               <div className="absolute inset-0 opacity-10 flex items-end gap-1 p-4">
                 {[...Array(20)].map((_, i) => (
@@ -154,7 +154,7 @@ export default function HeroSection() {
                     initial={{ opacity: 0, x: -30 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 1.2 + i * 0.2 }}
-                    className="bg-[#0c101f]/60 backdrop-blur-xl p-4 border border-white/10 rounded-xl shadow-xl hover:bg-[#0c101f]/80 transition-all duration-300 group/card relative overflow-hidden"
+                    className="bg-bg-tertiary/60 backdrop-blur-xl p-4 border border-border rounded-xl shadow-xl hover:bg-bg-tertiary/80 transition-all duration-300 group/card relative overflow-hidden"
                   >
                     {/* Inner glass glow */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent pointer-events-none opacity-0 group-hover/card:opacity-100 transition-opacity" />
@@ -196,7 +196,7 @@ export default function HeroSection() {
             </div>
             
             {/* Background elements */}
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#fbe178]/10 blur-[80px] rounded-full" />
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-accent/10 blur-[80px] rounded-full" />
             <div className="absolute -bottom-10 -left-10 w-60 h-60 bg-accent/5 blur-[100px] rounded-full" />
           </motion.div>
         </div>
