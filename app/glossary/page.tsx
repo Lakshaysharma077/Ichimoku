@@ -139,16 +139,19 @@ export default function GlossaryPage() {
           </ScrollReveal>
         </div>
 
-        {/* Content List */}
+        {/* Content List - Professional Table */}
         <ScrollReveal delay={0.2}>
           <div className="bg-bg-secondary/20 backdrop-blur-2xl border border-white/5 rounded-[32px] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.4)]">
-            {/* Headers */}
-            <div className="hidden sm:flex items-center justify-between px-8 py-5 bg-white/[0.02] border-b border-white/5">
-              <span className="text-[10px] font-mono font-bold text-text-muted uppercase tracking-[0.25em]">
-                Romanized Japanese / Common English Translation
+            {/* Table Header */}
+            <div className="hidden md:grid grid-cols-3 px-8 py-5 bg-white/[0.04] border-b border-white/5">
+              <span className="text-[10px] font-mono font-bold text-accent uppercase tracking-[0.25em]">
+                Romanized Japanese
               </span>
-              <span className="text-[10px] font-mono font-bold text-text-muted uppercase tracking-[0.25em]">
+              <span className="text-[10px] font-mono font-bold text-accent uppercase tracking-[0.25em]">
                 Japanese
+              </span>
+              <span className="text-[10px] font-mono font-bold text-accent uppercase tracking-[0.25em]">
+                English Translation
               </span>
             </div>
 
@@ -161,25 +164,37 @@ export default function GlossaryPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.98 }}
                     transition={{ duration: 0.3, delay: isExtended ? 0 : i * 0.05 }}
-                    className="group relative flex items-center justify-between px-8 py-6 border-b border-white/[0.03] last:border-0 hover:bg-white/[0.02] transition-all duration-300"
+                    className="group relative md:grid md:grid-cols-3 flex flex-col gap-4 px-8 py-6 border-b border-white/[0.03] last:border-0 hover:bg-white/[0.02] transition-all duration-300 items-center"
                   >
+                    {/* Romanized */}
                     <div className="flex flex-col gap-1 relative z-10">
-                      <span className="text-[16px] font-bold text-text-primary uppercase tracking-tight group-hover:text-accent transition-colors duration-300">
+                      <span className="hidden md:block text-[10px] font-mono text-text-muted/40 uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transition-opacity">Romanized</span>
+                      <span className="text-[15px] font-bold text-text-primary uppercase tracking-tight group-hover:text-accent transition-colors duration-300">
                         {item.romanized}
-                      </span>
-                      <span className="text-[12px] text-text-secondary group-hover:text-accent/80 transition-colors duration-300 leading-relaxed max-w-md">
-                        {item.english}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-6 relative z-10">
-                      <span className="shippori-mincho text-2xl text-text-muted opacity-30 group-hover:opacity-100 group-hover:text-accent group-hover:scale-110 transition-all duration-500">
+                    {/* Japanese */}
+                    <div className="flex items-center relative z-10">
+                      <span className="shippori-mincho text-2xl text-text-muted opacity-40 group-hover:opacity-100 group-hover:text-text-primary group-hover:scale-105 transition-all duration-500">
                         {item.japanese}
                       </span>
                     </div>
 
+                    {/* English */}
+                    <div className="flex flex-col relative z-10">
+                      <span className="text-[13px] text-text-secondary group-hover:text-text-primary transition-colors duration-300 leading-relaxed">
+                        {item.english}
+                      </span>
+                    </div>
+
+                    {/* Mobile Labels (only shown on small screens) */}
+                    <div className="md:hidden absolute top-2 right-4 flex gap-2">
+                      <span className="text-[8px] font-mono text-text-muted uppercase tracking-tighter opacity-30">Glossary Term</span>
+                    </div>
+
                     {/* Subtle hover accent */}
-                    <div className="absolute left-0 w-1 h-0 bg-accent rounded-full group-hover:h-8 transition-all duration-300 top-1/2 -translate-y-1/2" />
+                    <div className="absolute left-0 w-1 h-0 bg-accent rounded-full group-hover:h-12 transition-all duration-300 top-1/2 -translate-y-1/2" />
                   </motion.div>
                 ))}
               </AnimatePresence>

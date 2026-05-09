@@ -50,9 +50,6 @@ export default function ToolsPage() {
             <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
               Tools & Indicators
             </h1>
-            <p className="shippori-mincho text-2xl text-text-muted mb-6">
-              道具と指標
-            </p>
             <p className="text-xl text-text-secondary max-w-2xl leading-relaxed">
               Precision-built Pine Script indicators for TradingView. Each tool is battle-tested on real markets.
             </p>
