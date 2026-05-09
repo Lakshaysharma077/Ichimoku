@@ -3,7 +3,11 @@
 import { useThemeStore } from '@/store/themeStore';
 import { motion } from 'framer-motion';
 
-export default function FooterThemeSelector() {
+interface FooterThemeSelectorProps {
+  separators?: boolean;
+}
+
+export default function FooterThemeSelector({ separators = true }: FooterThemeSelectorProps) {
   const { theme, setTheme } = useThemeStore();
 
   return (
@@ -22,7 +26,7 @@ export default function FooterThemeSelector() {
             />
           )}
         </button>
-        <div className="w-px h-3 bg-border" />
+        {separators && <div className="w-px h-3 bg-border" />}
         <button 
           onClick={() => setTheme('light')}
           className={`relative px-1.5 py-1 rounded-full transition-all duration-300 hover:text-text-primary ${theme === 'light' ? 'text-accent font-bold' : ''}`}
@@ -36,7 +40,7 @@ export default function FooterThemeSelector() {
             />
           )}
         </button>
-        <div className="w-px h-3 bg-border" />
+        {separators && <div className="w-px h-3 bg-border" />}
         <button 
           onClick={() => setTheme('dark')}
           className={`relative px-1.5 py-1 rounded-full transition-all duration-300 hover:text-text-primary ${theme === 'dark' ? 'text-accent font-bold' : ''}`}
