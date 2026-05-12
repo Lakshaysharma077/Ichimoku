@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { signIn } from 'next-auth/react';
-import { signInWithGoogle } from '@/lib/supabase';
+import { signInWithGoogle, signInWithEmail } from '@/lib/supabase';
 import Button from '@/components/ui/Button';
 import { Mail, Lock, Eye, EyeOff, User, CheckCircle2, ShieldCheck, Zap, Globe } from 'lucide-react';
 import Link from 'next/link';
@@ -36,6 +36,9 @@ export default function AuthPage() {
 
     try {
       if (isLogin) {
+        // Sign in to Supabase first
+        await signInWithEmail(email, password);
+
         const res = await signIn('credentials', {
           email,
           password,

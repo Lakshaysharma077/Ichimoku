@@ -133,9 +133,9 @@ export default function EditableElement({
   }, [content, section, path, onSave, addChange]);
 
   // Stable refs for callbacks so the memoized child never needs to re-render
-  const onChangeRef = useRef<(html: string) => void>(null);
-  const onFocusRef = useRef<() => void>(null);
-  const onBlurRef = useRef<(html: string) => void>(null);
+  const onChangeRef = useRef<((html: string) => void) | null>(null);
+  const onFocusRef = useRef<(() => void) | null>(null);
+  const onBlurRef = useRef<((html: string) => void) | null>(null);
 
   onChangeRef.current = (html: string) => {
     doSave(html);
