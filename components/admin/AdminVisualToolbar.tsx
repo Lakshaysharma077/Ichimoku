@@ -124,11 +124,15 @@ export default function AdminVisualToolbar() {
     document.addEventListener('auxclick', blockClick, true);
 
     // Also override pushState/replaceState to prevent programmatic navigation
-    const origPush = history.pushState.bind(history);
-    const origReplace = history.replaceState.bind(history);
+    const origPush = history.pushState;
+    const origReplace = history.replaceState;
+    
     history.pushState = function(...args: any[]) {
-      // Allow — we can't fully block this without breaking the app
-      return origPush(...args);
+      return origPush.apply(history, args as any);
+    };
+    
+    history.replaceState = function(...args: any[]) {
+      return origReplace.apply(history, args as any);
     };
 
     return () => {
