@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,20 +8,19 @@ datasource db {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -45,12 +41,12 @@ model User {
   image               String?
   password            String?
   role                String    @default("USER")
-  tradingViewUsername String?
-  provider            String?
-  accounts            Account[]
-  sessions            Session[]
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
+  provider            String?
+  tradingViewUsername String?
+  accounts            Account[]
+  sessions            Session[]
 }
 
 model VerificationToken {
@@ -63,8 +59,8 @@ model VerificationToken {
 
 model ContentSection {
   id        String   @id @default(cuid())
-  key       String   @unique // e.g., 'hero', 'navbar', 'footer'
-  value     String   // Store as JSON string
+  key       String   @unique
+  value     String
   updatedAt DateTime @updatedAt
 }
 
@@ -83,7 +79,7 @@ model FaqItem {
   id         String   @id @default(cuid())
   question   String
   answer     String
-  categories String   // Store as comma-separated or JSON
+  categories String
   order      Int      @default(0)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -99,17 +95,17 @@ model PricingTier {
   isFeatured   Boolean          @default(false)
   isTrial      Boolean          @default(false)
   order        Int              @default(0)
-  features     PricingFeature[]
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
+  features     PricingFeature[]
 }
 
 model PricingFeature {
-  id        String      @id @default(cuid())
-  text      String
-  included  Boolean     @default(true)
-  tierId    String
-  tier      PricingTier @relation(fields: [tierId], references: [id], onDelete: Cascade)
+  id       String      @id @default(cuid())
+  text     String
+  included Boolean     @default(true)
+  tierId   String
+  tier     PricingTier @relation(fields: [tierId], references: [id], onDelete: Cascade)
 }
 
 model Tool {

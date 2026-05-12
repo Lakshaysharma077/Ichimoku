@@ -37,7 +37,13 @@ export default function AuthPage() {
     try {
       if (isLogin) {
         // Sign in to Supabase first
-        await signInWithEmail(email, password);
+        const { error: sbError } = await signInWithEmail(email, password);
+        
+        if (sbError) {
+          setError(sbError.message);
+          setIsLoading(false);
+          return;
+        }
 
         const res = await signIn('credentials', {
           email,
@@ -46,7 +52,7 @@ export default function AuthPage() {
         });
 
         if (res?.error) {
-          setError("Invalid email or password");
+          setError("Invalid email or password in database");
         } else {
           window.location.href = '/';
         }
