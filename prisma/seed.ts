@@ -66,7 +66,7 @@ async function main() {
         romanized: term.romanized,
         japanese: term.japanese,
         english: term.english,
-        isMain: content.glossary.mainWords.includes(term.romanized),
+        isMain: (content.glossary.mainWords as readonly string[]).includes(term.romanized),
         order: i,
       },
     });

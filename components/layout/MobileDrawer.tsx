@@ -14,11 +14,12 @@ import TradingViewIcon from '../ui/TradingViewIcon';
 interface MobileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  links: { 
-    name: string; 
-    href: string; 
-    label?: string;
-    submenu?: { name: string; href: string }[];
+  links: readonly { 
+    readonly name: string; 
+    readonly href: string; 
+    readonly label?: string;
+    readonly submenu?: readonly { readonly name: string; readonly href: string }[];
+    readonly dropdown?: readonly { readonly name: string; readonly href: string }[];
   }[];
 }
 
@@ -69,7 +70,7 @@ export default function MobileDrawer({ isOpen, onClose, links }: MobileDrawerPro
               <div className="space-y-2">
                 {links.map((link) => (
                   <div key={link.name} className="flex flex-col">
-                    {link.submenu ? (
+                    {(link.dropdown || link.submenu) ? (
                       <div className="flex flex-col">
                         <button
                           onClick={() => setOpenSubmenu(openSubmenu === link.name ? null : link.name)}
@@ -101,7 +102,7 @@ export default function MobileDrawer({ isOpen, onClose, links }: MobileDrawerPro
                               exit={{ height: 0, opacity: 0 }}
                               className="overflow-hidden bg-bg-secondary/30 rounded-xl px-4"
                             >
-                              {link.submenu.map((sub) => (
+                              {(link.dropdown || link.submenu)!.map((sub) => (
                                 <Link
                                   key={sub.name}
                                   href={sub.href}
