@@ -49,7 +49,7 @@ export default function StatsBar() {
     <section className="w-full bg-bg-secondary py-12 border-y border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0">
-          {stats.map((stat, i) => (
+          {Array.isArray(stats) && stats.map((stat, i) => (
             <div 
               key={i} 
               className={`flex flex-col items-center justify-center text-center px-8 ${

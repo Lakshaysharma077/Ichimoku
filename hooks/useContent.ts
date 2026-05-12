@@ -12,7 +12,10 @@ export function useContent<K extends keyof ContentType>(section: K): ContentType
         const res = await fetch(`/api/admin/content/${section}`);
         if (res.ok) {
           const json = await res.json();
-          setData(json);
+          // Ensure we don't set error objects as content data
+          if (json && typeof json === 'object' && !json.error) {
+            setData(json);
+          }
         }
       } catch (err) {
         console.error(`Failed to fetch dynamic content for section: ${section}`, err);
