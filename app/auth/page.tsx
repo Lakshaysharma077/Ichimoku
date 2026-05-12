@@ -53,6 +53,7 @@ export default function AuthPage() {
 
         if (res?.error) {
           setError("Invalid email or password in database");
+          setIsLoading(false);
         } else {
           window.location.href = '/';
         }

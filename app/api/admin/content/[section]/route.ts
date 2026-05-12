@@ -21,6 +21,7 @@ export async function GET(
 
     return NextResponse.json(JSON.parse(content.value));
   } catch (error) {
+    console.error("CONTENT_GET_ERROR:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

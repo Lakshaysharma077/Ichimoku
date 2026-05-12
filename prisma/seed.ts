@@ -46,6 +46,7 @@ async function main() {
     { key: 'legal', value: JSON.stringify(content.legal) },
     { key: 'tools', value: JSON.stringify(content.tools) },
     { key: 'pricing', value: JSON.stringify(content.pricing) },
+    { key: 'stats', value: JSON.stringify(content.stats) },
   ];
 
   for (const section of sections) {

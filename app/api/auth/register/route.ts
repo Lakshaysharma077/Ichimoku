@@ -62,7 +62,10 @@ export async function POST(req: Request) {
       name: user.name,
     });
   } catch (error: any) {
-    console.error("REGISTRATION_ERROR", error);
-    return new NextResponse(error.message || "Internal Error", { status: 500 });
+    console.error("REGISTRATION_CRITICAL_ERROR", error);
+    return new NextResponse(JSON.stringify({ error: error.message || "Internal Error" }), { 
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }
