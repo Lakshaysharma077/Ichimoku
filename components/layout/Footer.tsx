@@ -3,12 +3,20 @@
 import React from 'react';
 import Link from 'next/link';
 import { Youtube } from 'lucide-react';
-import LanguageSwitcher from '../ui/LanguageSwitcher';
+import { usePathname } from 'next/navigation';
 import FooterThemeSelector from '../ui/FooterThemeSelector';
+import LanguageSwitcher from '../ui/LanguageSwitcher';
 import XIcon from '../ui/XIcon';
 import TradingViewIcon from '../ui/TradingViewIcon';
+import { useContent } from '@/hooks/useContent';
+import EditableElement from '../admin/EditableElement';
 
 export default function Footer() {
+  const pathname = usePathname();
+  const footer = useContent('footer');
+
+  if (pathname.startsWith('/admin')) return null;
+
   return (
     <footer className="bg-bg-primary border-t border-border pt-12 pb-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
@@ -24,7 +32,7 @@ export default function Footer() {
 
               <Link href="/" className="flex flex-col items-start mb-6">
                 <div className="w-24 h-24 rounded-full overflow-hidden border border-border/50 bg-bg-tertiary shadow-2xl transition-transform duration-500 hover:scale-105">
-                  <img src="/logo.png" alt="Logo" className="w-full h-full object-cover scale-110" />
+                  <EditableElement section="footer" path={['brand', 'logo']} content={footer.brand.logo} type="image" className="w-full h-full object-cover scale-110" />
                 </div>
               </Link>
 
@@ -60,45 +68,22 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Platform */}
-            <div className="flex flex-col">
-              <h4 className="syne font-bold text-[11px] uppercase tracking-[0.2em] text-text-primary mb-6 opacity-80">
-                Platform
-              </h4>
-              <ul className="space-y-1.5 text-[13px] text-text-secondary font-medium">
-                <li><Link href="/" className="hover:text-accent transition-colors">Philosophy</Link></li>
-                <li><Link href="/ichimoku" className="hover:text-accent transition-colors">Ichimoku</Link></li>
-                <li><Link href="/tools" className="hover:text-accent transition-colors">Tools</Link></li>
-                <li><Link href="/education" className="hover:text-accent transition-colors">Resources</Link></li>
-                <li><Link href="/pricing" className="hover:text-accent transition-colors">Pricing</Link></li>
-              </ul>
-            </div>
-
-            {/* Legal */}
-            <div className="flex flex-col">
-              <h4 className="syne font-bold text-[11px] uppercase tracking-[0.2em] text-text-primary mb-6 opacity-80">
-                Legal
-              </h4>
-              <ul className="space-y-1.5 text-[13px] text-text-secondary font-medium">
-                <li><Link href="/terms" className="hover:text-accent transition-colors">Terms of Service</Link></li>
-                <li><Link href="/disclaimer" className="hover:text-accent transition-colors">Risk Disclaimer</Link></li>
-                <li><Link href="/privacy" className="hover:text-accent transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/refund" className="hover:text-accent transition-colors">Refund Policy</Link></li>
-                <li><Link href="/cookies" className="hover:text-accent transition-colors">Cookie Policy</Link></li>
-              </ul>
-            </div>
-
-            {/* Support */}
-            <div className="flex flex-col">
-              <h4 className="syne font-bold text-[11px] uppercase tracking-[0.2em] text-text-primary mb-6 opacity-80">
-                Support
-              </h4>
-              <ul className="space-y-1.5 text-[13px] text-text-secondary font-medium">
-                <li><Link href="/faq" className="hover:text-accent transition-colors">FAQ</Link></li>
-                <li><Link href="#" className="hover:text-accent transition-colors">Contact Us</Link></li>
-                <li><Link href="#" className="hover:text-accent transition-colors">Report an Issue</Link></li>
-              </ul>
-            </div>
+            {footer.sections.map((section: any, idx: number) => (
+              <div key={idx} className="flex flex-col">
+                <h4 className="syne font-bold text-[11px] uppercase tracking-[0.2em] text-text-primary mb-6 opacity-80">
+                  <EditableElement section="footer" path={['sections', idx.toString(), 'title']} content={section.title} />
+                </h4>
+                <ul className="space-y-1.5 text-[13px] text-text-secondary font-medium">
+                  {section.links.map((link: any, lIdx: number) => (
+                    <li key={lIdx}>
+                      <Link href={link.href} className="hover:text-accent transition-colors">
+                        <EditableElement section="footer" path={['sections', idx.toString(), 'links', lIdx.toString(), 'name']} content={link.name} />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
 
           {/* Settings */}
@@ -107,12 +92,14 @@ export default function Footer() {
               Settings
             </h4>
             <div className="flex flex-col gap-4">
+
               <div className="flex flex-col gap-2">
                 <span className="text-[13px] text-text-secondary font-medium">Language</span>
-                <div className="flex justify-start -ml-1">
-                  <LanguageSwitcher variant="minimal" />
+                <div className="flex justify-start">
+                  <LanguageSwitcher />
                 </div>
               </div>
+
               <div className="flex flex-col gap-2">
                 <span className="text-[13px] text-text-secondary font-medium">Display Mode</span>
                 <div className="flex justify-start">
@@ -125,8 +112,12 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-6 border-t border-border flex flex-col items-center text-center text-[10px] font-mono text-text-muted uppercase tracking-[0.2em] space-y-1">
-          <p>2026 ICHIMOKU EDGE. ALL RIGHTS RESERVED.</p>
-          <p>Educational tools only. Trading involves risk. Not financial advice.</p>
+          <p>
+            <EditableElement section="footer" path={['brand', 'copyright']} content={footer.brand.copyright} />
+          </p>
+          <p>
+            <EditableElement section="footer" path={['brand', 'tagline']} content={footer.brand.tagline} />
+          </p>
         </div>
       </div>
     </footer>

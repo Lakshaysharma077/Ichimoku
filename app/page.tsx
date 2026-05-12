@@ -23,15 +23,15 @@ export default function Home() {
       <ScrollReveal>
         <StatsBar />
       </ScrollReveal>
-      <SectionDivider kanji="刀" />
+      <SectionDivider />
       <ScrollReveal>
         <PhilosophySection />
       </ScrollReveal>
-      <SectionDivider kanji="魂" />
+      <SectionDivider />
       <ScrollReveal>
         <DashboardPreview />
       </ScrollReveal>
-      <SectionDivider kanji="心" />
+      <SectionDivider />
     </main>
   );
 }

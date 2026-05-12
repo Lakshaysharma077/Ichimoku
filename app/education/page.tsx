@@ -2,15 +2,17 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import KanjiWatermark from '@/components/shared/KanjiWatermark';
 import ScrollReveal from '@/components/shared/ScrollReveal';
 import Button from '@/components/ui/Button';
 import { Youtube, Mail, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { useContent } from '@/hooks/useContent';
+import EditableElement from '@/components/admin/EditableElement';
 
 export default function EducationPage() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const education = useContent('education');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,7 +21,7 @@ export default function EducationPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center pt-32 pb-24 relative overflow-hidden">
-      <KanjiWatermark kanji="資料" className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.05]" size="40vw" />
+
       
       <div className="max-w-2xl mx-auto px-4 sm:px-8 text-center relative z-10">
         <ScrollReveal>
@@ -27,24 +29,23 @@ export default function EducationPage() {
             <Youtube className="w-12 h-12 text-rose-500" />
           </div>
           
-          <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tight" style={{ wordSpacing: '0.2em' }}>
-            Resources Hub
+          <h1 className="syne font-extrabold text-4xl lg:text-6xl text-text-primary mb-12 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
+            <EditableElement section="education" path={['hero', 'heading']} content={education.hero.heading} />
           </h1>
-          <p className="shippori-mincho text-2xl text-text-muted mb-8">
-            資料ハブ
-          </p>
           
           <p className="text-xl text-text-secondary leading-relaxed mb-12">
-            Free Ichimoku trading tutorials, strategy breakdowns, and live analysis videos. Subscribe to our YouTube channel to be notified when new resources drop.
+            <EditableElement section="education" path={['hero', 'description']} content={education.hero.description} />
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Button size="lg" className="bg-rose-600 hover:bg-rose-700 text-white flex gap-2 items-center">
-              <Youtube className="w-5 h-5" /> Subscribe on YouTube
+              <Youtube className="w-5 h-5" /> 
+              <EditableElement section="education" path={['buttons', 'youtube']} content={education.buttons.youtube} />
             </Button>
             <Link href="/">
               <Button variant="outline" size="lg" className="flex gap-2 items-center">
-                <ArrowLeft className="w-4 h-4" /> Back to Philosophy
+                <ArrowLeft className="w-4 h-4" /> 
+                <EditableElement section="education" path={['buttons', 'back']} content={education.buttons.back} />
               </Button>
             </Link>
           </div>
@@ -57,13 +58,15 @@ export default function EducationPage() {
                   <input
                     type="email"
                     required
-                    placeholder="Enter your email"
+                    placeholder={education.form.placeholder}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full bg-bg-secondary border border-border rounded-lg py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-accent transition-colors"
                   />
                 </div>
-                <Button type="submit">Notify Me</Button>
+                <Button type="submit">
+                  <EditableElement section="education" path={['form', 'button']} content={education.form.button} />
+                </Button>
               </form>
             ) : (
               <motion.div
@@ -71,7 +74,7 @@ export default function EducationPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-emerald-500 font-bold text-sm uppercase tracking-widest"
               >
-                ✓ You're on the list! We'll email you when we launch.
+                <EditableElement section="education" path={['form', 'success']} content={education.form.success} />
               </motion.div>
             )}
           </div>

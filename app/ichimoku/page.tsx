@@ -1,37 +1,31 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import KanjiWatermark from '@/components/shared/KanjiWatermark';
 import ScrollReveal from '@/components/shared/ScrollReveal';
 import SectionDivider from '@/components/shared/SectionDivider';
-import BilingualHover from '@/components/shared/BilingualHover';
-
-const components = [
-  { name: 'Tenkan-Sen', kanji: '転換線', eng: 'Conversion Line', desc: '9-period midpoint of the high and low.', color: '#00B4D8' },
-  { name: 'Kijun-Sen', kanji: '基準線', eng: 'Base Line', desc: '26-period midpoint of the high and low.', color: '#EF4444' },
-  { name: 'Senkou Span A', kanji: '先行スパンA', eng: 'Leading Span A', desc: 'Average of Tenkan and Kijun, plotted 26 periods ahead.', color: '#10B981' },
-  { name: 'Senkou Span B', kanji: '先行スパンB', eng: 'Leading Span B', desc: '52-period midpoint, plotted 26 periods ahead.', color: '#F59E0B' },
-  { name: 'Chikou Span', kanji: '遅行スパン', eng: 'Lagging Span', desc: 'Closing price plotted 26 periods behind.', color: '#94A3B8' },
-];
+import { useContent } from '@/hooks/useContent';
+import EditableElement from '@/components/admin/EditableElement';
+import EditableList from '@/components/admin/EditableList';
 
 export default function IchimokuPage() {
+  const ichimoku = useContent('ichimoku');
   return (
     <div className="pt-40 pb-24 relative overflow-hidden">
-      <KanjiWatermark kanji="一目均衡表" className="top-10 right-[-10%] opacity-[0.04]" size="35vw" />
+
 
       {/* Hero */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 mb-24">
         <ScrollReveal>
           <div className="flex flex-col mb-12">
-            <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
-              Ichimoku Kinkō Hyō
+            <h1 className="syne font-extrabold text-4xl lg:text-6xl text-text-primary mb-2 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
+              <EditableElement section="ichimoku" path={['hero', 'heading']} content={ichimoku.hero.heading} />
             </h1>
-            <p className="shippori-mincho text-[clamp(1.75rem,5vw,3rem)] text-text-muted mb-8 leading-none transform scale-y-[1.1] origin-left">
-              一目均衡表
+            <p className="shippori-mincho text-4xl lg:text-6xl text-text-muted mb-8 leading-none transform scale-y-[1.1] origin-left">
+              <EditableElement section="ichimoku" path={['hero', 'japanese']} content={ichimoku.hero.japanese} />
             </p>
           </div>
           <p className="text-xl text-text-secondary max-w-3xl leading-relaxed">
-            Ichimoku Kinkō Hyō, commonly known as the Ichimoku Cloud, is a versatile charting system that identifies trend direction, gauges momentum, and reveals support and resistance levels. It offers a "single glance" view of the market.
+            <EditableElement section="ichimoku" path={['hero', 'description']} content={ichimoku.hero.description} />
           </p>
         </ScrollReveal>
       </div>
@@ -39,47 +33,82 @@ export default function IchimokuPage() {
       {/* 5 Components */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 mb-32">
         <ScrollReveal>
-          <h2 className="syne font-bold text-3xl text-text-primary uppercase">The 5 Lines of Ichimoku</h2>
+          <h2 className="syne font-bold text-3xl text-text-primary uppercase mb-12">
+            <EditableElement section="ichimoku" path={['componentsSection', 'heading']} content={ichimoku.componentsSection.heading} />
+          </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {components.map((item, i) => (
-            <ScrollReveal key={i} delay={i * 0.1}>
-              <div className="p-8 bg-bg-secondary border border-border rounded-2xl group hover:border-accent transition-all duration-300">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-2xl text-text-primary font-bold">{item.name}</span>
-                  <div className="w-12 h-1 rounded-full" style={{ backgroundColor: item.color }} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <EditableList
+            section="ichimoku"
+            path={['componentsSection', 'items']}
+            items={ichimoku.componentsSection.items as any}
+            newItemTemplate={{ name: 'New Component', kanji: '新', eng: 'New English', color: '#FFFFFF' }}
+            renderItem={(item: any, i: number) => (
+              <ScrollReveal key={i} delay={i * 0.1}>
+                <div className="p-8 bg-bg-secondary border border-border rounded-2xl group hover:border-accent transition-all duration-300">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-2xl text-text-primary font-bold">
+                      <EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'name']} content={item.name} />
+                    </span>
+                    <div className="w-12 h-1 rounded-full" style={{ backgroundColor: item.color }} />
+                  </div>
+                  <span className="shippori-mincho text-sm text-text-muted mb-3 block">
+                    <EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'kanji']} content={item.kanji} />
+                  </span>
+                  <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest block italic">
+                    "<EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'eng']} content={item.eng} />"
+                  </span>
                 </div>
-                <span className="shippori-mincho text-sm text-text-muted mb-3 block">{item.kanji}</span>
-                <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest block italic">"{item.eng}"</span>
-              </div>
-            </ScrollReveal>
-          ))}
+              </ScrollReveal>
+            )}
+          />
         </div>
+
+        <ScrollReveal delay={0.6}>
+          <div className="flex justify-center mt-12">
+            <div className="max-w-4xl w-full p-2 bg-bg-secondary border border-border rounded-3xl overflow-hidden shadow-2xl shadow-black/50">
+              <EditableElement 
+                section="ichimoku" 
+                path={['componentsSection', 'image']} 
+                content={ichimoku.componentsSection.image || ''} 
+                type="image"
+                className="w-full h-auto rounded-2xl opacity-90 hover:opacity-100 transition-opacity duration-500"
+              />
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
 
-      <SectionDivider kanji="雲" />
+      <SectionDivider />
 
       {/* The Cloud */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 mb-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <ScrollReveal>
-            <h2 className="syne font-bold text-4xl text-text-primary mb-8 uppercase">How to Read the Cloud</h2>
+            <h2 className="syne font-bold text-4xl text-text-primary mb-8 uppercase">
+              <EditableElement section="ichimoku" path={['cloudSection', 'heading']} content={ichimoku.cloudSection.heading} />
+            </h2>
             <div className="space-y-6 text-lg text-text-secondary leading-relaxed">
-              <p>The <BilingualHover english="Kumo" japanese="雲" /> (Cloud) is the heart of the system. Formed by Senkou Span A and B, it represents a dynamic zone of support and resistance.</p>
+              <p>
+                <EditableElement section="ichimoku" path={['cloudSection', 'description']} content={ichimoku.cloudSection.description} />
+              </p>
               <ul className="space-y-4">
-                <li className="flex gap-4">
-                  <span className="text-emerald-500 font-bold">▲</span>
-                  <span><strong>Price Above <BilingualHover english="Cloud" japanese="雲" />:</strong> Strong Bullish Sentiment.</span>
-                </li>
-                <li className="flex gap-4">
-                  <span className="text-text-muted font-bold">●</span>
-                  <span><strong>Price Inside <BilingualHover english="Cloud" japanese="雲" />:</strong> Neutral / Consolidation Zone.</span>
-                </li>
-                <li className="flex gap-4">
-                  <span className="text-rose-500 font-bold">▼</span>
-                  <span><strong>Price Below <BilingualHover english="Cloud" japanese="雲" />:</strong> Strong Bearish Sentiment.</span>
-                </li>
+                <EditableList
+                  section="ichimoku"
+                  path={['cloudSection', 'rules']}
+                  items={ichimoku.cloudSection.rules as any}
+                  newItemTemplate={{ icon: "●", label: "New Rule", desc: "Description", color: "text-text-muted" }}
+                  renderItem={(rule: any, i: number) => (
+                    <li key={i} className="flex gap-4">
+                      <span className={`font-bold ${rule.color}`}>{rule.icon}</span>
+                      <span>
+                        <strong><EditableElement section="ichimoku" path={['cloudSection', 'rules', i.toString(), 'label']} content={rule.label} />:</strong> 
+                        <EditableElement section="ichimoku" path={['cloudSection', 'rules', i.toString(), 'desc']} content={rule.desc} />
+                      </span>
+                    </li>
+                  )}
+                />
               </ul>
             </div>
           </ScrollReveal>
@@ -111,9 +140,12 @@ export default function IchimokuPage() {
                 </motion.svg>
               </div>
               <div className="mt-8 flex justify-center gap-12 text-[10px] font-mono text-text-muted uppercase tracking-widest">
-                <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500" /> Span A</span>
-                <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-rose-500" /> Span B</span>
-                <span className="flex items-center gap-2"><div className="w-2 h-2 bg-text-primary" /> Price</span>
+                {(ichimoku as any).cloudSection?.legend?.map((item: any, i: number) => (
+                  <span key={i} className="flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${item.color}`} />
+                    <EditableElement section="ichimoku" path={['cloudSection', 'legend', i.toString(), 'label']} content={item.label} />
+                  </span>
+                ))}
               </div>
             </div>
           </ScrollReveal>
@@ -123,30 +155,38 @@ export default function IchimokuPage() {
       {/* Settings Table */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 mb-32">
         <ScrollReveal>
-          <h2 className="syne font-bold text-3xl text-text-primary mb-12 uppercase">Ichimoku Settings</h2>
+          <h2 className="syne font-bold text-3xl text-text-primary mb-12 uppercase">
+            <EditableElement section="ichimoku" path={['settingsSection', 'heading']} content={ichimoku.settingsSection.heading} />
+          </h2>
           <div className="overflow-x-auto rounded-2xl border border-border">
             <table className="w-full text-left text-sm">
               <thead className="bg-bg-secondary text-text-muted font-mono uppercase text-[10px] tracking-widest border-b border-border">
                 <tr>
-                  <th className="px-8 py-6">Style</th>
-                  <th className="px-8 py-6">Conversion (TK)</th>
-                  <th className="px-8 py-6">Base (KJ)</th>
-                  <th className="px-8 py-6">Leading B (S2)</th>
-                  <th className="px-8 py-6">Lagging (CS)</th>
+                  {(ichimoku as any).settingsSection?.table?.headers.map((header: string, i: number) => (
+                    <th key={i} className="px-8 py-6">
+                      <EditableElement section="ichimoku" path={['settingsSection', 'table', 'headers', i.toString()]} content={header} />
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-border text-text-secondary">
-                {[
-                  { style: 'Classic (Original)', tk: 9, kj: 26, s2: 52, cs: 26 },
-                  { style: 'Modern (Stock)', tk: 10, kj: 30, s2: 60, cs: 30 },
-                  { style: 'Crypto-Adapted', tk: 20, kj: 60, s2: 120, cs: 30 },
-                ].map((row, i) => (
+                {(ichimoku as any).settingsSection?.table?.rows.map((row: any, i: number) => (
                   <tr key={i} className="hover:bg-bg-tertiary/50 transition-colors">
-                    <td className="px-8 py-6 font-bold text-text-primary">{row.style}</td>
-                    <td className="px-8 py-6 font-mono">{row.tk}</td>
-                    <td className="px-8 py-6 font-mono">{row.kj}</td>
-                    <td className="px-8 py-6 font-mono">{row.s2}</td>
-                    <td className="px-8 py-6 font-mono">{row.cs}</td>
+                    <td className="px-8 py-6 font-bold text-text-primary">
+                      <EditableElement section="ichimoku" path={['settingsSection', 'table', 'rows', i.toString(), 'style']} content={row.style} />
+                    </td>
+                    <td className="px-8 py-6 font-mono">
+                      <EditableElement section="ichimoku" path={['settingsSection', 'table', 'rows', i.toString(), 'tk']} content={row.tk.toString()} />
+                    </td>
+                    <td className="px-8 py-6 font-mono">
+                      <EditableElement section="ichimoku" path={['settingsSection', 'table', 'rows', i.toString(), 'kj']} content={row.kj.toString()} />
+                    </td>
+                    <td className="px-8 py-6 font-mono">
+                      <EditableElement section="ichimoku" path={['settingsSection', 'table', 'rows', i.toString(), 's2']} content={row.s2.toString()} />
+                    </td>
+                    <td className="px-8 py-6 font-mono">
+                      <EditableElement section="ichimoku" path={['settingsSection', 'table', 'rows', i.toString(), 'cs']} content={row.cs.toString()} />
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -158,12 +198,13 @@ export default function IchimokuPage() {
       {/* SEO Section */}
       <div className="max-w-4xl mx-auto px-4 sm:px-8">
         <ScrollReveal>
-          <h2 className="syne font-bold text-3xl text-text-primary mb-8 uppercase">What is Ichimoku Kinkō Hyō?</h2>
+          <h2 className="syne font-bold text-3xl text-text-primary mb-8 uppercase">
+            <EditableElement section="ichimoku" path={['seoSection', 'heading']} content={ichimoku.seoSection.heading} />
+          </h2>
           <div className="prose prose-invert prose-p:text-text-secondary prose-p:leading-relaxed space-y-6">
-            <p>Developed in the late 1930s by Goichi Hosoda, a Japanese journalist who used to be known as Ichimoku Sanjin, Ichimoku Kinkō Hyō translates to "one-look equilibrium chart." Hosoda spent 30 years perfecting the system before releasing it to the public in 1968.</p>
-            <p>Unlike traditional technical indicators that focus on a single aspect of market behavior, Ichimoku is a comprehensive framework. It provides a holistic view of price action, trend strength, and potential reversal points. Many traders find it superior to standard moving average crossovers because it accounts for the element of time, not just price.</p>
-            <p>The system is built on five distinct lines, each calculated based on the midpoints of highs and lows over specific periods. This focus on midpoints rather than closing prices makes the system more sensitive to market volatility and helps filter out noise.</p>
-            <p>In modern trading, Ichimoku has become a staple for institutional traders in Japan and is rapidly gaining popularity among Western forex and crypto traders. Its ability to define trend and support/resistance simultaneously makes it an essential tool for any disciplined trader seeking market clarity.</p>
+            {ichimoku.seoSection.paragraphs.map((p: string, i: number) => (
+              <EditableElement key={i} section="ichimoku" path={['seoSection', 'paragraphs', i.toString()]} content={p} as="p" />
+            ))}
           </div>
         </ScrollReveal>
       </div>

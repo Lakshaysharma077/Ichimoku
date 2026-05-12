@@ -4,14 +4,15 @@ import { motion } from 'framer-motion';
 import Button from '../ui/Button';
 import KanjiWatermark from '../shared/KanjiWatermark';
 import Link from 'next/link';
+import { useContent } from '@/hooks/useContent';
+import EditableElement from '../admin/EditableElement';
 
 export default function HeroSection() {
-  const words = ["See", "the", "Market", "Clearly."];
+  const hero = useContent('hero');
+  const words = hero.headline;
   
   return (
     <section className="relative min-h-[100svh] flex items-center overflow-hidden pt-20">
-      <KanjiWatermark kanji="一目" className="bottom-0 right-[-5%] opacity-[0.04]" size="45vw" />
-      
       <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* Left Column */}
         <div className="lg:col-span-7 flex flex-col items-start z-10">
@@ -19,9 +20,9 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="font-mono text-[11px] tracking-[0.3em] uppercase text-text-muted mb-4"
+            className="font-mono text-[11px] tracking-[0.3em] uppercase text-text-muted mb-4 block"
           >
-            Professional Trading Tools — Since 2021
+            <EditableElement section="hero" path={['tagline']} content={hero.tagline} />
           </motion.span>
           
           <h1 className="syne font-extrabold text-[clamp(2.5rem,8vw,5.5rem)] leading-[0.95] text-text-primary mb-6">
@@ -33,7 +34,7 @@ export default function HeroSection() {
                 transition={{ duration: 0.6, delay: 0.2 + i * 0.1, ease: [0.33, 1, 0.68, 1] }}
                 className={`inline-block mr-[0.2em] relative ${word === 'Market' ? 'text-accent' : ''}`}
               >
-                {word}
+                <EditableElement section="hero" path={['headline', i.toString()]} content={word} />
                 {word === 'Market' && (
                   <motion.svg
                     initial={{ pathLength: 0 }}
@@ -54,23 +55,13 @@ export default function HeroSection() {
               </motion.span>
             ))}
           </h1>
-          
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-            className="shippori-mincho text-xl text-text-muted mb-6"
-          >
-            市場を明確に見る
-          </motion.p>
-          
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.9 }}
             className="text-lg text-text-secondary max-w-lg leading-relaxed mb-10"
           >
-            The Ichimoku Edge indicator suite transforms complex Ichimoku Kinko Hyo signals into instant, actionable intelligence. Built for traders who value discipline over noise.
+            <EditableElement section="hero" path={['description']} content={hero.description} />
           </motion.p>
           
           <motion.div
@@ -79,11 +70,15 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 1 }}
             className="flex flex-wrap gap-4 mb-12"
           >
-            <Link href="/pricing">
-              <Button size="lg">Start Free Trial</Button>
+            <Link href={hero.buttons.primary.href}>
+              <Button size="lg">
+                <EditableElement section="hero" path={['buttons', 'primary', 'text']} content={hero.buttons.primary.text} />
+              </Button>
             </Link>
-            <Link href="/tools">
-              <Button variant="outline" size="lg">View Indicators</Button>
+            <Link href={hero.buttons.secondary.href}>
+              <Button variant="outline" size="lg">
+                <EditableElement section="hero" path={['buttons', 'secondary', 'text']} content={hero.buttons.secondary.text} />
+              </Button>
             </Link>
           </motion.div>
           
@@ -94,14 +89,16 @@ export default function HeroSection() {
             className="flex items-center gap-6"
           >
             <div className="flex flex-col">
-              <span className="text-sm font-bold text-text-primary">★★★★★</span>
+              <span className="text-sm font-bold text-text-primary">
+                <EditableElement section="hero" path={['trustBadges', 'rating']} content={hero.trustBadges.rating} />
+              </span>
               <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest">
-                Trusted by 1,200+ traders on TradingView
+                <EditableElement section="hero" path={['trustBadges', 'traders']} content={hero.trustBadges.traders} />
               </span>
             </div>
             <div className="h-8 w-px bg-border" />
             <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest">
-              Available on TradingView Pine Script v5
+              <EditableElement section="hero" path={['trustBadges', 'platform']} content={hero.trustBadges.platform} />
             </span>
           </motion.div>
         </div>
@@ -139,16 +136,12 @@ export default function HeroSection() {
                     transition={{ delay: 1 }}
                     className="bg-accent text-bg-primary px-3 py-1 text-[10px] font-bold syne uppercase tracking-tighter"
                   >
-                    ICHIMOKU EDGE PRO
+                    <EditableElement section="hero" path={['mockup', 'badge']} content={hero.mockup.badge} />
                   </motion.div>
                   <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 </div>
                 
-                {[
-                  { label: "Cloud Signal", value: "BULLISH ▲", sub: "Strong Confirmation", color: "text-emerald-500" },
-                  { label: "TK Cross", value: "ACTIVE", sub: "Bullish Breakout", color: "text-accent" },
-                  { label: "Kumo Twist", value: "3 BARS", sub: "Recent Change", color: "text-text-primary" },
-                ].map((stat, i) => (
+                {hero.mockup.stats.map((stat: any, i: number) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, x: -30 }}
@@ -159,10 +152,16 @@ export default function HeroSection() {
                     {/* Inner glass glow */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent pointer-events-none opacity-0 group-hover/card:opacity-100 transition-opacity" />
                     
-                    <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest block mb-1 relative z-10">{stat.label}</span>
+                    <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest block mb-1 relative z-10">
+                      <EditableElement section="hero" path={['mockup', 'stats', i.toString(), 'label']} content={stat.label} />
+                    </span>
                     <div className="flex items-center justify-between relative z-10">
-                      <span className={`text-lg font-bold syne ${stat.color}`}>{stat.value}</span>
-                      <span className="text-xs text-text-secondary">{stat.sub}</span>
+                      <span className={`text-lg font-bold syne ${i === 1 ? 'text-accent' : i === 0 ? 'text-emerald-500' : 'text-text-primary'}`}>
+                        <EditableElement section="hero" path={['mockup', 'stats', i.toString(), 'value']} content={stat.value} />
+                      </span>
+                      <span className="text-xs text-text-secondary">
+                        <EditableElement section="hero" path={['mockup', 'stats', i.toString(), 'sub']} content={stat.sub} />
+                      </span>
                     </div>
                   </motion.div>
                 ))}
@@ -190,7 +189,9 @@ export default function HeroSection() {
                       }}
                     />
                   </svg>
-                  <div className="absolute -right-2 top-0 text-[10px] font-mono font-bold text-emerald-500 uppercase">Chikou Span</div>
+                  <div className="absolute -right-2 top-0 text-[10px] font-mono font-bold text-emerald-500 uppercase">
+                    <EditableElement section="hero" path={['mockup', 'chikouLabel']} content={hero.mockup.chikouLabel} />
+                  </div>
                 </div>
               </div>
             </div>

@@ -1,6 +1,5 @@
 'use client';
 
-import KanjiWatermark from '@/components/shared/KanjiWatermark';
 import ScrollReveal from '@/components/shared/ScrollReveal';
 
 export default function DisclaimerPage() {
@@ -61,17 +60,14 @@ export default function DisclaimerPage() {
 
   return (
     <div className="pt-40 pb-24 relative overflow-hidden min-h-screen">
-      <KanjiWatermark kanji="免責" className="bottom-10 left-[-5%] opacity-[0.04]" size="30vw" />
+
       
       <div className="max-w-4xl mx-auto px-4 sm:px-8">
         <ScrollReveal>
           <div className="flex flex-col mb-12">
-            <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
+            <h1 className="syne font-extrabold text-4xl lg:text-6xl text-text-primary mb-12 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
               Risk Disclaimer
             </h1>
-            <p className="shippori-mincho text-2xl text-text-muted mb-6">
-              免責事項
-            </p>
             <p className="text-xl text-text-secondary leading-relaxed">
               Please understand the significant risks involved in financial trading before using our tools.
             </p>

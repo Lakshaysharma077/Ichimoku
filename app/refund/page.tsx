@@ -1,6 +1,5 @@
 'use client';
 
-import KanjiWatermark from '@/components/shared/KanjiWatermark';
 import ScrollReveal from '@/components/shared/ScrollReveal';
 
 export default function RefundPage() {
@@ -29,17 +28,14 @@ export default function RefundPage() {
 
   return (
     <div className="pt-40 pb-24 relative overflow-hidden min-h-screen">
-      <KanjiWatermark kanji="返金" className="bottom-10 left-[-5%] opacity-[0.04]" size="30vw" />
+
       
       <div className="max-w-4xl mx-auto px-4 sm:px-8">
         <ScrollReveal>
           <div className="flex flex-col mb-12">
-            <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
+            <h1 className="syne font-extrabold text-4xl lg:text-6xl text-text-primary mb-12 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
               Refund Policy
             </h1>
-            <p className="shippori-mincho text-2xl text-text-muted mb-6">
-              返金ポリシー
-            </p>
             <p className="text-xl text-text-secondary leading-relaxed">
               Transparent rules for cancellations, trials, and subscription management.
             </p>

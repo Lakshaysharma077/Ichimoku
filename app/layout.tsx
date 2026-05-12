@@ -6,6 +6,9 @@ import PageTransition from "@/components/providers/PageTransition";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/shared/CookieConsent";
+import { Providers } from "./providers";
+import AdminVisualToolbar from "@/components/admin/AdminVisualToolbar";
+import CompleteProfileModal from "@/components/shared/CompleteProfileModal";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -58,16 +61,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${shippori.variable} ${jetbrains.variable} font-sans antialiased`}>
-        <ThemeProvider>
-          <Navbar />
-          <main className="min-h-screen">
-            <PageTransition>
-              {children}
-            </PageTransition>
-          </main>
-          <Footer />
-          <CookieConsent />
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider>
+            <Navbar />
+            <main className="min-h-screen">
+              <PageTransition>
+                {children}
+              </PageTransition>
+            </main>
+            <Footer />
+            <CookieConsent />
+            <AdminVisualToolbar />
+            <CompleteProfileModal />
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

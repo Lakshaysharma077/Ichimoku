@@ -23,7 +23,19 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env*.local
+
+# databases
+*.db
+*.db-journal
+
+# logs
+*.log
+seed_error.log
+
+# scratch
+test-db.js
 
 # vercel
 .vercel
@@ -33,3 +45,5 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+/lib/generated/prisma

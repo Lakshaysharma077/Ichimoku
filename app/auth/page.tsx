@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import KanjiWatermark from '@/components/shared/KanjiWatermark';
+import { signIn } from 'next-auth/react';
+import { signInWithGoogle } from '@/lib/supabase';
 import Button from '@/components/ui/Button';
 import { Mail, Lock, Eye, EyeOff, User, CheckCircle2, ShieldCheck, Zap, Globe } from 'lucide-react';
 import Link from 'next/link';
@@ -11,9 +12,12 @@ import TradingViewIcon from '@/components/ui/TradingViewIcon';
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [tvUsername, setTvUsername] = useState("");
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const getPasswordStrength = () => {
     if (password.length === 0) return { label: '', color: 'bg-border', width: '0%' };
@@ -25,43 +29,57 @@ export default function AuthPage() {
 
   const strength = getPasswordStrength();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSuccess(true);
-  };
+    setIsLoading(true);
+    setError("");
 
-  if (isSuccess) {
-    return (
-      <div className="min-h-screen flex items-center justify-center pt-20 px-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="max-w-md w-full p-12 bg-bg-secondary border border-border rounded-[2rem] text-center relative overflow-hidden group shadow-2xl"
-        >
-          {/* Decorative background glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50" />
-          
-          <div className="inline-flex p-5 bg-emerald-500/10 rounded-full mb-8 relative">
-            <CheckCircle2 className="w-14 h-14 text-emerald-500" />
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full"
-            />
-          </div>
-          <h2 className="syne font-extrabold text-3xl text-text-primary mb-4 uppercase tracking-tight">Verify your email</h2>
-          <p className="text-text-secondary mb-10 leading-relaxed">
-            We've sent a secure verification link to your email address. Please activate your account to begin your 14-day trial.
-          </p>
-          <Link href="/">
-            <Button variant="outline" size="lg" className="w-full border-accent/20 hover:border-accent/50">
-              Return to Philosophy
-            </Button>
-          </Link>
-        </motion.div>
-      </div>
-    );
-  }
+    try {
+      if (isLogin) {
+        const res = await signIn('credentials', {
+          email,
+          password,
+          redirect: false,
+        });
+
+        if (res?.error) {
+          setError("Invalid email or password");
+        } else {
+          window.location.href = '/';
+        }
+      } else {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, name, tradingViewUsername: tvUsername }),
+        });
+
+        if (!res.ok) {
+          const data = await res.text();
+          setError(data || "Something went wrong during registration");
+          return;
+        }
+
+        // Auto login after registration
+        const loginRes = await signIn('credentials', {
+          email,
+          password,
+          redirect: false,
+        });
+
+        if (loginRes?.error) {
+          setError("Account created, but failed to log in automatically. Please log in manually.");
+          setIsLogin(true);
+        } else {
+          window.location.href = '/';
+        }
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 relative overflow-hidden">
@@ -71,7 +89,7 @@ export default function AuthPage() {
 
       {/* Left Side - Institutional Value Prop */}
       <div className="hidden lg:flex flex-col justify-center p-24 bg-bg-secondary/50 border-r border-border relative overflow-hidden pt-32">
-        <KanjiWatermark kanji="一目" className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.05]" size="35vw" />
+
         
         <div className="relative z-10 max-w-lg">
           <motion.div
@@ -86,7 +104,7 @@ export default function AuthPage() {
           <h2 className="syne font-extrabold text-6xl text-text-primary mb-6 uppercase tracking-tight leading-[0.9]">
             Professional <br /> <span className="text-accent">Market Clarity.</span>
           </h2>
-          <p className="shippori-mincho text-2xl text-text-muted mb-16">プロフェッショナルな市場の透明性</p>
+
           
           <div className="space-y-10">
             {[
@@ -172,7 +190,9 @@ export default function AuthPage() {
                         <input
                           required
                           type="text"
-                          placeholder="Musashi Miyamoto"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Alexander Black"
                           className="w-full bg-bg-secondary border border-border rounded-xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all"
                         />
                       </div>
@@ -209,6 +229,8 @@ export default function AuthPage() {
                     <input
                       required
                       type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       placeholder="name@example.com"
                       className="w-full bg-bg-secondary border border-border rounded-xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all"
                     />
@@ -274,10 +296,33 @@ export default function AuthPage() {
                   </div>
                 )}
 
+                {/* Error Message */}
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 text-[10px] font-bold uppercase tracking-widest text-center"
+                  >
+                    {error}
+                  </motion.div>
+                )}
+
                 {/* Submit Button */}
                 <div className="pt-4">
-                  <Button type="submit" className="w-full !rounded-xl !py-7 !text-xs !tracking-[0.2em]" size="lg">
-                    {isLogin ? "LOG IN TO ACCOUNT" : "START YOUR 14-DAY TRIAL"}
+                  <Button 
+                    type="submit" 
+                    className="w-full !rounded-xl !py-7 !text-xs !tracking-[0.2em]" 
+                    size="lg"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                        PROCESSING...
+                      </div>
+                    ) : (
+                      isLogin ? "LOG IN TO ACCOUNT" : "START YOUR 14-DAY TRIAL"
+                    )}
                   </Button>
                 </div>
 
@@ -290,6 +335,10 @@ export default function AuthPage() {
 
                 <button
                   type="button"
+                  onClick={async () => {
+                    const { error } = await signInWithGoogle();
+                    if (error) setError(error.message);
+                  }}
                   className="w-full flex items-center justify-center gap-3 py-4 border border-border rounded-xl hover:bg-bg-secondary/80 hover:border-accent/20 transition-all duration-300"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">

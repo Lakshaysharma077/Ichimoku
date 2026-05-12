@@ -6,7 +6,7 @@ import { Globe, ChevronDown, Check } from 'lucide-react';
 
 const languages = [
   { code: 'EN', label: 'English', flagUrl: 'https://em-content.zobj.net/source/apple/237/flag-for-united-states_1f1fa-1f1f8.png' },
-  { code: 'JA', label: 'Japan', flagUrl: 'https://em-content.zobj.net/source/apple/237/flag-for-japan_1f1ef-1f1f5.png' },
+  { code: 'JP', label: 'Japan', flagUrl: 'https://em-content.zobj.net/source/apple/237/flag-for-japan_1f1ef-1f1f5.png' },
 ];
 
 interface LanguageSwitcherProps {
@@ -39,7 +39,7 @@ export default function LanguageSwitcher({ variant = 'default' }: LanguageSwitch
       {/* Top Bar Selector */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`group flex items-center gap-1.5 rounded-xl transition-all duration-300 hover:bg-white/5 ${padding}`}
+        className={`group flex items-center gap-1.5 rounded-xl transition-all duration-300 hover:bg-accent/[0.06] ${padding}`}
       >
         <Globe 
           className={`${iconSize} transition-all duration-300 ${
@@ -64,11 +64,11 @@ export default function LanguageSwitcher({ variant = 'default' }: LanguageSwitch
             animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
             exit={{ opacity: 0, y: 8, scale: 0.95, filter: 'blur(4px)' }}
             transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-            className="absolute right-0 mt-3 w-52 overflow-hidden rounded-[20px] bg-bg-secondary/95 backdrop-blur-2xl border border-border shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-[110]"
+            className="absolute right-0 mt-3 w-52 overflow-hidden rounded-[20px] bg-bg-secondary backdrop-blur-2xl border border-border shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-[110]"
           >
             {/* Header section */}
-            <div className="px-5 py-3.5 border-b border-border/50">
-              <p className="text-[10px] font-mono font-bold text-accent/50 uppercase tracking-[0.2em]">
+            <div className="px-5 py-3.5 border-b border-border">
+              <p className="text-[10px] font-mono font-bold text-accent uppercase tracking-[0.2em]">
                 Select Language
               </p>
             </div>

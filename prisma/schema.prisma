@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                  String    @id @default(cuid())
+  name                String?
+  email               String?   @unique
+  emailVerified       DateTime?
+  image               String?
+  password            String?
+  role                String    @default("USER")
+  tradingViewUsername String?
+  provider            String?
+  accounts            Account[]
+  sessions            Session[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model ContentSection {
+  id        String   @id @default(cuid())
+  key       String   @unique // e.g., 'hero', 'navbar', 'footer'
+  value     String   // Store as JSON string
+  updatedAt DateTime @updatedAt
+}
+
+model GlossaryTerm {
+  id        String   @id @default(cuid())
+  romanized String
+  japanese  String
+  english   String
+  isMain    Boolean  @default(false)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FaqItem {
+  id         String   @id @default(cuid())
+  question   String
+  answer     String
+  categories String   // Store as comma-separated or JSON
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model PricingTier {
+  id           String           @id @default(cuid())
+  name         String
+  monthlyPrice String
+  yearlyPrice  String
+  tagline      String
+  ctaText      String
+  isFeatured   Boolean          @default(false)
+  isTrial      Boolean          @default(false)
+  order        Int              @default(0)
+  features     PricingFeature[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model PricingFeature {
+  id        String      @id @default(cuid())
+  text      String
+  included  Boolean     @default(true)
+  tierId    String
+  tier      PricingTier @relation(fields: [tierId], references: [id], onDelete: Cascade)
+}
+
+model Tool {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  badge       String?
+  category    String?
+  href        String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Stat {
+  id        String   @id @default(cuid())
+  label     String
+  value     Float
+  suffix    String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

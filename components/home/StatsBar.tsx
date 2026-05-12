@@ -2,13 +2,9 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
-
-const stats = [
-  { value: 1200, label: 'Active Traders', suffix: '+' },
-  { value: 12, label: 'Indicators & Scripts', suffix: '+' },
-  { value: 4.9, label: 'TradingView Rating', suffix: '★' },
-  { value: 14, label: 'Free Trial, No Card', suffix: ' Days' },
-];
+import { useContent } from '@/hooks/useContent';
+import EditableElement from '../admin/EditableElement';
+import { useEditStore } from '@/lib/store/useEditStore';
 
 function Counter({ value, suffix }: { value: number, suffix: string }) {
   const [count, setCount] = useState(0);
@@ -47,6 +43,8 @@ function Counter({ value, suffix }: { value: number, suffix: string }) {
 }
 
 export default function StatsBar() {
+  const stats = useContent('stats');
+  const { isEditMode } = useEditStore();
   return (
     <section className="w-full bg-bg-secondary py-12 border-y border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
@@ -59,10 +57,17 @@ export default function StatsBar() {
               }`}
             >
               <h3 className="syne font-bold text-3xl lg:text-4xl text-text-primary mb-2">
-                <Counter value={stat.value} suffix={stat.suffix} />
+                {!isEditMode ? (
+                  <Counter value={stat.value} suffix={stat.suffix} />
+                ) : (
+                  <div className="flex items-baseline">
+                    <EditableElement section="stats" path={[i.toString(), 'value']} content={stat.value.toString()} />
+                    <EditableElement section="stats" path={[i.toString(), 'suffix']} content={stat.suffix || ''} />
+                  </div>
+                )}
               </h3>
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
-                {stat.label}
+                <EditableElement section="stats" path={[i.toString(), 'label']} content={stat.label} />
               </span>
             </div>
           ))}

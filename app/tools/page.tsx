@@ -3,14 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useAdminStore } from '@/store/adminStore';
 import { seedIndicators } from '@/lib/indicators';
-import KanjiWatermark from '@/components/shared/KanjiWatermark';
 import ScrollReveal from '@/components/shared/ScrollReveal';
 import FilterBar from '@/components/tools/FilterBar';
 import IndicatorCard from '@/components/tools/IndicatorCard';
 import AdminPanel from '@/components/tools/AdminPanel';
+import EditableElement from '@/components/admin/EditableElement';
+import { useContent } from '@/hooks/useContent';
 import { Lock } from 'lucide-react';
 
 export default function ToolsPage() {
+  const tools = useContent('tools');
   const { indicators, setIndicators, isAdminMode, setAdminMode, deleteIndicator } = useAdminStore();
   const [activeFilter, setActiveFilter] = useState("All");
 
@@ -42,16 +44,16 @@ export default function ToolsPage() {
 
   return (
     <div className="pt-40 pb-24 relative overflow-hidden min-h-screen">
-      <KanjiWatermark kanji="道具" className="bottom-10 left-[-5%] opacity-[0.04]" size="30vw" />
+
       
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <ScrollReveal>
           <div className="flex flex-col mb-12">
-            <h1 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary mb-4 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
-              Tools & Indicators
+            <h1 className="syne font-extrabold text-4xl lg:text-6xl text-text-primary mb-4 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
+              <EditableElement section="tools" path={['hero', 'heading']} content={tools.hero.heading} />
             </h1>
             <p className="text-xl text-text-secondary max-w-2xl leading-relaxed">
-              Precision-built Pine Script indicators for TradingView. Each tool is battle-tested on real markets.
+              <EditableElement section="tools" path={['hero', 'description']} content={tools.hero.description} />
             </p>
           </div>
         </ScrollReveal>
@@ -74,7 +76,9 @@ export default function ToolsPage() {
 
         {filteredIndicators.length === 0 && (
           <div className="text-center py-24 border border-dashed border-border rounded-2xl">
-            <p className="text-text-muted font-mono uppercase tracking-widest">No indicators found for this category.</p>
+            <p className="text-text-muted font-mono uppercase tracking-widest">
+              <EditableElement section="tools" path={['noResults']} content={tools.noResults} />
+            </p>
           </div>
         )}
 
@@ -85,7 +89,7 @@ export default function ToolsPage() {
             className="flex items-center gap-2 text-[10px] font-mono text-text-muted uppercase tracking-[0.3em] hover:text-accent transition-colors"
           >
             <Lock className="w-3 h-3" />
-            {isAdminMode ? "Disable Admin Mode" : "Admin"}
+            <EditableElement section="tools" path={['adminLink', isAdminMode ? 'disable' : 'enable']} content={isAdminMode ? tools.adminLink.disable : tools.adminLink.enable} />
           </button>
         </div>
       </div>
