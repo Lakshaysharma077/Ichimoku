@@ -69,7 +69,7 @@ export default function IchimokuPage() {
             <div className="max-w-2xl w-full p-3 bg-bg-secondary/60 backdrop-blur-md border border-border rounded-3xl overflow-hidden shadow-2xl shadow-black/20 transition-all duration-500">
               <div className="rounded-2xl overflow-hidden bg-bg-primary transition-colors duration-500">
                 <img 
-                  src="/Chart3.png" 
+                  src="/Chart4.png" 
                   alt="Ichimoku Chart — Five Lines Visualization"
                   className="w-full h-auto block transition-all duration-500"
                   style={{ filter: 'var(--chart-filter, none)' }}
