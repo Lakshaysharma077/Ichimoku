@@ -11,6 +11,8 @@
   --text-muted: #8a7a3a;
   --accent: #fbe178;
   --border: rgba(251,225,120,0.15);
+  --chart-blend: screen;
+  --chart-filter: invert(1) hue-rotate(180deg);
 }
 
 [data-theme='light'] {
@@ -22,6 +24,8 @@
   --text-muted: #888880;
   --accent: #0a0a0a;
   --border: rgba(0,0,0,0.1);
+  --chart-blend: normal;
+  --chart-filter: none;
 }
 
 [data-theme='dark'] {
@@ -33,6 +37,8 @@
   --text-muted: #606058;
   --accent: #f0f0ee;
   --border: rgba(255,255,255,0.08);
+  --chart-blend: screen;
+  --chart-filter: invert(1) hue-rotate(180deg);
 }
 
 [data-theme='signature'] {
@@ -44,6 +50,8 @@
   --text-muted: #8a7a3a;
   --accent: #fbe178;
   --border: rgba(251,225,120,0.15);
+  --chart-blend: screen;
+  --chart-filter: invert(1) hue-rotate(180deg);
 }
 
 @layer base {

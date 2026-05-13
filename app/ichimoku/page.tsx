@@ -38,43 +38,43 @@ export default function IchimokuPage() {
           </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          <EditableList
-            section="ichimoku"
-            path={['componentsSection', 'items']}
-            items={ichimoku.componentsSection.items as any}
-            newItemTemplate={{ name: 'New Component', kanji: '新', eng: 'New English', color: '#FFFFFF' }}
-            renderItem={(item: any, i: number) => (
-              <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="p-8 bg-bg-secondary border border-border rounded-2xl group hover:border-accent transition-all duration-300">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-2xl text-text-primary font-bold">
-                      <EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'name']} content={item.name} />
-                    </span>
-                    <div className="w-12 h-1 rounded-full" style={{ backgroundColor: item.color }} />
-                  </div>
-                  <span className="shippori-mincho text-sm text-text-muted mb-3 block">
-                    <EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'kanji']} content={item.kanji} />
+        <EditableList
+          section="ichimoku"
+          path={['componentsSection', 'items']}
+          items={ichimoku.componentsSection.items as any}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16"
+          newItemTemplate={{ name: 'New Component', kanji: '新', eng: 'New English', color: '#FFFFFF' }}
+          renderItem={(item: any, i: number) => (
+            <ScrollReveal key={i} delay={i * 0.1}>
+              <div className="h-full p-8 bg-bg-secondary border border-border rounded-2xl group hover:border-accent transition-all duration-500">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-2xl text-text-primary font-bold">
+                    <EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'name']} content={item.name} />
                   </span>
-                  <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest block italic">
-                    "<EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'eng']} content={item.eng} />"
-                  </span>
+                  <div className="w-12 h-1 rounded-full" style={{ backgroundColor: item.color }} />
                 </div>
-              </ScrollReveal>
-            )}
-          />
-        </div>
+                <span className="shippori-mincho text-sm text-text-muted mb-3 block">
+                  <EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'kanji']} content={item.kanji} />
+                </span>
+                <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest block italic">
+                  &quot;<EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'eng']} content={item.eng} />&quot;
+                </span>
+              </div>
+            </ScrollReveal>
+          )}
+        />
 
         <ScrollReveal delay={0.6}>
-          <div className="flex justify-center mt-12">
-            <div className="max-w-4xl w-full p-2 bg-bg-secondary border border-border rounded-3xl overflow-hidden shadow-2xl shadow-black/50">
-              <EditableElement 
-                section="ichimoku" 
-                path={['componentsSection', 'image']} 
-                content={ichimoku.componentsSection.image || ''} 
-                type="image"
-                className="w-full h-auto rounded-2xl opacity-90 hover:opacity-100 transition-opacity duration-500"
-              />
+          <div className="mt-12">
+            <div className="max-w-2xl w-full p-3 bg-bg-secondary/60 backdrop-blur-md border border-border rounded-3xl overflow-hidden shadow-2xl shadow-black/20 transition-all duration-500">
+              <div className="rounded-2xl overflow-hidden bg-bg-primary transition-colors duration-500">
+                <img 
+                  src="/Chart3.png" 
+                  alt="Ichimoku Chart — Five Lines Visualization"
+                  className="w-full h-auto block transition-all duration-500"
+                  style={{ filter: 'var(--chart-filter, none)' }}
+                />
+              </div>
             </div>
           </div>
         </ScrollReveal>
