@@ -12,7 +12,7 @@
   --accent: #fbe178;
   --border: rgba(251,225,120,0.15);
   --chart-blend: screen;
-  --chart-filter: invert(1) hue-rotate(180deg);
+  --chart-filter: invert(1) sepia(0.2) hue-rotate(190deg) brightness(0.8) contrast(1.1);
 }
 
 [data-theme='light'] {
@@ -51,7 +51,7 @@
   --accent: #fbe178;
   --border: rgba(251,225,120,0.15);
   --chart-blend: screen;
-  --chart-filter: invert(1) hue-rotate(180deg);
+  --chart-filter: invert(1) sepia(0.2) hue-rotate(190deg) brightness(0.8) contrast(1.1);
 }
 
 @layer base {
