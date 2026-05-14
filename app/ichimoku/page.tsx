@@ -72,7 +72,10 @@ export default function IchimokuPage() {
                   src="/Chart4.png" 
                   alt="Ichimoku Chart — Five Lines Visualization"
                   className="w-full h-auto block transition-all duration-500"
-                  style={{ filter: 'var(--chart-filter, none)' }}
+                  style={{ 
+                    filter: 'var(--chart-filter, none)',
+                    mixBlendMode: 'var(--chart-blend, normal)' as any
+                  }}
                 />
               </div>
             </div>

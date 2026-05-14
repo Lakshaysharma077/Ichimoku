@@ -24,7 +24,7 @@
   --text-muted: #888880;
   --accent: #0a0a0a;
   --border: rgba(0,0,0,0.1);
-  --chart-blend: normal;
+  --chart-blend: multiply;
   --chart-filter: none;
 }
 
