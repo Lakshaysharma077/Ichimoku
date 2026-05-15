@@ -62,9 +62,17 @@ export default function Navbar() {
         )} />
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between flex-nowrap">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group whitespace-nowrap -ml-1">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden shrink-0 border border-white/5 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105">
+          <Link href="/" className="flex items-center gap-4 group whitespace-nowrap -ml-1">
+            <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden shrink-0 border border-white/5 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105">
               <img src={getLogoSrc()} alt="Ichimoku Edge Logo" className="object-cover w-full h-full" />
+            </div>
+            <div className="flex flex-col">
+              <span className="syne font-bold text-[18px] leading-none tracking-tight text-text-primary">
+                <EditableElement section="navbar" path={['logo', 'text']} content={navbar.logo.text} />
+              </span>
+              <span className="syne font-bold text-[13px] leading-none tracking-[0.2em] text-accent mt-1">
+                <EditableElement section="navbar" path={['logo', 'subtext']} content={navbar.logo.subtext} />
+              </span>
             </div>
           </Link>
 
