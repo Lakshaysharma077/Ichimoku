@@ -48,9 +48,9 @@ export default function MobileDrawer({ isOpen, onClose, links }: MobileDrawerPro
             <div className="p-6 flex items-center justify-between border-b border-border">
               <Link href="/" onClick={onClose} className="flex items-center gap-2">
                 <div className="w-10 h-10 rounded-full overflow-hidden border border-border/50 bg-bg-tertiary">
-                  <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
+                  <img src="/logo.png" alt="Logo" className="w-full h-full object-cover scale-[1.2]" />
                 </div>
-                <div className="flex flex-col leading-[0.85]">
+                <div className="flex flex-col leading-[0.9] gap-0.5">
                   <span className="font-black syne text-[13px] tracking-tight text-text-primary uppercase">ICHIMOKU</span>
                   <span className="font-black syne text-[13px] tracking-[0.1em] text-accent uppercase">EDGE</span>
                 </div>

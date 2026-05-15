@@ -11,7 +11,7 @@ export const staticContent = {
       subtext: "EDGE"
     },
     links: [
-      { name: 'Philosophy', href: '/' },
+      { name: 'Home', href: '/' },
       { name: 'Ichimoku', href: '/ichimoku' },
       { 
         name: 'Resources', 
@@ -63,7 +63,7 @@ export const staticContent = {
 
   // Home Page - Philosophy Section
   philosophy: {
-    label: 'THE PHILOSOPHY',
+    label: 'HOME',
     heading: 'Trading demands the discipline of a Samurai.',
     paragraphs: [
       'The Ichimoku system was not built for guessing. It was built for clarity. Like a Samurai who sees the battlefield before the enemy moves, the Ichimoku Edge indicator reveals market structure before price confirms.',
@@ -112,7 +112,7 @@ export const staticContent = {
       {
         title: "Platform",
         links: [
-          { name: 'Philosophy', href: '/' },
+          { name: 'Home', href: '/' },
           { name: 'Ichimoku', href: '/ichimoku' },
           { name: 'Tools', href: '/tools' },
           { name: 'Resources', href: '/education' },
@@ -376,7 +376,7 @@ export const staticContent = {
     },
     buttons: {
       youtube: "Subscribe on YouTube",
-      back: "Back to Philosophy"
+      back: "Back to Home"
     },
     form: {
       placeholder: "Enter your email",
