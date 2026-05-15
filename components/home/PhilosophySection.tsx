@@ -10,7 +10,7 @@ import EditableElement from '../admin/EditableElement';
 export default function PhilosophySection() {
   const philosophy = useContent('philosophy');
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
 
       
       <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
@@ -28,7 +28,7 @@ export default function PhilosophySection() {
               </h2>
             </ScrollReveal>
             
-            <div className="space-y-8 text-lg text-text-secondary leading-relaxed max-w-2xl mb-20">
+            <div className="space-y-8 text-lg text-text-secondary leading-relaxed max-w-2xl mb-12">
               {philosophy.paragraphs.map((para: string, i: number) => (
                 <ScrollReveal key={i} delay={0.1 * (i + 1)}>
                   <EditableElement section="philosophy" path={['paragraphs', i.toString()]} content={para} as="p" />
@@ -36,14 +36,14 @@ export default function PhilosophySection() {
               ))}
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               {philosophy.pillars.map((pillar: any, i: number) => (
                 <ScrollReveal key={i} delay={0.4 + i * 0.1}>
-                  <div className="p-8 bg-bg-secondary border border-border rounded-xl group hover:border-accent transition-colors duration-300">
-                    <span className="text-4xl block mb-6 grayscale group-hover:grayscale-0 transition-all">
+                  <div className="p-6 bg-bg-secondary border border-border rounded-xl group hover:border-accent transition-colors duration-300">
+                    <span className="text-4xl block mb-4 grayscale group-hover:grayscale-0 transition-all">
                       <EditableElement section="philosophy" path={['pillars', i.toString(), 'icon']} content={pillar.icon} />
                     </span>
-                    <h4 className="syne font-bold text-xl text-text-primary mb-4 uppercase tracking-tight">
+                    <h4 className="syne font-bold text-xl text-text-primary mb-2 uppercase tracking-tight">
                       <EditableElement section="philosophy" path={['pillars', i.toString(), 'title']} content={pillar.title} />
                     </h4>
                     <p className="text-sm text-text-secondary">

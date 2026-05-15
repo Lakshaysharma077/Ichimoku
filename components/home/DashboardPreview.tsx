@@ -14,9 +14,9 @@ export default function DashboardPreview() {
   const { isEditMode } = useEditStore();
 
   return (
-    <section className="py-24 bg-bg-primary">
+    <section className="py-16 bg-bg-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <ScrollReveal>
             <h2 className="syne font-bold text-4xl lg:text-5xl text-text-primary mb-4">
               <EditableElement section="dashboard" path={['heading']} content={dashboard.heading} />
@@ -30,7 +30,7 @@ export default function DashboardPreview() {
           </ScrollReveal>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {dashboard.previews.map((preview: any, i: number) => (
             <ScrollReveal key={i}>
               <div className="flex flex-col h-full">
@@ -56,7 +56,7 @@ export default function DashboardPreview() {
         </div>
 
         {/* Feature Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-10">
           <div className="flex justify-center">
             <ScrollReveal>
               <div className="max-w-[540px] w-full">

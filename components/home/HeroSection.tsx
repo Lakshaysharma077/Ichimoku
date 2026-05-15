@@ -12,7 +12,7 @@ export default function HeroSection() {
   const words = hero.headline;
   
   return (
-    <section className="relative min-h-[100svh] flex items-center overflow-hidden pt-20">
+    <section className="relative min-h-[100svh] flex items-center overflow-hidden pt-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* Left Column */}
         <div className="lg:col-span-7 flex flex-col items-start z-10">

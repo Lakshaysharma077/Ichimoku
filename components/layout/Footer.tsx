@@ -8,39 +8,42 @@ import FooterThemeSelector from '../ui/FooterThemeSelector';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
 import XIcon from '../ui/XIcon';
 import TradingViewIcon from '../ui/TradingViewIcon';
+import { useThemeStore } from '@/store/themeStore';
 import { useContent } from '@/hooks/useContent';
 import EditableElement from '../admin/EditableElement';
 
 export default function Footer() {
   const pathname = usePathname();
   const footer = useContent('footer');
+  const { theme } = useThemeStore();
 
   if (pathname.startsWith('/admin')) return null;
 
+  // Determine logo based on theme
+  const getLogoSrc = () => {
+    if (theme === 'signature') return '/edgefoot.png';
+    if (theme === 'dark') return '/whitefoot.jpeg';
+    if (theme === 'light') return '/blackfoot.jpeg';
+    return footer.brand.logo;
+  };
+
   return (
-    <footer className="bg-bg-primary border-t border-border pt-12 pb-6">
+    <footer className="bg-bg-primary border-t border-border pt-8 pb-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
 
-        <div className="flex flex-col lg:flex-row justify-between items-stretch gap-12 mb-20">
+        <div className="flex flex-col lg:flex-row justify-between items-stretch gap-12 mb-10">
           {/* Left Group: Brand + Nav Links */}
           <div className="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20">
             {/* Brand & Socials — flex-col with flex-1 spacer pushes icons to bottom */}
-            <div className="flex flex-col min-w-[160px]">
-              <h4 className="syne font-bold text-[11px] uppercase tracking-[0.2em] text-text-primary mb-6 opacity-80">
-                Ichimoku Edge
-              </h4>
-
+            <div className="flex flex-col min-w-[200px]">
               <Link href="/" className="flex flex-col items-start mb-6">
-                <div className="w-24 h-24 rounded-full overflow-hidden border border-border/50 bg-bg-tertiary shadow-2xl transition-transform duration-500 hover:scale-105">
-                  <EditableElement section="footer" path={['brand', 'logo']} content={footer.brand.logo} type="image" className="w-full h-full object-cover scale-110" />
+                <div className="w-20 h-20 rounded-full overflow-hidden border border-border/10 bg-bg-tertiary shadow-2xl transition-transform duration-500 hover:scale-105">
+                  <img src={getLogoSrc()} alt="Ichimoku Edge Logo" className="w-full h-full object-cover" />
                 </div>
               </Link>
 
-              {/* This spacer grows to fill available height, pushing icons to bottom */}
-              <div className="flex-1" />
-
-              {/* Icons now sit at the same level as Pricing / Cookie Policy */}
-              <div className="flex items-center gap-3 mt-auto pb-2.5">
+              {/* Icons now sit at the bottom, aligned with Pricing link */}
+              <div className="flex items-center gap-3 mt-auto pb-1">
                 <a
                   href="https://www.tradingview.com/u/IchimokuEdge/"
                   target="_blank"
@@ -70,7 +73,7 @@ export default function Footer() {
 
             {footer.sections.map((section: any, idx: number) => (
               <div key={idx} className="flex flex-col">
-                <h4 className="syne font-bold text-[11px] uppercase tracking-[0.2em] text-text-primary mb-6 opacity-80">
+                <h4 className="syne font-bold text-[11px] uppercase tracking-[0.2em] text-text-primary mb-4 opacity-80">
                   <EditableElement section="footer" path={['sections', idx.toString(), 'title']} content={section.title} />
                 </h4>
                 <ul className="space-y-1.5 text-[13px] text-text-secondary font-medium">
@@ -88,7 +91,7 @@ export default function Footer() {
 
           {/* Settings */}
           <div className="flex flex-col">
-            <h4 className="syne font-bold text-[11px] uppercase tracking-[0.2em] text-text-primary mb-6 opacity-80">
+            <h4 className="syne font-bold text-[11px] uppercase tracking-[0.2em] text-text-primary mb-4 opacity-80">
               Settings
             </h4>
             <div className="flex flex-col gap-4">
@@ -111,7 +114,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-6 border-t border-border flex flex-col items-center text-center text-[10px] font-mono text-text-muted uppercase tracking-[0.2em] space-y-1">
+        <div className="pt-4 border-t border-border flex flex-col items-center text-center text-[10px] font-mono text-text-muted uppercase tracking-[0.2em] space-y-1">
           <p>
             <EditableElement section="footer" path={['brand', 'copyright']} content={footer.brand.copyright} />
           </p>

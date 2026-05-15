@@ -13,8 +13,8 @@ export const staticContent = {
     links: [
       { name: 'Home', href: '/' },
       { name: 'Ichimoku', href: '/ichimoku' },
-      { 
-        name: 'Resources', 
+      {
+        name: 'Resources',
         href: '/education',
         dropdown: [
           { name: 'Education Hub', href: '/education' },
@@ -106,7 +106,7 @@ export const staticContent = {
       name: "Ichimoku Edge",
       tagline: "Educational tools only. Trading involves risk. Not financial advice.",
       copyright: "2026 ICHIMOKU EDGE. ALL RIGHTS RESERVED.",
-      logo: "/logo.png"
+      logo: "/logo_final.png"
     },
     sections: [
       {

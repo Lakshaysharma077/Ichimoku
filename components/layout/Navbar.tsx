@@ -10,6 +10,7 @@ import { Menu, X, Youtube, Twitter, LineChart, LogIn, ChevronDown, Share2, LogOu
 import Button from '../ui/Button';
 import XIcon from '../ui/XIcon';
 import TradingViewIcon from '../ui/TradingViewIcon';
+import { useThemeStore } from '@/store/themeStore';
 import SettingsDropdown from './SettingsDropdown';
 import MobileDrawer from './MobileDrawer';
 import { clsx } from 'clsx';
@@ -23,6 +24,7 @@ export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const pathname = usePathname();
+  const { theme } = useThemeStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +36,14 @@ export default function Navbar() {
 
   if (pathname.startsWith('/admin')) return null;
 
+  // Determine logo based on theme
+  const getLogoSrc = () => {
+    if (theme === 'signature') return '/edgenav.jpeg';
+    if (theme === 'dark') return '/whiteedge.jpeg';
+    if (theme === 'light') return '/blackedge.jpeg';
+    return '/logo_final.png';
+  };
+
   return (
     <>
       {/* Backdrop blur removed as requested */}
@@ -41,23 +51,20 @@ export default function Navbar() {
 
       <header
         className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${isScrolled
-          ? 'bg-bg-primary/85 backdrop-blur-2xl border-b border-border/50 py-3.5 shadow-[0_4px_30px_rgba(0,0,0,0.1)]'
+          ? 'bg-bg-primary/90 backdrop-blur-2xl py-3.5 shadow-[0_4px_30px_rgba(0,0,0,0.15)]'
           : 'bg-transparent py-6'
           }`}
       >
+        {/* Thinner Gold Line on Scroll */}
+        <div className={clsx(
+          "absolute bottom-0 left-0 right-0 h-[1px] bg-accent/30 transition-opacity duration-500",
+          isScrolled ? "opacity-100" : "opacity-0"
+        )} />
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between flex-nowrap">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 sm:gap-4 group whitespace-nowrap -ml-1">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden shrink-0 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105">
-              <img src="/logo.png" alt="Ichimoku Edge Logo" className="object-cover w-full h-full scale-[1.2]" />
-            </div>
-            <div className="flex flex-col leading-none gap-2">
-              <span className="text-[15px] sm:text-[18px] font-black text-text-primary uppercase syne transition-colors duration-500 group-hover:text-accent tracking-wide">
-                <EditableElement section="navbar" path={['logo', 'text']} content={navbar.logo.text} />
-              </span>
-              <span className="text-[10px] sm:text-[11px] font-black text-accent uppercase syne transition-colors duration-500 group-hover:text-text-primary tracking-[0.25em] ml-0.5 opacity-90">
-                <EditableElement section="navbar" path={['logo', 'subtext']} content={navbar.logo.subtext} />
-              </span>
+          <Link href="/" className="flex items-center gap-3 group whitespace-nowrap -ml-1">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden shrink-0 border border-white/5 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105">
+              <img src={getLogoSrc()} alt="Ichimoku Edge Logo" className="object-cover w-full h-full" />
             </div>
           </Link>
 
@@ -80,12 +87,6 @@ export default function Navbar() {
                   <span className="relative z-10">
                     <EditableElement section="navbar" path={['links', navbar.links.indexOf(link).toString(), 'name']} content={link.name} />
                   </span>
-                  {link.dropdown && (
-                    <ChevronDown className={clsx(
-                      "w-3.5 h-3.5 opacity-50 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]",
-                      hoveredLink === link.name ? "rotate-180 opacity-100 text-accent" : "group-hover:opacity-80"
-                    )} />
-                  )}
                   
                   {/* Premium Gold Underline - Center Outward */}
                   <div className={clsx(
@@ -185,7 +186,7 @@ export default function Navbar() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="group relative flex items-center gap-2.5 px-6 py-2.5 rounded-full border-white/10 hover:border-accent/40 hover:bg-accent/[0.03] hover:text-accent transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] bg-transparent shadow-sm hover:shadow-[0_8px_20px_rgba(0,0,0,0.2),0_0_15px_rgba(var(--accent),0.1)] hover:-translate-y-0.5 overflow-hidden"
+                  className="group relative flex items-center gap-2.5 px-6 py-2.5 rounded-full border-accent/40 hover:border-accent hover:bg-accent/[0.03] hover:text-accent transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] bg-transparent shadow-sm hover:shadow-[0_8px_20px_rgba(0,0,0,0.2),0_0_15px_rgba(var(--accent),0.1)] hover:-translate-y-0.5 overflow-hidden text-accent"
                 >
                   {/* Subtle Gold Lighting Sweep */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">

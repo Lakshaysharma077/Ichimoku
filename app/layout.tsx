@@ -9,6 +9,7 @@ import CookieConsent from "@/components/shared/CookieConsent";
 import { Providers } from "./providers";
 import AdminVisualToolbar from "@/components/admin/AdminVisualToolbar";
 import CompleteProfileModal from "@/components/shared/CompleteProfileModal";
+import KanjiBackground from "@/components/shared/KanjiBackground";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -73,6 +74,7 @@ export default function RootLayout({
             <CookieConsent />
             <AdminVisualToolbar />
             <CompleteProfileModal />
+            <KanjiBackground />
           </ThemeProvider>
         </Providers>
       </body>
