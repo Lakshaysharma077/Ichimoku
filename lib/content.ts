@@ -145,7 +145,8 @@ export const staticContent = {
     socials: {
       tradingview: "https://www.tradingview.com/u/IchimokuEdge/",
       youtube: "https://www.youtube.com/@IchimokuEdge",
-      x: "https://x.com/IchimokuEdge"
+      x: "https://x.com/IchimokuEdge",
+      discord: "#"
     }
   },
 
