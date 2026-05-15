@@ -21,9 +21,9 @@ export default function Footer() {
 
   // Determine logo based on theme
   const getLogoSrc = () => {
-    if (theme === 'signature') return '/edgefoot.png';
-    if (theme === 'dark') return '/whitefoot.jpeg';
-    if (theme === 'light') return '/blackfoot.jpeg';
+    if (theme === 'signature') return '/edgefoot.jpeg';
+    if (theme === 'dark') return '/blackfoot.jpeg';
+    if (theme === 'light') return '/whitefoot.jpeg';
     return footer.brand.logo;
   };
 
@@ -37,8 +37,8 @@ export default function Footer() {
             {/* Brand & Socials — flex-col with flex-1 spacer pushes icons to bottom */}
             <div className="flex flex-col min-w-[200px]">
               <Link href="/" className="flex flex-col items-start mb-6">
-                <div className="w-20 h-20 rounded-full overflow-hidden border border-border/10 bg-bg-tertiary shadow-2xl transition-transform duration-500 hover:scale-105">
-                  <img src={getLogoSrc()} alt="Ichimoku Edge Logo" className="w-full h-full object-cover" />
+                <div className="w-20 h-20 rounded-full overflow-hidden transition-transform duration-500 hover:scale-105">
+                  <img src={getLogoSrc()} alt="Ichimoku Edge Logo" className="w-full h-full object-cover scale-[1.1]" />
                 </div>
               </Link>
 
