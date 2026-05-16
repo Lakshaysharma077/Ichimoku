@@ -20,7 +20,7 @@ export default function ThemeToggle() {
       <motion.button
         whileTap={{ scale: 0.9 }}
         onClick={toggleTheme}
-        className="w-8 h-8 rounded-full border !border-[#fbe178]/40 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group bg-bg-secondary/30 backdrop-blur-md relative overflow-hidden hover:!border-[#fbe178]/80 hover:bg-bg-secondary hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:-translate-y-0.5"
+        className="w-8 h-8 rounded-full border !border-[#fbe178]/40 flex items-center justify-center transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group bg-bg-secondary/30 backdrop-blur-md relative overflow-hidden hover:!border-[#fbe178]/80 hover:bg-bg-secondary hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:-translate-y-0.5"
         aria-label="Toggle theme"
       >
         <AnimatePresence mode="wait">

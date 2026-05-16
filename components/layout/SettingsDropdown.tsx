@@ -57,7 +57,7 @@ export default function SettingsDropdown() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={clsx(
-          "w-8 h-8 rounded-full border !border-[#fbe178]/40 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group bg-bg-secondary/30 backdrop-blur-md relative overflow-hidden",
+          "w-8 h-8 rounded-full border !border-[#fbe178]/40 flex items-center justify-center transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group bg-bg-secondary/30 backdrop-blur-md relative overflow-hidden",
           "hover:!border-[#fbe178]/80 hover:bg-bg-secondary hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:-translate-y-0.5",
           isOpen ? "border-accent/60 shadow-[0_0_10px_rgba(var(--accent),0.1)] bg-bg-secondary" : ""
         )}
@@ -183,10 +183,10 @@ export default function SettingsDropdown() {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-8 h-8 rounded-lg bg-bg-primary/50 border border-white/5 flex items-center justify-center text-text-muted transition-all duration-500 ease-[0.23,1,0.32,1] hover:text-accent hover:bg-accent/5 hover:border-accent/20 hover:shadow-[0_0_12px_rgba(var(--accent),0.1)] hover:-translate-y-0.5 group/social"
+                        className="w-8 h-8 rounded-lg bg-bg-primary/50 border border-white/5 flex items-center justify-center text-text-muted transition-all duration-200 ease-[0.23,1,0.32,1] hover:text-accent hover:bg-accent/5 hover:border-accent/20 hover:shadow-[0_0_12px_rgba(var(--accent),0.1)] hover:-translate-y-0.5 group/social"
                         title={social.title}
                       >
-                        <social.icon className="w-4 h-4 transition-transform duration-500 group-hover/social:scale-110" />
+                        <social.icon className="w-4 h-4 transition-transform duration-200 group-hover/social:scale-110" />
                       </a>
                     ))}
                   </div>

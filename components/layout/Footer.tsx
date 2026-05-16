@@ -37,7 +37,7 @@ export default function Footer() {
             {/* Brand & Socials — flex-col with flex-1 spacer pushes icons to bottom */}
             <div className="flex flex-col min-w-[160px] lg:min-w-[170px]">
               <Link href="/" className="flex flex-col items-start mb-6">
-                <div className="w-20 h-20 rounded-full overflow-hidden transition-transform duration-500 hover:scale-105">
+                <div className="w-20 h-20 rounded-full overflow-hidden transition-transform duration-200 hover:scale-105">
                   <img src={getLogoSrc()} alt="Ichimoku Edge Logo" className="w-full h-full object-cover scale-[1.1]" />
                 </div>
               </Link>

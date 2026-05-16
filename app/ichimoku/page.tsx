@@ -6,9 +6,17 @@ import SectionDivider from '@/components/shared/SectionDivider';
 import { useContent } from '@/hooks/useContent';
 import EditableElement from '@/components/admin/EditableElement';
 import EditableList from '@/components/admin/EditableList';
+import { useThemeStore } from '@/store/themeStore';
 
 export default function IchimokuPage() {
   const ichimoku = useContent('ichimoku');
+  const { theme } = useThemeStore();
+
+  const getChartImg = () => {
+    if (theme === 'signature') return '/ichimokuedgeth.png';
+    if (theme === 'dark') return '/ichimokuchardark.png';
+    return '/ichimokuchart.png';
+  };
   return (
     <div className="pt-40 pb-24 relative overflow-hidden">
 
@@ -46,7 +54,7 @@ export default function IchimokuPage() {
           newItemTemplate={{ name: 'New Component', kanji: '新', eng: 'New English', color: '#FFFFFF' }}
           renderItem={(item: any, i: number) => (
             <ScrollReveal key={i} delay={i * 0.1}>
-              <div className="h-full p-8 bg-bg-secondary border border-border rounded-2xl group hover:border-accent transition-all duration-500">
+              <div className="h-full p-8 bg-bg-secondary border border-border rounded-2xl group hover:border-accent transition-all duration-200">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-2xl text-text-primary font-bold">
                     <EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'name']} content={item.name} />
@@ -66,16 +74,12 @@ export default function IchimokuPage() {
 
         <ScrollReveal delay={0.6}>
           <div className="mt-12">
-            <div className="max-w-2xl w-full p-3 bg-bg-secondary/60 backdrop-blur-md border border-border rounded-3xl overflow-hidden shadow-2xl shadow-black/20 transition-all duration-500">
-              <div className="rounded-2xl overflow-hidden bg-bg-primary transition-colors duration-500">
+            <div className="max-w-2xl w-full p-3 bg-bg-secondary/60 backdrop-blur-md border border-border rounded-3xl overflow-hidden shadow-2xl shadow-black/20 transition-all duration-200">
+              <div className="rounded-2xl overflow-hidden bg-bg-primary transition-colors duration-200">
                 <img 
-                  src="/Chart4.png" 
+                  src={getChartImg()} 
                   alt="Ichimoku Chart — Five Lines Visualization"
-                  className="w-full h-auto block transition-all duration-500"
-                  style={{ 
-                    filter: 'var(--chart-filter, none)',
-                    mixBlendMode: 'var(--chart-blend, normal)' as any
-                  }}
+                  className="w-full h-auto block transition-all duration-200"
                 />
               </div>
             </div>

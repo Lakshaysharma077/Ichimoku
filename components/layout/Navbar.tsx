@@ -51,20 +51,20 @@ export default function Navbar() {
 
 
       <header
-        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${isScrolled
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${isScrolled
           ? 'bg-bg-primary/90 backdrop-blur-2xl py-3.5 shadow-[0_4px_30px_rgba(0,0,0,0.15)]'
           : 'bg-transparent py-6'
           }`}
       >
         {/* Thinner Gold Line on Scroll */}
         <div className={clsx(
-          "absolute bottom-0 left-0 right-0 h-[1px] bg-accent/30 transition-opacity duration-500",
+          "absolute bottom-0 left-0 right-0 h-[1px] bg-accent/30 transition-opacity duration-200",
           isScrolled ? "opacity-100" : "opacity-0"
         )} />
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between flex-nowrap">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-4 group whitespace-nowrap -ml-1">
-            <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden shrink-0 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105">
+            <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden shrink-0 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105">
               <img src={getLogoSrc()} alt="Ichimoku Edge Logo" className="object-cover w-full h-full scale-[1.1]" />
             </div>
             <div className="flex flex-col">
@@ -89,7 +89,7 @@ export default function Navbar() {
                 <Link
                   href={link.href}
                   className={clsx(
-                    "group relative text-[14px] font-medium transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] whitespace-nowrap flex items-center gap-1.5 py-1",
+                    "group relative text-[14px] font-medium transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] whitespace-nowrap flex items-center gap-1.5 py-1",
                     pathname === link.href ? "text-accent brightness-110" : "text-text-secondary hover:text-text-primary hover:brightness-110 hover:-translate-y-[1px]"
                   )}
                 >
@@ -99,7 +99,7 @@ export default function Navbar() {
                   
                   {/* Premium Gold Underline - Center Outward */}
                   <div className={clsx(
-                    "absolute -bottom-1 left-0 right-0 h-[1.5px] bg-accent rounded-full transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] origin-center",
+                    "absolute -bottom-1 left-0 right-0 h-[1.5px] bg-accent rounded-full transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] origin-center",
                     pathname === link.href ? "scale-x-100 opacity-80" : "scale-x-0 group-hover:scale-x-100 opacity-60"
                   )} />
                 </Link>
@@ -121,16 +121,16 @@ export default function Navbar() {
                             <Link
                               key={sub.name}
                               href={sub.href}
-                              className="flex items-center px-4 py-3 text-[11px] font-bold tracking-widest uppercase text-text-secondary hover:text-accent hover:bg-accent/[0.04] rounded-xl transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group/sub relative overflow-hidden"
+                              className="flex items-center px-4 py-3 text-[11px] font-bold tracking-widest uppercase text-text-secondary hover:text-accent hover:bg-accent/[0.04] rounded-xl transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group/sub relative overflow-hidden"
                             >
-                              <span className="relative z-10 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover/sub:translate-x-1">
+                              <span className="relative z-10 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover/sub:translate-x-1">
                                 <EditableElement 
                                   section="navbar" 
                                   path={['links', navbar.links.indexOf(link).toString(), 'dropdown', link.dropdown.indexOf(sub).toString(), 'name']} 
                                   content={sub.name} 
                                 />
                               </span>
-                              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 bg-accent rounded-full group-hover/sub:h-1/2 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] opacity-0 group-hover/sub:opacity-100" />
+                              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 bg-accent rounded-full group-hover/sub:h-1/2 transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] opacity-0 group-hover/sub:opacity-100" />
                             </Link>
                           ))}
                         </div>
@@ -156,7 +156,7 @@ export default function Navbar() {
                   <span className="text-[8px] text-text-muted uppercase tracking-widest mt-1">{(session.user as any).role}</span>
                 </div>
                 <div className="relative group">
-                  <button className="w-10 h-10 rounded-full bg-accent/10 border border-accent/20 overflow-hidden hover:border-accent hover:shadow-[0_0_15px_rgba(var(--accent),0.2)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]">
+                  <button className="w-10 h-10 rounded-full bg-accent/10 border border-accent/20 overflow-hidden hover:border-accent hover:shadow-[0_0_15px_rgba(var(--accent),0.2)] transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)]">
                     {session.user?.image ? (
                       <img src={session.user.image} alt="" className="w-full h-full object-cover" />
                     ) : (
@@ -167,11 +167,11 @@ export default function Navbar() {
                   </button>
                   
                   {/* Simple Dropdown on hover */}
-                  <div className="absolute top-full right-0 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] z-[120]">
+                  <div className="absolute top-full right-0 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] z-[120]">
                     <div className="bg-bg-secondary/90 backdrop-blur-2xl border border-border/50 rounded-2xl p-2 shadow-[0_30px_60px_rgba(0,0,0,0.2)] min-w-[180px] flex flex-col gap-1">
                       <Link
                         href="/profile"
-                        className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[11px] font-bold text-text-secondary hover:text-accent hover:bg-accent/[0.04] rounded-xl transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] uppercase tracking-widest"
+                        className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[11px] font-bold text-text-secondary hover:text-accent hover:bg-accent/[0.04] rounded-xl transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] uppercase tracking-widest"
                       >
                         <User className="w-3.5 h-3.5" />
                         Profile Settings
@@ -182,7 +182,7 @@ export default function Navbar() {
                           await signOutUser();
                           signOut();
                         }}
-                        className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[11px] font-bold text-rose-500/80 hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] uppercase tracking-widest"
+                        className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[11px] font-bold text-rose-500/80 hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] uppercase tracking-widest"
                       >
                         <LogOut className="w-3.5 h-3.5" />
                         Sign Out
@@ -196,14 +196,14 @@ export default function Navbar() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="group relative flex items-center gap-2.5 px-6 py-2.5 rounded-full !border-[#fbe178]/80 hover:!border-[#fbe178] hover:bg-accent/[0.03] hover:text-accent transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] bg-transparent shadow-sm hover:shadow-[0_8px_20px_rgba(0,0,0,0.2),0_0_15px_rgba(var(--accent),0.1)] hover:-translate-y-0.5 overflow-hidden text-accent"
+                  className="group relative flex items-center gap-2.5 px-6 py-2.5 rounded-full !border-[#fbe178]/80 hover:!border-[#fbe178] hover:bg-accent/[0.03] hover:text-accent transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] bg-transparent shadow-sm hover:shadow-[0_8px_20px_rgba(0,0,0,0.2),0_0_15px_rgba(var(--accent),0.1)] hover:-translate-y-0.5 overflow-hidden text-accent"
                 >
                   {/* Subtle Gold Lighting Sweep */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
                     <div className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out bg-gradient-to-r from-transparent via-accent/10 to-transparent" />
                   </div>
                   
-                  <LogIn className="w-3.5 h-3.5 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-110" />
+                  <LogIn className="w-3.5 h-3.5 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-110" />
                   <span className="font-bold tracking-tight text-[12px]">
                     <EditableElement section="navbar" path={['loginButton']} content={navbar.loginButton} />
                   </span>
