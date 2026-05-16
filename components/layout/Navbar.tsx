@@ -12,6 +12,7 @@ import XIcon from '../ui/XIcon';
 import TradingViewIcon from '../ui/TradingViewIcon';
 import { useThemeStore } from '@/store/themeStore';
 import SettingsDropdown from './SettingsDropdown';
+import ThemeToggle from '../ui/ThemeToggle';
 import MobileDrawer from './MobileDrawer';
 import { clsx } from 'clsx';
 import { useContent } from '@/hooks/useContent';
@@ -144,6 +145,7 @@ export default function Navbar() {
           {/* Right Section */}
           <div className="hidden lg:flex items-center gap-5">
             <SettingsDropdown />
+            <ThemeToggle />
 
             <div className="h-6 w-px bg-white/10 mx-1" />
 
@@ -194,7 +196,7 @@ export default function Navbar() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="group relative flex items-center gap-2.5 px-6 py-2.5 rounded-full border-accent/40 hover:border-accent hover:bg-accent/[0.03] hover:text-accent transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] bg-transparent shadow-sm hover:shadow-[0_8px_20px_rgba(0,0,0,0.2),0_0_15px_rgba(var(--accent),0.1)] hover:-translate-y-0.5 overflow-hidden text-accent"
+                  className="group relative flex items-center gap-2.5 px-6 py-2.5 rounded-full !border-[#fbe178]/80 hover:!border-[#fbe178] hover:bg-accent/[0.03] hover:text-accent transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] bg-transparent shadow-sm hover:shadow-[0_8px_20px_rgba(0,0,0,0.2),0_0_15px_rgba(var(--accent),0.1)] hover:-translate-y-0.5 overflow-hidden text-accent"
                 >
                   {/* Subtle Gold Lighting Sweep */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">

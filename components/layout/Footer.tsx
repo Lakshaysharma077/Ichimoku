@@ -33,9 +33,9 @@ export default function Footer() {
 
         <div className="flex flex-col lg:flex-row justify-between items-stretch gap-12 mb-10">
           {/* Left Group: Brand + Nav Links */}
-          <div className="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20">
+          <div className="flex flex-col lg:flex-row items-stretch gap-10 lg:gap-10 xl:gap-14">
             {/* Brand & Socials — flex-col with flex-1 spacer pushes icons to bottom */}
-            <div className="flex flex-col min-w-[200px]">
+            <div className="flex flex-col min-w-[160px] lg:min-w-[170px]">
               <Link href="/" className="flex flex-col items-start mb-6">
                 <div className="w-20 h-20 rounded-full overflow-hidden transition-transform duration-500 hover:scale-105">
                   <img src={getLogoSrc()} alt="Ichimoku Edge Logo" className="w-full h-full object-cover scale-[1.1]" />
@@ -71,22 +71,25 @@ export default function Footer() {
               </div>
             </div>
 
-            {footer.sections.map((section: any, idx: number) => (
-              <div key={idx} className="flex flex-col">
-                <h4 className="syne font-bold text-[11px] uppercase tracking-[0.2em] text-text-primary mb-4 opacity-80">
-                  <EditableElement section="footer" path={['sections', idx.toString(), 'title']} content={section.title} />
-                </h4>
-                <ul className="space-y-1.5 text-[13px] text-text-secondary font-medium">
-                  {section.links.map((link: any, lIdx: number) => (
-                    <li key={lIdx}>
-                      <Link href={link.href} className="hover:text-accent transition-colors">
-                        <EditableElement section="footer" path={['sections', idx.toString(), 'links', lIdx.toString(), 'name']} content={link.name} />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {/* Nav Sections - Grouped with consistent gap */}
+            <div className="flex flex-col lg:flex-row gap-10 lg:gap-10 xl:gap-14">
+              {footer.sections.map((section: any, idx: number) => (
+                <div key={idx} className="flex flex-col min-w-[120px] xl:min-w-[130px]">
+                  <h4 className="syne font-bold text-[11px] uppercase tracking-[0.2em] text-text-primary mb-4 opacity-80">
+                    <EditableElement section="footer" path={['sections', idx.toString(), 'title']} content={section.title} />
+                  </h4>
+                  <ul className="space-y-1.5 text-[13px] text-text-secondary font-medium">
+                    {section.links.map((link: any, lIdx: number) => (
+                      <li key={lIdx}>
+                        <Link href={link.href} className="hover:text-accent transition-colors">
+                          <EditableElement section="footer" path={['sections', idx.toString(), 'links', lIdx.toString(), 'name']} content={link.name} />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Settings */}
