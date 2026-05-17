@@ -36,7 +36,7 @@ function Counter({ value, suffix }: { value: number, suffix: string }) {
 
   return (
     <span ref={ref}>
-      {Number.isInteger(Number(value)) ? Math.floor(count) : count.toFixed(1)}
+      {Number.isInteger(Number(value)) ? Math.floor(Number(count)) : Number(count).toFixed(1)}
       {suffix}
     </span>
   );
