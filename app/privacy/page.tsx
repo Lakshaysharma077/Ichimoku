@@ -10,11 +10,11 @@ export default function PrivacyPage() {
   const privacy = legal.privacy;
 
   return (
-    <div className="pt-40 pb-24 relative overflow-hidden min-h-screen">
+    <div className="pt-40 pb-24 relative overflow-hidden min-h-[100svh]">
       <div className="max-w-4xl mx-auto px-4 sm:px-8">
         <ScrollReveal>
           <div className="flex flex-col mb-12">
-            <h1 className="syne font-extrabold text-4xl lg:text-6xl text-text-primary mb-12 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
+            <h1 className="syne font-extrabold text-4xl lg:text-[56px] text-text-primary mb-12 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
               <EditableElement section="legal" path={['privacy', 'title']} content={privacy.title} />
             </h1>
             <p className="text-xl text-text-secondary leading-relaxed">

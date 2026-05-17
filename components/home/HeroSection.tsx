@@ -25,7 +25,7 @@ export default function HeroSection() {
             <EditableElement section="hero" path={['tagline']} content={hero.tagline} />
           </motion.span>
           
-          <h1 className="syne font-extrabold text-[clamp(2.5rem,8vw,5.5rem)] leading-[0.95] text-text-primary mb-6">
+          <h1 className="syne font-extrabold text-4xl lg:text-[56px] text-text-primary mb-12 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
             {words.map((word, i) => (
               <motion.span
                 key={i}

@@ -27,14 +27,14 @@ export default function GlossaryPage() {
     : glossary.data.filter((item: any) => glossary.mainWords.includes(item.romanized));
 
   return (
-    <div className="pt-40 pb-24 relative overflow-hidden min-h-screen">
+    <div className="pt-40 pb-24 relative overflow-hidden min-h-[100svh]">
 
       
       <div className="max-w-4xl mx-auto px-4 sm:px-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <ScrollReveal>
-            <h1 className="syne font-extrabold text-4xl lg:text-6xl text-text-primary mb-12 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
+            <h1 className="syne font-extrabold text-4xl lg:text-[56px] text-text-primary mb-12 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
               <EditableElement section="glossary" path={['heading']} content={glossary.heading} />
             </h1>
           </ScrollReveal>

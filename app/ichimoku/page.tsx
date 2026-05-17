@@ -18,17 +18,17 @@ export default function IchimokuPage() {
     return '/ichimokuchart.png';
   };
   return (
-    <div className="pt-40 pb-24 relative overflow-hidden">
+    <div className="pt-40 pb-24 relative overflow-hidden min-h-[100svh]">
 
 
       {/* Hero */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 mb-24">
         <ScrollReveal>
           <div className="flex flex-col mb-12">
-            <h1 className="syne font-extrabold text-4xl lg:text-6xl text-text-primary mb-2 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
+            <h1 className="syne font-extrabold text-4xl lg:text-[56px] text-text-primary mb-12 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
               <EditableElement section="ichimoku" path={['hero', 'heading']} content={ichimoku.hero.heading} />
             </h1>
-            <p className="shippori-mincho text-4xl lg:text-6xl text-text-muted mb-8 leading-none transform scale-y-[1.1] origin-left">
+            <p className="shippori-mincho text-4xl lg:text-[56px] text-text-muted mb-8 leading-none transform scale-y-[1.1] origin-left">
               <EditableElement section="ichimoku" path={['hero', 'japanese']} content={ichimoku.hero.japanese} />
             </p>
           </div>

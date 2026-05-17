@@ -29,7 +29,7 @@ export default function EducationPage() {
             <Youtube className="w-12 h-12 text-rose-500" />
           </div>
           
-          <h1 className="syne font-extrabold text-4xl lg:text-6xl text-text-primary mb-12 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
+          <h1 className="syne font-extrabold text-4xl lg:text-[56px] text-text-primary mb-12 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
             <EditableElement section="education" path={['hero', 'heading']} content={education.hero.heading} />
           </h1>
           

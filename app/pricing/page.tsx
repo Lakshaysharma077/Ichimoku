@@ -17,13 +17,13 @@ export default function PricingPage() {
   const { isEditMode } = useEditStore();
 
   return (
-    <div className="pt-40 pb-24 relative overflow-hidden">
+    <div className="pt-40 pb-24 relative overflow-hidden min-h-[100svh]">
 
       
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="text-center mb-16">
           <ScrollReveal>
-            <h1 className="syne font-extrabold text-4xl lg:text-6xl text-text-primary mb-4 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
+            <h1 className="syne font-extrabold text-4xl lg:text-[56px] text-text-primary mb-12 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
               <EditableElement section="pricing" path={['hero', 'heading']} content={pricing.hero.heading} />
             </h1>
 
