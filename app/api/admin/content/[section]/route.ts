@@ -1,8 +1,10 @@
+// ACTIVE COMPONENT VERIFIED
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { staticContent } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
@@ -17,11 +19,16 @@ export async function GET(
       where: { key: section }
     });
 
-    if (!content) {
+    let data;
+    if (content) {
+      data = JSON.parse(content.value);
+    } else if (section in staticContent) {
+      data = staticContent[section as keyof typeof staticContent];
+    } else {
       return NextResponse.json({ error: "Section not found" }, { status: 404 });
     }
 
-    const response = NextResponse.json(JSON.parse(content.value));
+    const response = NextResponse.json(data);
     response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     response.headers.set('Pragma', 'no-cache');
     response.headers.set('Expires', '0');
