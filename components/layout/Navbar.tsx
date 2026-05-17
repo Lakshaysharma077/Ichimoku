@@ -143,9 +143,11 @@ export default function Navbar() {
           </div>
 
           {/* Right Section */}
-          <div className="hidden lg:flex items-center gap-5">
-            <SettingsDropdown />
-            <ThemeToggle />
+          <div className="hidden lg:flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <SettingsDropdown />
+              <ThemeToggle />
+            </div>
 
             {session ? (
               <div className="flex items-center gap-3 pl-2">

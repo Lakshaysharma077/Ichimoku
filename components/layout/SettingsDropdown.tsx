@@ -53,19 +53,17 @@ export default function SettingsDropdown() {
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
-      {/* Settings Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={clsx(
-          "w-8 h-8 rounded-full border !border-[#fbe178]/40 flex items-center justify-center transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group bg-bg-secondary/30 backdrop-blur-md relative overflow-hidden",
-          "hover:!border-[#fbe178]/80 hover:bg-bg-secondary hover:shadow-[0_4px_15px_rgba(0,0,0,0.2)] hover:-translate-y-0.5",
-          isOpen ? "border-accent/60 shadow-[0_0_10px_rgba(var(--accent),0.1)] bg-bg-secondary" : ""
+          "w-8 h-8 flex items-center justify-center transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group relative",
+          "hover:-translate-y-0.5"
         )}
       >
         <Globe 
           className={clsx(
-            "w-3.5 h-3.5 transition-all duration-700 ease-[0.23,1,0.32,1] group-hover:text-accent group-hover:scale-110",
-            isOpen ? "text-accent rotate-90" : "text-accent/60 group-hover:text-accent group-hover:rotate-12"
+            "w-[18px] h-[18px] transition-all duration-700 ease-[0.23,1,0.32,1] group-hover:text-accent group-hover:scale-110",
+            isOpen ? "text-accent rotate-90" : "text-text-primary group-hover:rotate-12"
           )} 
         />
       </button>

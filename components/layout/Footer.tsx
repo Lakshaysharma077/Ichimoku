@@ -31,9 +31,9 @@ export default function Footer() {
     <footer className="bg-bg-primary border-t border-border pt-8 pb-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
 
-        <div className="flex flex-col lg:flex-row justify-between items-stretch gap-12 mb-10">
+        <div className="flex flex-col lg:flex-row justify-between items-stretch gap-8 mb-6">
           {/* Left Group: Brand + Nav Links */}
-          <div className="flex flex-col lg:flex-row items-stretch gap-10 lg:gap-10 xl:gap-14">
+          <div className="flex flex-col lg:flex-row items-stretch gap-6 lg:gap-6 xl:gap-8">
             {/* Brand & Socials — flex-col with flex-1 spacer pushes icons to bottom */}
             <div className="flex flex-col min-w-[160px] lg:min-w-[170px]">
               <Link href="/" className="flex flex-col items-start mb-6">
@@ -48,31 +48,31 @@ export default function Footer() {
                   href="https://www.tradingview.com/u/IchimokuEdge/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 bg-bg-secondary/50 rounded-xl hover:bg-bg-tertiary transition-all duration-300 border border-white/5 hover:border-accent/20"
+                  className="p-2 bg-bg-secondary/50 rounded-xl hover:bg-bg-tertiary transition-all duration-300 border border-white/5 hover:border-accent/20"
                 >
-                  <TradingViewIcon className="w-[20px] h-[20px] text-text-primary/90" />
+                  <TradingViewIcon className="w-[16px] h-[16px] text-text-primary/90" />
                 </a>
                 <a
                   href="https://www.youtube.com/@IchimokuEdge"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 bg-bg-secondary/50 rounded-xl hover:bg-bg-tertiary transition-all duration-300 border border-white/5 hover:border-accent/20"
+                  className="p-2 bg-bg-secondary/50 rounded-xl hover:bg-bg-tertiary transition-all duration-300 border border-white/5 hover:border-accent/20"
                 >
-                  <Youtube className="w-[18px] h-[18px] text-text-primary/90" strokeWidth={1.5} />
+                  <Youtube className="w-[14px] h-[14px] text-text-primary/90" strokeWidth={1.5} />
                 </a>
                 <a
                   href="https://x.com/IchimokuEdge"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 bg-bg-secondary/50 rounded-xl hover:bg-bg-tertiary transition-all duration-300 border border-white/5 hover:border-accent/20"
+                  className="p-2 bg-bg-secondary/50 rounded-xl hover:bg-bg-tertiary transition-all duration-300 border border-white/5 hover:border-accent/20"
                 >
-                  <XIcon className="w-[17px] h-[17px] text-text-primary/90" />
+                  <XIcon className="w-[14px] h-[14px] text-text-primary/90" />
                 </a>
               </div>
             </div>
 
             {/* Nav Sections - Grouped with consistent gap */}
-            <div className="flex flex-col lg:flex-row gap-10 lg:gap-10 xl:gap-14">
+            <div className="flex flex-col lg:flex-row gap-6 lg:gap-6 xl:gap-8">
               {footer.sections.map((section: any, idx: number) => (
                 <div key={idx} className="flex flex-col min-w-[120px] xl:min-w-[130px]">
                   <h4 className="syne font-bold text-[11px] uppercase tracking-[0.2em] text-text-primary mb-4 opacity-80">
@@ -117,7 +117,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-4 border-t border-border flex flex-col items-center text-center text-[10px] font-mono text-text-muted uppercase tracking-[0.2em] space-y-1">
+        <div className="pt-3 border-t border-border flex flex-col items-center text-center text-[10px] font-mono text-text-muted uppercase tracking-[0.2em] space-y-0">
           <p>
             <EditableElement section="footer" path={['brand', 'copyright']} content={footer.brand.copyright} />
           </p>

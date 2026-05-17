@@ -42,11 +42,19 @@ export default function EditableList<T>({
   if (!isEditMode) {
     return (
       <div className={className}>
-        {items.map((item, index) => (
-          <div key={index} className={itemClassName}>
-            {renderItem(item, index)}
-          </div>
-        ))}
+        {items.map((item, index) => {
+          const rendered = renderItem(item, index);
+          if (!rendered) return null;
+          return itemClassName ? (
+            <div key={index} className={itemClassName}>
+              {rendered}
+            </div>
+          ) : (
+            <React.Fragment key={index}>
+              {rendered}
+            </React.Fragment>
+          );
+        })}
       </div>
     );
   }
