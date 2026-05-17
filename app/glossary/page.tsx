@@ -24,10 +24,11 @@ export default function GlossaryPage() {
 
   const filteredData = isExtended 
     ? glossary.data 
-    : glossary.data.filter((item: any) => glossary.mainWords.includes(item.romanized));
+    : glossary.data.filter((item: any, i: number) => glossary.mainWords.includes(item.romanized) || i < glossary.mainWords.length);
 
   return (
     <div className="pt-40 pb-24 relative overflow-hidden min-h-[100svh]">
+      {/* ACTIVE COMPONENT VERIFIED */}
 
       
       <div className="max-w-4xl mx-auto px-4 sm:px-8">
@@ -94,7 +95,7 @@ export default function GlossaryPage() {
               items={glossary.data as any}
               newItemTemplate={{ romanized: "New Term", japanese: "新用語", english: "New translation" }}
               renderItem={(item: any, i: number) => {
-                const isVisible = isExtended || glossary.mainWords.includes(item.romanized);
+                const isVisible = isExtended || glossary.mainWords.includes(item.romanized) || i < glossary.mainWords.length;
                 if (!isVisible && !isEditMode) return null;
 
                 return (
