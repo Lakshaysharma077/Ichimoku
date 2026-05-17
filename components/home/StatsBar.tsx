@@ -14,7 +14,7 @@ function Counter({ value, suffix }: { value: number, suffix: string }) {
   useEffect(() => {
     if (isInView) {
       let start = 0;
-      const end = value;
+      const end = Number(value) || 0;
       const duration = 2000;
       const stepTime = 20;
       const totalSteps = duration / stepTime;
@@ -36,7 +36,7 @@ function Counter({ value, suffix }: { value: number, suffix: string }) {
 
   return (
     <span ref={ref}>
-      {Number.isInteger(value) ? Math.floor(count) : count.toFixed(1)}
+      {Number.isInteger(Number(value)) ? Math.floor(count) : count.toFixed(1)}
       {suffix}
     </span>
   );
