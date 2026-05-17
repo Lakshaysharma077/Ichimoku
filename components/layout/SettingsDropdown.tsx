@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, Sun, Monitor, Moon, Check, Youtube, Link as LinkIcon, Sparkles } from 'lucide-react';
+import { Globe, Sun, Monitor, Moon, Check, Youtube, Link as LinkIcon, Sparkles } from 'lucide-react';
 import { useThemeStore } from '@/store/themeStore';
 import XIcon from '../ui/XIcon';
 import TradingViewIcon from '../ui/TradingViewIcon';
@@ -27,7 +27,7 @@ export default function SettingsDropdown() {
   const [currentLang, setCurrentLang] = useState(languages[0]);
   const [copied, setCopied] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { theme, setTheme } = useThemeStore();
+  const { theme, setTheme, toggleTheme } = useThemeStore();
   const { socials } = useContent('footer');
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function SettingsDropdown() {
           isOpen ? "border-accent/60 shadow-[0_0_10px_rgba(var(--accent),0.1)] bg-bg-secondary" : ""
         )}
       >
-        <Settings 
+        <Globe 
           className={clsx(
             "w-3.5 h-3.5 transition-all duration-700 ease-[0.23,1,0.32,1] group-hover:text-accent group-hover:scale-110",
             isOpen ? "text-accent rotate-90" : "text-accent/60 group-hover:text-accent group-hover:rotate-12"
@@ -121,42 +121,6 @@ export default function SettingsDropdown() {
 
                 <div className="h-px bg-white/5 w-full" />
 
-                {/* 2. DISPLAY MODE */}
-                <div className="flex flex-col gap-2.5">
-                  <span className="text-[11px] font-bold text-text-muted uppercase tracking-[0.15em] flex items-center gap-2">
-                    DISPLAY MODE
-                  </span>
-                  <div className="flex items-center gap-1 bg-bg-primary/50 p-1 rounded-lg border border-white/5">
-                    {THEMES.map(({ key, icon: Icon, label }) => (
-                      <button 
-                        key={key}
-                        onClick={() => setTheme(key as ThemeKey)}
-                        className={clsx(
-                          "flex-1 py-1.5 rounded-md flex items-center justify-center transition-all duration-300",
-                          theme === key ? "bg-accent/10 border border-accent/20 text-accent shadow-[0_0_8px_rgba(var(--accent),0.1)]" : "text-text-muted hover:text-text-primary hover:bg-white/5"
-                        )}
-                      >
-                        <Icon className="w-3.5 h-3.5" />
-                      </button>
-                    ))}
-                  </div>
-                  {/* Theme labels row */}
-                  <div className="flex items-center">
-                    {THEMES.map(({ key, label }) => (
-                      <span
-                        key={key}
-                        className={clsx(
-                          'flex-1 text-center text-[8px] uppercase tracking-widest font-bold transition-colors duration-300',
-                          theme === key ? 'text-accent' : 'text-text-muted',
-                        )}
-                      >
-                        {label}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="h-px bg-white/5 w-full" />
 
                 {/* 3. SOCIAL */}
                 <div className="flex flex-col gap-2.5">

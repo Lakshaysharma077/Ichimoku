@@ -147,8 +147,6 @@ export default function Navbar() {
             <SettingsDropdown />
             <ThemeToggle />
 
-            <div className="h-6 w-px bg-white/10 mx-1" />
-
             {session ? (
               <div className="flex items-center gap-3 pl-2">
                 <div className="flex flex-col items-end hidden sm:flex">
