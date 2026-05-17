@@ -50,7 +50,7 @@ export default function AdminVisualToolbar() {
         const currentData = await res.json();
 
         const changes = pendingChanges[section];
-        const newData = { ...currentData };
+        const newData = Array.isArray(currentData) ? [...currentData] : { ...currentData };
 
         Object.entries(changes).forEach(([pathStr, value]) => {
           const path = pathStr.split('.');

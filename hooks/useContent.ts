@@ -9,7 +9,7 @@ export function useContent<K extends keyof ContentType>(section: K): ContentType
   useEffect(() => {
     async function fetchDynamicContent() {
       try {
-        const res = await fetch(`/api/admin/content/${section}`);
+        const res = await fetch(`/api/admin/content/${section}`, { cache: 'no-store' });
         if (res.ok) {
           const json = await res.json();
           // Ensure we don't set error objects as content data

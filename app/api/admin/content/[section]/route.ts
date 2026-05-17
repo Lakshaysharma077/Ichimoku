@@ -4,6 +4,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   req: NextRequest,
   { params }: { params: { section: string } }
@@ -19,7 +21,11 @@ export async function GET(
       return NextResponse.json({ error: "Section not found" }, { status: 404 });
     }
 
-    return NextResponse.json(JSON.parse(content.value));
+    const response = NextResponse.json(JSON.parse(content.value));
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+    return response;
   } catch (error) {
     console.error("CONTENT_GET_ERROR:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
