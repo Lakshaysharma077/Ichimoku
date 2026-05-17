@@ -90,6 +90,14 @@ const ContentEditable = memo(function ContentEditable({
     };
   }, []);
 
+  useEffect(() => {
+    if (elRef.current && document.activeElement !== elRef.current) {
+      if (elRef.current.innerHTML !== initialContent) {
+        elRef.current.innerHTML = initialContent;
+      }
+    }
+  }, [initialContent]);
+
   const Tag = tagName as any;
 
   return (
