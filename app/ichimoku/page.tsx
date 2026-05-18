@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { motion } from 'framer-motion';
 import ScrollReveal from '@/components/shared/ScrollReveal';
 import SectionDivider from '@/components/shared/SectionDivider';
@@ -32,11 +33,135 @@ export default function IchimokuPage() {
               <EditableElement section="ichimoku" path={['hero', 'japanese']} content={ichimoku.hero.japanese} />
             </p>
           </div>
-          <p className="text-xl text-text-secondary max-w-3xl leading-relaxed">
+          <p className="text-xl txt-body max-w-3xl leading-relaxed">
             <EditableElement section="ichimoku" path={['hero', 'description']} content={ichimoku.hero.description} />
           </p>
         </ScrollReveal>
       </div>
+
+      {/* Meaning & Origin Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 mb-32 relative">
+        <ScrollReveal>
+          <div className="relative p-8 md:p-12 bg-bg-secondary/40 border border-border rounded-3xl backdrop-blur-md overflow-hidden">
+            {/* Background Kanji Watermark */}
+            <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 opacity-[0.03] text-[20vw] pointer-events-none font-serif select-none leading-none">
+              一目均衡表
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 relative z-10">
+              {/* Left Column: Heading, Translation & Purpose */}
+              <div className="lg:col-span-5 flex flex-col justify-between h-full">
+                <div>
+                  <h2 className="syne font-bold text-3xl md:text-4xl text-text-primary uppercase mb-4 tracking-tight">
+                    <EditableElement section="ichimoku" path={['meaningSection', 'heading']} content={ichimoku.meaningSection.heading} />
+                  </h2>
+                  <div className="mb-8">
+                    <p className="txt-label mb-2">
+                      <EditableElement section="ichimoku" path={['meaningSection', 'subheading']} content={ichimoku.meaningSection.subheading} />
+                    </p>
+                    <p className="shippori text-3xl text-accent font-bold tracking-wider mb-6">
+                      <EditableElement section="ichimoku" path={['meaningSection', 'japaneseText']} content={ichimoku.meaningSection.japaneseText} />
+                    </p>
+                    
+                    <div className="p-5 bg-bg-primary/80 border border-border/80 rounded-2xl shadow-lg relative group overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                      <p className="txt-label mb-3">
+                        <EditableElement section="ichimoku" path={['meaningSection', 'translationLabel']} content={ichimoku.meaningSection.translationLabel} />
+                      </p>
+                      <ul className="space-y-2">
+                        {ichimoku.meaningSection.translations.map((trans: string, idx: number) => (
+                          <li key={idx} className="text-lg font-bold text-text-primary italic">
+                            <EditableElement section="ichimoku" path={['meaningSection', 'translations', idx.toString()]} content={trans} />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 lg:mt-auto pt-6 border-t border-border/40">
+                  <p className="text-base txt-body leading-relaxed font-sans">
+                    <EditableElement section="ichimoku" path={['meaningSection', 'purpose']} content={ichimoku.meaningSection.purpose} />
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Column: Character Meaning & Formula Breakdown */}
+              <div className="lg:col-span-7 space-y-8">
+                {/* Character meanings grid */}
+                <div>
+                  <h3 className="syne font-bold text-lg text-text-primary uppercase tracking-wider mb-6 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                    <EditableElement section="ichimoku" path={['meaningSection', 'characterTitle']} content={ichimoku.meaningSection.characterTitle} />
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {ichimoku.meaningSection.characters.map((char: any, idx: number) => (
+                      <div key={idx} className="p-6 bg-bg-primary/40 border border-border rounded-2xl hover:border-accent/40 hover:bg-bg-primary/60 transition-all duration-300 group">
+                        <div className="flex items-baseline justify-between mb-2">
+                          <span className="shippori text-3xl font-extrabold text-accent group-hover:scale-110 transition-transform duration-300 origin-left">
+                            <EditableElement section="ichimoku" path={['meaningSection', 'characters', idx.toString(), 'char']} content={char.char} />
+                          </span>
+                          <span className="txt-label">
+                            <EditableElement section="ichimoku" path={['meaningSection', 'characters', idx.toString(), 'name']} content={char.name} />
+                          </span>
+                        </div>
+                        <p className="text-sm txt-muted leading-normal">
+                          <EditableElement section="ichimoku" path={['meaningSection', 'characters', idx.toString(), 'desc']} content={char.desc} />
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Mathematical breakdown */}
+                <div className="p-6 bg-bg-primary/60 border border-border rounded-2xl relative overflow-hidden">
+                  <h3 className="txt-label mb-4">
+                    <EditableElement section="ichimoku" path={['meaningSection', 'breakdownTitle']} content={ichimoku.meaningSection.breakdownTitle} />
+                  </h3>
+                  
+                  {/* Flow breakdown */}
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-6">
+                    {ichimoku.meaningSection.breakdowns.map((b: any, idx: number) => (
+                      <React.Fragment key={idx}>
+                        <div className="flex items-center gap-3">
+                          <span className="shippori text-2xl font-bold text-accent">
+                            <EditableElement section="ichimoku" path={['meaningSection', 'breakdowns', idx.toString(), 'key']} content={b.key} />
+                          </span>
+                          <span className="txt-label whitespace-nowrap">
+                            (= <EditableElement section="ichimoku" path={['meaningSection', 'breakdowns', idx.toString(), 'val']} content={b.val} />)
+                          </span>
+                        </div>
+                        {idx < ichimoku.meaningSection.breakdowns.length - 1 && (
+                          <span className="hidden sm:inline text-text-muted/60 text-lg font-mono">+</span>
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
+
+                  <p className="text-sm text-text-primary font-bold leading-relaxed border-t border-border/40 pt-4 font-mono">
+                    <EditableElement section="ichimoku" path={['meaningSection', 'conclusion']} content={ichimoku.meaningSection.conclusion} />
+                  </p>
+                </div>
+
+                {/* Why This Matters Callout */}
+                <div className="p-6 bg-accent/[0.02] border-l-2 border-accent rounded-r-2xl space-y-3">
+                  <h4 className="syne font-bold text-sm text-accent uppercase tracking-wider">
+                    <EditableElement section="ichimoku" path={['meaningSection', 'whyTitle']} content={ichimoku.meaningSection.whyTitle} />
+                  </h4>
+                  <p className="text-sm txt-body leading-relaxed font-sans">
+                    <EditableElement section="ichimoku" path={['meaningSection', 'whyText1']} content={ichimoku.meaningSection.whyText1} />
+                  </p>
+                  <p className="text-sm txt-muted leading-relaxed font-sans italic">
+                    <EditableElement section="ichimoku" path={['meaningSection', 'whyText2']} content={ichimoku.meaningSection.whyText2} />
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ScrollReveal>
+      </div>
+
+      <SectionDivider />
 
       {/* 5 Components */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 mb-32">
@@ -50,23 +175,25 @@ export default function IchimokuPage() {
           section="ichimoku"
           path={['componentsSection', 'items']}
           items={ichimoku.componentsSection.items as any}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-16"
           newItemTemplate={{ name: 'New Component', kanji: '新', eng: 'New English', color: '#FFFFFF' }}
           renderItem={(item: any, i: number) => (
             <ScrollReveal key={i} delay={i * 0.1}>
-              <div className="h-full p-8 bg-bg-secondary border border-border rounded-2xl group hover:border-accent transition-all duration-200">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-2xl text-text-primary font-bold">
+              <div className="h-[140px] p-5 bg-bg-secondary border border-border rounded-xl group hover:border-accent transition-all duration-200 flex flex-col justify-between w-full">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-base lg:text-lg text-text-primary font-bold tracking-tight">
                     <EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'name']} content={item.name} />
                   </span>
-                  <div className="w-12 h-1 rounded-full" style={{ backgroundColor: item.color }} />
+                  <div className="w-10 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
                 </div>
-                <span className="shippori-mincho text-sm text-text-muted mb-3 block">
-                  <EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'kanji']} content={item.kanji} />
-                </span>
-                <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest block italic">
-                  &quot;<EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'eng']} content={item.eng} />&quot;
-                </span>
+                <div>
+                  <span className="shippori-mincho text-xs text-text-muted mb-1.5 block">
+                    <EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'kanji']} content={item.kanji} />
+                  </span>
+                  <span className="font-mono text-[9px] text-text-muted uppercase tracking-widest block italic">
+                    &quot;<EditableElement section="ichimoku" path={['componentsSection', 'items', i.toString(), 'eng']} content={item.eng} />&quot;
+                  </span>
+                </div>
               </div>
             </ScrollReveal>
           )}

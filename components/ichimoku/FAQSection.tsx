@@ -30,9 +30,9 @@ export default function FAQSection() {
     <section id="faq" className="scroll-mt-32 py-24">
       <div className="flex flex-col gap-12 max-w-3xl mx-auto">
         <div className="flex flex-col items-center text-center gap-4">
-          <span className="syne font-bold text-xs uppercase tracking-[0.3em] text-[#fbe178]">Questions</span>
+          <span className="txt-label tracking-[0.3em]">Questions</span>
           <h2 className="syne font-extrabold text-4xl text-text-primary">
-            The Ichimoku <span className="text-[#fbe178]">Debrief.</span>
+            The Ichimoku <span className="text-accent">Debrief.</span>
           </h2>
         </div>
 
@@ -41,7 +41,7 @@ export default function FAQSection() {
             <div 
               key={i} 
               className={`border border-border rounded-2xl overflow-hidden transition-all duration-300 ${
-                openIndex === i ? 'bg-bg-secondary border-[#fbe178]/30 shadow-[0_0_30px_rgba(251,225,120,0.05)]' : 'bg-transparent'
+                openIndex === i ? 'bg-bg-secondary border-accent/30 shadow-[0_0_30px_rgba(251,225,120,0.05)]' : 'bg-transparent'
               }`}
             >
               <button
@@ -51,18 +51,18 @@ export default function FAQSection() {
                 <span className={`syne font-bold text-lg transition-colors ${openIndex === i ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'}`}>
                   {faq.q}
                 </span>
-                <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${openIndex === i ? 'rotate-180 text-[#fbe178]' : 'text-text-muted'}`} />
+                <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${openIndex === i ? 'rotate-180 text-accent' : 'text-text-muted'}`} />
               </button>
               
               <AnimatePresence>
                 {openIndex === i && (
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+                     initial={{ height: 0, opacity: 0 }}
+                     animate={{ height: 'auto', opacity: 1 }}
+                     exit={{ height: 0, opacity: 0 }}
+                     transition={{ duration: 0.3 }}
                   >
-                    <div className="px-6 pb-6 text-text-secondary text-sm leading-relaxed border-t border-border/50 pt-4 whitespace-pre-line">
+                    <div className="px-6 pb-6 txt-body text-sm leading-relaxed border-t border-border/50 pt-4 whitespace-pre-line">
                       {faq.a.split(/(https?:\/\/[^\s]+)/g).map((part, index) => {
                         if (part.match(/^https?:\/\//)) {
                           return (

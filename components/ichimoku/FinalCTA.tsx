@@ -8,7 +8,7 @@ export default function FinalCTA() {
   return (
     <section className="py-32 relative overflow-hidden">
       {/* Background Decorative Element */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[200px] bg-[#fbe178]/5 blur-[100px] rotate-[-5deg]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[200px] bg-accent/5 blur-[100px] rotate-[-5deg]" />
       
       <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
         <motion.div
@@ -18,10 +18,10 @@ export default function FinalCTA() {
           className="space-y-8"
         >
           <h2 className="syne font-extrabold text-5xl lg:text-7xl text-text-primary leading-tight uppercase">
-            Master Structure. <br /> <span className="text-[#fbe178]">Remove Noise.</span>
+            Master Structure. <br /> <span className="text-accent">Remove Noise.</span>
           </h2>
           
-          <p className="text-xl text-text-secondary max-w-xl mx-auto leading-relaxed">
+          <p className="text-xl txt-body max-w-xl mx-auto leading-relaxed">
             Ready to experience the clarity of Ichimoku Kinko Hyo with institutional-grade tools?
           </p>
 
@@ -31,7 +31,7 @@ export default function FinalCTA() {
                 Explore Ichimoku Edge
               </Button>
             </Link>
-            <Link href="/pricing" className="text-text-muted hover:text-[#fbe178] transition-colors font-bold uppercase tracking-widest text-xs">
+            <Link href="/pricing" className="text-text-muted hover:text-accent transition-colors font-bold uppercase tracking-widest text-xs">
               View Pricing Plans
             </Link>
           </div>

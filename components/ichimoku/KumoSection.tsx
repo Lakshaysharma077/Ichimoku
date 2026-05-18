@@ -30,16 +30,16 @@ export default function KumoSection() {
     <section id="kumo" className="scroll-mt-32 py-24 relative">
       <div className="flex flex-col gap-12">
         <div className="inline-flex items-center gap-4">
-          <div className="h-px w-12 bg-[#fbe178]/50" />
-          <span className="syne font-bold text-xs uppercase tracking-[0.3em] text-[#fbe178]">The Kumo</span>
+          <div className="h-px w-12 bg-border" />
+          <span className="txt-label tracking-[0.3em]">The Kumo</span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           <div className="lg:col-span-5 space-y-8">
             <h2 className="syne font-extrabold text-4xl lg:text-5xl text-text-primary leading-tight">
-              The Soul of the System: <br /> <span className="text-[#fbe178]">The Kumo Cloud.</span>
+              The Soul of the System: <br /> <span className="text-accent">The Kumo Cloud.</span>
             </h2>
-            <p className="text-lg text-text-secondary leading-relaxed">
+            <p className="text-lg txt-body leading-relaxed">
               The Cloud is the most distinctive element of Ichimoku. It doesn't just show support 
               and resistance; it represents the <span className="text-text-primary font-bold">memory of the market</span> and the 
               probability of future trend continuation.
@@ -51,7 +51,7 @@ export default function KumoSection() {
                    <div className={`w-1 h-full rounded-full bg-${insight.color === 'text-muted' ? 'bg-tertiary' : insight.color}`} />
                    <div>
                      <h4 className="syne font-bold text-sm text-text-primary mb-1 uppercase">{insight.title}</h4>
-                     <p className="text-xs text-text-secondary leading-relaxed">{insight.desc}</p>
+                     <p className="text-xs txt-body leading-relaxed">{insight.desc}</p>
                    </div>
                 </div>
               ))}
@@ -121,13 +121,13 @@ export default function KumoSection() {
                   </motion.svg>
                 </div>
                 
-                <div className="mt-16 flex items-center justify-between text-[10px] font-mono text-text-muted uppercase tracking-[0.2em]">
-                  <div className="flex flex-col gap-1">
+                <div className="mt-16 flex items-center justify-between txt-label">
+                  <div className="flex flex-col gap-1 font-mono">
                     <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500" /> Senkou Span A</span>
                     <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-rose-500" /> Senkou Span B</span>
                   </div>
                   <div className="h-px flex-1 mx-8 bg-border/50" />
-                  <span className="text-[#fbe178] font-bold">Institutional Bias</span>
+                  <span className="text-accent font-bold">Institutional Bias</span>
                 </div>
               </div>
             </div>

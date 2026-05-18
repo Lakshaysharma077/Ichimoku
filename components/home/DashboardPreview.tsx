@@ -24,7 +24,7 @@ export default function DashboardPreview() {
             <p className="shippori-mincho text-xl text-text-muted mb-4">
               <EditableElement section="dashboard" path={['japaneseHeading']} content={dashboard.japaneseHeading} />
             </p>
-            <p className="text-text-secondary">
+            <p className="txt-body">
               <EditableElement section="dashboard" path={['subtitle']} content={dashboard.subtitle} />
             </p>
           </ScrollReveal>
@@ -69,7 +69,7 @@ export default function DashboardPreview() {
               <h3 className="syne font-bold text-3xl text-text-primary mb-6 uppercase">
                 <EditableElement section="dashboard" path={['featureSection', 'heading']} content={dashboard.featureSection.heading} />
               </h3>
-              <p className="text-text-secondary text-lg leading-relaxed mb-8">
+              <p className="text-lg txt-body leading-relaxed mb-8">
                 <EditableElement section="dashboard" path={['featureSection', 'description']} content={dashboard.featureSection.description} />
               </p>
               <div className="space-y-4">
@@ -102,7 +102,7 @@ function renderPreviewContent(index: number) {
   if (index === 0) {
     return (
       <div className="w-full h-full p-4 space-y-4">
-        <div className="grid grid-cols-4 text-[10px] font-mono text-text-muted uppercase tracking-widest pb-2 border-b border-border">
+        <div className="grid grid-cols-4 txt-label pb-2 border-b border-border">
           <span>TF</span>
           <span>Cloud</span>
           <span>TK</span>
@@ -140,11 +140,11 @@ function renderPreviewContent(index: number) {
         </div>
         <div className="mt-6 grid grid-cols-2 gap-4">
           <div className="flex flex-col">
-            <span className="text-[10px] font-mono text-text-muted uppercase">Kumo Thickness</span>
+            <span className="txt-label">Kumo Thickness</span>
             <span className="text-xs font-bold text-text-primary">2.3%</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-[10px] font-mono text-text-muted uppercase">Bias</span>
+            <span className="txt-label">Bias</span>
             <span className="text-xs font-bold text-emerald-500 uppercase">BULLISH</span>
           </div>
         </div>
@@ -163,10 +163,10 @@ function renderPreviewContent(index: number) {
             <span className={`text-sm font-bold ${alert.color}`}>{alert.status}</span>
             <div className="flex flex-col">
               <span className="text-xs font-bold text-text-primary">{alert.title}</span>
-              <span className="text-[10px] font-mono text-text-muted uppercase">{alert.asset}</span>
+              <span className="txt-label">{alert.asset}</span>
             </div>
           </div>
-          <span className="text-[10px] font-mono text-text-muted">{alert.tf}</span>
+          <span className="txt-label font-normal">{alert.tf}</span>
         </div>
       ))}
     </div>

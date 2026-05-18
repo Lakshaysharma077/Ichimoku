@@ -66,7 +66,7 @@ export default function StatsBar() {
                   </div>
                 )}
               </h3>
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
+              <span className="txt-label tracking-[0.2em]">
                 <EditableElement section="stats" path={[i.toString(), 'label']} content={stat.label} />
               </span>
             </div>

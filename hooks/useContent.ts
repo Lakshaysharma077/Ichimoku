@@ -13,8 +13,13 @@ export function useContent<K extends keyof ContentType>(section: K): ContentType
         if (res.ok) {
           const json = await res.json();
           // Ensure we don't set error objects as content data
-          if (json && typeof json === 'object' && !json.error) {
-            setData(json);
+          if (json && typeof json === "object" && !json.error) {
+            setData(() => {
+              if (Array.isArray(staticContent[section])) {
+                return Array.isArray(json) ? (json as any) : staticContent[section];
+              }
+              return { ...staticContent[section], ...json };
+            });
           }
         }
       } catch (err) {

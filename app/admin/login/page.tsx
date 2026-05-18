@@ -45,15 +45,15 @@ export default function AdminLogin() {
             <Lock className="w-8 h-8 text-emerald-500" />
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">Admin Dashboard</h1>
-          <p className="text-gray-400 mt-2">Sign in to manage Ichimoku Edge content</p>
+          <p className="txt-muted mt-2">Sign in to manage Ichimoku Edge content</p>
         </div>
 
         <div className="bg-[#111418] border border-white/5 rounded-2xl p-8 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">Email Address</label>
+              <label className="block txt-label mb-2">Email Address</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 txt-muted" />
                 <input
                   type="email"
                   value={email}
@@ -66,9 +66,9 @@ export default function AdminLogin() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">Password</label>
+              <label className="block txt-label mb-2">Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 txt-muted" />
                 <input
                   type="password"
                   value={password}
@@ -97,7 +97,7 @@ export default function AdminLogin() {
 
           <div className="relative py-6 flex items-center">
             <div className="flex-1 h-px bg-white/5" />
-            <span className="px-4 text-[10px] font-mono text-gray-500 uppercase tracking-widest">or</span>
+            <span className="px-4 txt-label">or</span>
             <div className="flex-1 h-px bg-white/5" />
           </div>
 
@@ -128,7 +128,7 @@ export default function AdminLogin() {
           </button>
         </div>
 
-        <p className="text-center text-gray-500 text-sm mt-8">
+        <p className="text-center txt-muted text-sm mt-8">
           &copy; 2026 Ichimoku Edge CMS. All rights reserved.
         </p>
       </div>

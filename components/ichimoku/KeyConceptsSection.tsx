@@ -35,12 +35,12 @@ export default function KeyConceptsSection() {
     <section id="concepts" className="scroll-mt-32 py-24">
       <div className="flex flex-col gap-12">
         <div className="inline-flex items-center gap-4">
-          <div className="h-px w-12 bg-[#fbe178]/50" />
-          <span className="syne font-bold text-xs uppercase tracking-[0.3em] text-[#fbe178]">Foundations</span>
+          <div className="h-px w-12 bg-border" />
+          <span className="txt-label tracking-[0.3em]">Foundations</span>
         </div>
 
         <h2 className="syne font-extrabold text-4xl lg:text-5xl text-text-primary leading-tight">
-          The Five Pillars of <br /> <span className="text-[#fbe178]">Market Structure.</span>
+          The Five Pillars of <br /> <span className="text-accent">Market Structure.</span>
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -51,14 +51,14 @@ export default function KeyConceptsSection() {
               className="p-8 bg-bg-secondary/30 border border-border rounded-2xl flex flex-col justify-between group hover:bg-bg-tertiary transition-all duration-500 min-h-[300px]"
             >
               <div>
-                <span className="shippori-mincho text-2xl text-[#fbe178]/40 group-hover:text-[#fbe178] transition-colors block mb-6">{concept.kanji}</span>
+                <span className="shippori-mincho text-2xl text-accent/40 group-hover:text-accent transition-colors block mb-6">{concept.kanji}</span>
                 <h3 className="syne font-bold text-lg text-text-primary mb-4 uppercase">{concept.title}</h3>
-                <p className="text-xs text-text-secondary leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">
+                <p className="text-xs txt-body opacity-80 group-hover:opacity-100 transition-opacity">
                   {concept.desc}
                 </p>
               </div>
               
-              <div className="h-0.5 w-full bg-border group-hover:bg-[#fbe178]/50 transition-colors mt-8" />
+              <div className="h-0.5 w-full bg-border group-hover:bg-accent/50 transition-colors mt-8" />
             </motion.div>
           ))}
         </div>

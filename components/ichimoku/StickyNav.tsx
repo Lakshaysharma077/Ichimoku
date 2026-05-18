@@ -55,7 +55,7 @@ export default function StickyNav() {
             onClick={() => scrollTo(section.id)}
             className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${
               activeSection === section.id 
-                ? 'bg-[#fbe178] text-[#0c101f]' 
+                ? 'bg-accent text-bg-primary' 
                 : 'bg-bg-secondary text-text-muted border border-border'
             }`}
           >
@@ -74,12 +74,12 @@ export default function StickyNav() {
           >
             <div className={`absolute -left-[33px] w-2 h-2 rounded-full transition-all duration-300 ${
               activeSection === section.id 
-                ? 'bg-[#fbe178] scale-150 shadow-[0_0_10px_#fbe178]' 
+                ? 'bg-accent scale-150 shadow-[0_0_10px_var(--accent)]' 
                 : 'bg-border scale-100 group-hover:bg-text-muted'
             }`} />
             <span className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 ${
               activeSection === section.id 
-                ? 'text-[#fbe178]' 
+                ? 'text-accent' 
                 : 'text-text-muted group-hover:text-text-primary'
             }`}>
               {section.name}

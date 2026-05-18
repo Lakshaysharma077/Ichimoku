@@ -24,10 +24,10 @@ export default function IchimokuHero() {
           transition={{ duration: 0.8 }}
           className="mb-6 flex flex-col items-center"
         >
-          <span className="shippori-mincho text-[#fbe178] text-xl lg:text-2xl mb-4 tracking-[0.2em]">一目均衡表</span>
+          <span className="shippori-mincho text-accent text-xl lg:text-2xl mb-4 tracking-[0.2em]">一目均衡表</span>
           <h1 className="syne font-extrabold text-text-primary leading-[1.2] lg:leading-[0.85] uppercase">
             <span className="block text-[clamp(3rem,10vw,7rem)] mb-2 lg:mb-0">ICHIMOKU</span>
-            <span className="block text-[clamp(2.5rem,8vw,6rem)] text-transparent bg-clip-text bg-gradient-to-r from-text-primary via-[#fbe178] to-text-primary">KINKŌ HYŌ</span>
+            <span className="block text-[clamp(2.5rem,8vw,6rem)] text-transparent bg-clip-text bg-gradient-to-r from-text-primary via-accent to-text-primary">KINKŌ HYŌ</span>
           </h1>
         </motion.div>
 
@@ -46,7 +46,7 @@ export default function IchimokuHero() {
           transition={{ duration: 1, delay: 0.4 }}
           className="max-w-2xl mx-auto"
         >
-          <p className="text-lg text-text-secondary leading-relaxed">
+          <p className="text-lg txt-body leading-relaxed">
             A comprehensive institutional framework designed to define trend direction, 
             gauge momentum, and reveal the hidden equilibrium of price and time.
           </p>
@@ -57,7 +57,7 @@ export default function IchimokuHero() {
           initial={{ width: 0 }}
           animate={{ width: "100px" }}
           transition={{ duration: 1.5, delay: 0.6 }}
-          className="h-1 bg-[#fbe178] mx-auto mt-12 rounded-full shadow-[0_0_15px_rgba(251,225,120,0.5)]"
+          className="h-1 bg-accent mx-auto mt-12 rounded-full shadow-[0_0_15px_rgba(251,225,120,0.5)]"
         />
       </div>
 

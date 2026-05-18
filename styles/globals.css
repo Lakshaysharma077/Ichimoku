@@ -60,6 +60,24 @@
   }
 }
 
+@layer utilities {
+  .txt-heading {
+    @apply text-text-primary transition-colors duration-300 ease-in-out;
+  }
+  .txt-body {
+    @apply text-text-secondary leading-relaxed transition-colors duration-300 ease-in-out;
+  }
+  .txt-muted {
+    @apply text-text-muted transition-colors duration-300 ease-in-out;
+  }
+  .txt-small {
+    @apply text-text-muted text-xs leading-normal transition-colors duration-300 ease-in-out;
+  }
+  .txt-label {
+    @apply text-text-muted text-[10px] font-mono uppercase tracking-widest transition-colors duration-300 ease-in-out;
+  }
+}
+
 .kanji-watermark {
   font-family: var(--font-shippori);
   pointer-events: none;
