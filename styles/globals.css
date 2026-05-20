@@ -139,3 +139,26 @@ h2.syne {
   scrollbar-width: thin;
   scrollbar-color: var(--text-muted) var(--bg-primary);
 }
+
+/* Theme-adaptive login button border */
+.login-btn-border {
+  border-color: rgba(251, 225, 120, 0.8) !important;
+}
+.login-btn-border:hover {
+  border-color: rgba(251, 225, 120, 1) !important;
+}
+
+[data-theme='dark'] .login-btn-border {
+  border-color: rgba(255, 255, 255, 0.8) !important;
+}
+[data-theme='dark'] .login-btn-border:hover {
+  border-color: rgba(255, 255, 255, 1) !important;
+}
+
+[data-theme='light'] .login-btn-border {
+  border-color: rgba(10, 10, 10, 0.8) !important;
+}
+[data-theme='light'] .login-btn-border:hover {
+  border-color: rgba(10, 10, 10, 1) !important;
+}
+

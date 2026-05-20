@@ -208,7 +208,7 @@ export default function EditableElement({
     if (type === 'image') {
       return <img src={content} className={className} alt="" />;
     }
-    return <Component className={className}>{content}</Component>;
+    return <Component className={className} dangerouslySetInnerHTML={{ __html: content || '' }} />;
   }
 
   // --- Edit mode: image type ---

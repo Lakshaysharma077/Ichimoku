@@ -335,9 +335,9 @@ export default function IchimokuPage() {
           <h2 className="syne font-bold text-3xl text-text-primary mb-8 uppercase">
             <EditableElement section="ichimoku" path={['seoSection', 'heading']} content={ichimoku.seoSection.heading} />
           </h2>
-          <div className="prose prose-invert prose-p:text-text-secondary prose-p:leading-relaxed space-y-6">
+          <div className="text-text-secondary space-y-6">
             {ichimoku.seoSection.paragraphs.map((p: string, i: number) => (
-              <EditableElement key={i} section="ichimoku" path={['seoSection', 'paragraphs', i.toString()]} content={p} as="p" />
+              <EditableElement key={i} section="ichimoku" path={['seoSection', 'paragraphs', i.toString()]} content={p} as="p" className="leading-relaxed" />
             ))}
           </div>
         </ScrollReveal>
