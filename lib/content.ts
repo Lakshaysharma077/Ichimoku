@@ -437,6 +437,8 @@ export const staticContent = {
         date: "2026-07-07",
         image: "https://s3.tradingview.com/b/bp9o4Ou5_big.png",
         url: "https://www.tradingview.com/chart/BNBUSDT/bp9o4Ou5-Flat-Ichimoku-Levels-What-They-Are-and-Why-They-Matter/",
+        editorPick: true,
+        readingTime: "5 min read",
       },
       {
         id: "idea-2",
@@ -447,6 +449,8 @@ export const staticContent = {
         date: "2026-06-24",
         image: "https://s3.tradingview.com/7/77VOQHQq_big.png",
         url: "https://www.tradingview.com/chart/VIRTUALUSDT/77VOQHQq-Lagging-Span-and-Trendline-Interaction/",
+        editorPick: false,
+        readingTime: "3 min read",
       },
       {
         id: "idea-3",
@@ -457,6 +461,8 @@ export const staticContent = {
         date: "2026-03-27",
         image: "https://s3.tradingview.com/0/0zDnSXMI_big.png",
         url: "https://www.tradingview.com/chart/AKTUSDT/0zDnSXMI-AKT-Ichimoku-Bullish-Setup-Awaiting-an-SSB-Breakout/",
+        editorPick: false,
+        readingTime: "4 min read",
       },
       {
         id: "idea-4",
@@ -467,6 +473,8 @@ export const staticContent = {
         date: "2026-03-16",
         image: "https://s3.tradingview.com/i/ihprmleG_big.png",
         url: "https://www.tradingview.com/chart/EURUSD/ihprmleG-How-the-Lagging-Span-path-reveals-hidden-resistance-behind-price/",
+        editorPick: true,
+        readingTime: "6 min read",
       },
       {
         id: "idea-5",
@@ -477,6 +485,8 @@ export const staticContent = {
         date: "2026-03-08",
         image: "https://s3.tradingview.com/a/aeblQqxQ_big.png",
         url: "https://www.tradingview.com/chart/BTCUSDT/aeblQqxQ-BTC-A-Subtle-Insight-Historical-Ichimoku-Flat-Levels/",
+        editorPick: false,
+        readingTime: "5 min read",
       }
     ]
   },

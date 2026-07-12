@@ -58,9 +58,17 @@ export default function IdeasPage() {
         {/* ── Header: Label + Search ── */}
         <ScrollReveal delay={0.1}>
           <div className="flex items-center justify-between flex-wrap gap-4 mb-8">
-            <span className="text-[11px] font-mono font-bold text-text-muted uppercase tracking-[0.15em]">
-              {ideas.sectionLabel}
-            </span>
+            <div className="flex items-center gap-3.5 flex-wrap">
+              <span className="text-[11px] font-mono font-bold text-text-muted uppercase tracking-[0.15em]">
+                {ideas.sectionLabel}
+              </span>
+              <div className="flex items-center gap-1.5 text-[10px] font-mono text-text-muted bg-bg-secondary/40 border border-[#2962FF]/20 rounded-full px-2.5 py-0.5 shadow-sm">
+                <svg className="w-3 h-3 fill-[#2962FF] shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.4519-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
+                </svg>
+                <span>Editor's Pick = Selected by TradingView editors</span>
+              </div>
+            </div>
             <div className="flex items-center gap-2.5 bg-bg-secondary border border-border rounded-xl px-4 py-2.5 w-64 max-w-full transition-all focus-within:border-accent/50 focus-within:shadow-[0_0_0_3px_rgba(251,225,120,0.08)]">
               <Search className="w-4 h-4 text-text-muted shrink-0" />
               <input
@@ -104,14 +112,13 @@ export default function IdeasPage() {
                       />
                       {/* Scrim */}
                       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
-                      {/* Ticker badge */}
-                      <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-lg text-[0.74rem] font-bold tracking-wide text-emerald-50 bg-[rgba(23,52,61,0.82)] border border-accent/40 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.35)]">
-                        {featured.ticker}
-                      </span>
-                      {/* Timeframe badge */}
-                      {featured.timeframe && (
-                        <span className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-lg text-[0.78rem] font-bold tracking-widest text-accent bg-[rgba(10,14,18,0.88)] border border-accent/40 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_8px_rgba(0,0,0,0.35)]">
-                          {featured.timeframe}
+                      {/* Editor's Pick badge */}
+                      {featured.editorPick && (
+                        <span className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-3 py-1 rounded-lg text-[0.74rem] font-bold uppercase tracking-wider text-accent bg-bg-primary border border-[#2962FF] shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
+                          <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0 animate-pulse" style={{ animationDuration: '3s' }} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.4519-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
+                          </svg>
+                          <span>Editor's Pick</span>
                         </span>
                       )}
                     </div>
@@ -123,8 +130,10 @@ export default function IdeasPage() {
                       <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_0_3px_rgba(251,225,120,0.18)]" />
                       {ideas.featuredLabel}
                     </span>
-                    <span className="text-[0.72rem] font-bold tracking-[0.1em] uppercase text-text-muted">
-                      {formatDate(featured.date)}
+                    <span className="text-[0.72rem] font-bold tracking-[0.1em] uppercase text-text-muted flex items-center gap-2">
+                      <span>{formatDate(featured.date)}</span>
+                      <span>•</span>
+                      <span>{featured.readingTime}</span>
                     </span>
                     {featured.company && (
                       <span className="text-[0.82rem] font-medium text-text-secondary flex items-center gap-2">
@@ -193,22 +202,23 @@ export default function IdeasPage() {
                       />
                       {/* Scrim */}
                       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
-                      {/* Ticker */}
-                      <span className="absolute top-2.5 left-2.5 z-10 px-2.5 py-1 rounded-lg text-[0.74rem] font-bold tracking-wide text-emerald-50 bg-[rgba(23,52,61,0.82)] border border-accent/40 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.35)]">
-                        {article.ticker}
-                      </span>
-                      {/* Timeframe */}
-                      {article.timeframe && (
-                        <span className="absolute top-2.5 right-2.5 z-10 px-2.5 py-1 rounded-lg text-[0.78rem] font-bold tracking-widest text-accent bg-[rgba(10,14,18,0.88)] border border-accent/40 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_8px_rgba(0,0,0,0.35)]">
-                          {article.timeframe}
+                      {/* Editor's Pick badge */}
+                      {article.editorPick && (
+                        <span className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[0.72rem] font-bold uppercase tracking-wider text-accent bg-bg-primary border border-[#2962FF] shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
+                          <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0 animate-pulse" style={{ animationDuration: '3s' }} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.4519-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
+                          </svg>
+                          <span>Editor's Pick</span>
                         </span>
                       )}
                     </a>
 
                     {/* Body */}
                     <div className="p-5 flex flex-col flex-1">
-                      <span className="text-[0.72rem] font-bold tracking-[0.1em] uppercase text-text-muted mb-1">
-                        {formatDate(article.date)}
+                      <span className="text-[0.72rem] font-bold tracking-[0.1em] uppercase text-text-muted mb-1 flex items-center gap-2">
+                        <span>{formatDate(article.date)}</span>
+                        <span>•</span>
+                        <span>{article.readingTime}</span>
                       </span>
                       {article.company && (
                         <span className="text-[0.82rem] font-medium text-text-secondary mb-2 flex items-center gap-2">
