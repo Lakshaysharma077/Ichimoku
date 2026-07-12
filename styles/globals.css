@@ -162,3 +162,9 @@ h2.syne {
   border-color: rgba(10, 10, 10, 1) !important;
 }
 
+/* Ideas page — card hover scan sweep */
+@keyframes scanSweep {
+  0%   { transform: translateX(-120%); opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translateX(280%); opacity: 0; }
+}

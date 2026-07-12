@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['images.unsplash.com'],
+    domains: ['images.unsplash.com', 's3.tradingview.com'],
   },
   optimizeFonts: false,
   webpack: (config, { dev, isServer }) => {

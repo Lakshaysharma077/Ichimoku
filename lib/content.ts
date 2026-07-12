@@ -18,6 +18,7 @@ export const staticContent = {
         href: '/education',
         dropdown: [
           { name: 'Education Hub', href: '/education' },
+          { name: 'Ideas', href: '/ideas' },
           { name: 'Glossary', href: '/glossary' },
           { name: 'FAQ', href: '/faq' },
         ]
@@ -412,6 +413,72 @@ export const staticContent = {
       button: "Notify Me",
       success: "✓ You're on the list! We'll email you when we launch."
     }
+  },
+
+  // Ideas Page — TradingView Published Ideas (edolab-style)
+  ideas: {
+    hero: {
+      heading: "Market Analysis",
+      subtitle: "Technical analysis ideas published on TradingView by Ichimoku Edge."
+    },
+    sectionLabel: "Published on TradingView",
+    searchPlaceholder: "Search a ticker...",
+    noResults: "No ideas found for this search.",
+    ctaText: "Read on TradingView",
+    featuredLabel: "Latest Idea",
+    // Articles sorted newest-first. The first entry becomes the featured card.
+    articles: [
+      {
+        id: "idea-1",
+        ticker: "BNBUSDT",
+        timeframe: "1W",
+        company: "Binance Coin / TetherUS",
+        title: "Flat Ichimoku Levels: What They Are and Why They Matter",
+        date: "2026-07-07",
+        image: "https://s3.tradingview.com/b/bp9o4Ou5_big.png",
+        url: "https://www.tradingview.com/chart/BNBUSDT/bp9o4Ou5-Flat-Ichimoku-Levels-What-They-Are-and-Why-They-Matter/",
+      },
+      {
+        id: "idea-2",
+        ticker: "VIRTUALUSDT",
+        timeframe: "4h",
+        company: "Virtuals Protocol / USDT",
+        title: "Lagging Span and Trendline Interaction",
+        date: "2026-06-24",
+        image: "https://s3.tradingview.com/7/77VOQHQq_big.png",
+        url: "https://www.tradingview.com/chart/VIRTUALUSDT/77VOQHQq-Lagging-Span-and-Trendline-Interaction/",
+      },
+      {
+        id: "idea-3",
+        ticker: "AKTUSDT",
+        timeframe: "1D",
+        company: "Akash Network / Tether",
+        title: "AKT: Ichimoku Bullish Setup Awaiting an SSB Breakout",
+        date: "2026-03-27",
+        image: "https://s3.tradingview.com/0/0zDnSXMI_big.png",
+        url: "https://www.tradingview.com/chart/AKTUSDT/0zDnSXMI-AKT-Ichimoku-Bullish-Setup-Awaiting-an-SSB-Breakout/",
+      },
+      {
+        id: "idea-4",
+        ticker: "EURUSD",
+        timeframe: "1D",
+        company: "Euro / U.S. Dollar",
+        title: "How the Lagging Span path reveals hidden resistance behind price",
+        date: "2026-03-16",
+        image: "https://s3.tradingview.com/i/ihprmleG_big.png",
+        url: "https://www.tradingview.com/chart/EURUSD/ihprmleG-How-the-Lagging-Span-path-reveals-hidden-resistance-behind-price/",
+      },
+      {
+        id: "idea-5",
+        ticker: "BTCUSDT",
+        timeframe: "1W",
+        company: "Bitcoin / TetherUS",
+        title: "BTC - A Subtle Insight: Historical Ichimoku Flat Levels",
+        date: "2026-03-08",
+        image: "https://s3.tradingview.com/a/aeblQqxQ_big.png",
+        url: "https://www.tradingview.com/chart/BTCUSDT/aeblQqxQ-BTC-A-Subtle-Insight-Historical-Ichimoku-Flat-Levels/",
+      }
+    ]
   },
 
   // FAQ Page
