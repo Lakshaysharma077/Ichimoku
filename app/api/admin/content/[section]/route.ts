@@ -67,7 +67,8 @@ export async function POST(
     revalidatePath("/glossary");
 
     return NextResponse.json({ success: true, data: JSON.parse(content.value) });
-  } catch (error) {
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  } catch (error: any) {
+    console.error("CONTENT_POST_ERROR:", error);
+    return NextResponse.json({ error: error?.message || "Internal Server Error" }, { status: 500 });
   }
 }

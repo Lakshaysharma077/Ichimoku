@@ -20,7 +20,7 @@ export default function OverviewSection() {
             <div className="space-y-6 text-lg txt-body leading-relaxed">
               <p>
                 Developed in the late 1930s by Goichi Hosoda, Ichimoku Kinkō Hyō translates to 
-                <span className="text-text-primary font-bold italic"> "one-look equilibrium chart."</span>
+                <span className="text-text-primary font-bold italic"> &quot;one-look equilibrium chart.&quot;</span>
               </p>
               <p>
                 Hosoda spent 30 years perfecting this system, aiming to create a comprehensive framework 
@@ -32,7 +32,7 @@ export default function OverviewSection() {
             <blockquote className="relative p-8 bg-bg-secondary/50 rounded-2xl border-l-4 border-accent overflow-hidden group">
               <div className="absolute top-0 right-0 p-4 opacity-10 text-8xl shippori-mincho text-accent select-none group-hover:scale-110 transition-transform duration-700"></div>
               <p className="relative z-10 shippori-mincho text-xl text-text-primary leading-relaxed italic">
-                "The market is a reflection of human nature. To master the chart, one must first master the self and understand the balance of time."
+                &quot;The market is a reflection of human nature. To master the chart, one must first master the self and understand the balance of time.&quot;
               </p>
               <footer className="mt-4 txt-label">
                 — Goichi Hosoda (Ichimoku Sanjin)

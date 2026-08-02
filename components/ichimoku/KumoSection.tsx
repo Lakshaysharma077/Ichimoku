@@ -40,7 +40,7 @@ export default function KumoSection() {
               The Soul of the System: <br /> <span className="text-accent">The Kumo Cloud.</span>
             </h2>
             <p className="text-lg txt-body leading-relaxed">
-              The Cloud is the most distinctive element of Ichimoku. It doesn't just show support 
+              The Cloud is the most distinctive element of Ichimoku. It doesn&apos;t just show support 
               and resistance; it represents the <span className="text-text-primary font-bold">memory of the market</span> and the 
               probability of future trend continuation.
             </p>

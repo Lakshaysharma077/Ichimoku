@@ -134,7 +134,7 @@ export default function CompleteProfileModal() {
                 onClick={() => setIsOpen(false)}
                 className="w-full text-[10px] font-bold text-text-muted hover:text-text-primary uppercase tracking-[0.2em] transition-colors"
               >
-                I'll do this later
+                I&apos;ll do this later
               </button>
             </form>
           )}

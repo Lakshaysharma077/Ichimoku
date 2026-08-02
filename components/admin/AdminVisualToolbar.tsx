@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEditStore } from "@/lib/store/useEditStore";
 import {
   Eye,
@@ -13,7 +14,8 @@ import {
   Keyboard,
   Undo2,
   Redo2,
-  GripHorizontal
+  GripHorizontal,
+  CreditCard
 } from "lucide-react";
 import { clsx } from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,6 +23,7 @@ import { useState, useEffect, useCallback } from "react";
 
 export default function AdminVisualToolbar() {
   const { data: session } = useSession();
+  const router = useRouter();
   const { isEditMode, setEditMode, pendingChanges, clearChanges } = useEditStore();
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "success" | "error">("idle");
@@ -38,7 +41,7 @@ export default function AdminVisualToolbar() {
     count + Object.keys(section).length, 0
   );
 
-  const handleSaveAll = async () => {
+  const handleSaveAll = useCallback(async () => {
     setIsSaving(true);
     setSaveStatus("saving");
     try {
@@ -79,7 +82,7 @@ export default function AdminVisualToolbar() {
     } finally {
       setIsSaving(false);
     }
-  };
+  }, [pendingChanges, clearChanges]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 's') {
@@ -91,7 +94,7 @@ export default function AdminVisualToolbar() {
     if (e.key === 'Escape' && isEditMode) {
       setEditMode(false);
     }
-  }, [hasChanges, isEditMode, handleSaveAll]);
+  }, [hasChanges, isEditMode, handleSaveAll, setEditMode]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -195,6 +198,15 @@ export default function AdminVisualToolbar() {
               {!isMobile && "EDIT"}
             </button>
           </div>
+
+          <button
+            onClick={() => router.push('/admin/payments')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-bold bg-white/5 hover:bg-accent/20 text-white hover:text-accent border border-white/10 transition-all"
+            title="Manage Subscriptions & Payments"
+          >
+            <CreditCard className="w-3.5 h-3.5" />
+            {!isMobile && "PAYMENTS"}
+          </button>
 
           {isEditMode && (
             <>

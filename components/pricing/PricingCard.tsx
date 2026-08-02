@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import Button from '../ui/Button';
 import { Check, X } from 'lucide-react';
 
@@ -34,8 +35,16 @@ export default function PricingCard({
   isYearly,
   subtext
 }: PricingCardProps) {
+  const router = useRouter();
   const pathPrefix = index !== undefined ? ['tiers', index.toString()] : [];
   const pricePath = isYearly ? 'yearlyPrice' : 'monthlyPrice';
+
+  const handleCtaClick = () => {
+    const planParam = encodeURIComponent(name);
+    const priceParam = encodeURIComponent(price);
+    const isYearlyParam = isYearly ? 'true' : 'false';
+    router.push(`/checkout?plan=${planParam}&price=${priceParam}&yearly=${isYearlyParam}`);
+  };
   return (
     <motion.div
       whileHover={{ y: -8 }}
@@ -124,7 +133,11 @@ export default function PricingCard({
       </div>
 
       <div className="space-y-4">
-        <Button className="w-full" variant={isFeatured ? 'solid' : 'outline'}>
+        <Button 
+          className="w-full" 
+          variant={isFeatured ? 'solid' : 'outline'}
+          onClick={handleCtaClick}
+        >
           {index !== undefined ? (
             <EditableElement section="pricing" path={[...pathPrefix, 'ctaText']} content={ctaText} />
           ) : ctaText}

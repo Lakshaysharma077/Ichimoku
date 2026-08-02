@@ -88,7 +88,7 @@ const ContentEditable = memo(function ContentEditable({
       el.removeEventListener('keydown', handleKeyDown);
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, []);
+  }, [onBlurRef, onChangeRef, onFocusRef, tagName]);
 
   useEffect(() => {
     if (elRef.current && document.activeElement !== elRef.current) {

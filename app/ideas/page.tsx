@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '@/components/shared/ScrollReveal';
-import { Search, ArrowRight } from 'lucide-react';
+import { Search, ArrowRight, Clock } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
 
 /** Format ISO date string to readable format */
@@ -22,6 +22,68 @@ export default function IdeasPage() {
 
   // Split: first = featured, rest = grid
   const allArticles = ideas.articles;
+  const [readTimes, setReadTimes] = useState<Record<string, number>>({});
+
+  // Load times from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const times: Record<string, number> = {};
+      allArticles.forEach((article: any) => {
+        const stored = localStorage.getItem(`read_time_${article.id}`);
+        if (stored) {
+          times[article.id] = parseInt(stored, 10);
+        }
+      });
+      setReadTimes(times);
+    }
+  }, [allArticles]);
+
+  // Track window focus events to calculate reading time
+  useEffect(() => {
+    const handleFocus = () => {
+      const clickedId = sessionStorage.getItem('clicked_article_id');
+      const clickedTimeStr = sessionStorage.getItem('clicked_article_time');
+      if (clickedId && clickedTimeStr) {
+        const clickTime = parseInt(clickedTimeStr, 10);
+        const elapsed = Date.now() - clickTime;
+        if (elapsed > 1000) {
+          // Cap elapsed time to 30 mins to avoid background tab artifacts
+          const cappedElapsed = Math.min(elapsed, 30 * 60 * 1000);
+          const prevTime = parseInt(localStorage.getItem(`read_time_${clickedId}`) || '0', 10);
+          const newTime = prevTime + cappedElapsed;
+          localStorage.setItem(`read_time_${clickedId}`, newTime.toString());
+          setReadTimes(prev => ({
+            ...prev,
+            [clickedId]: newTime
+          }));
+        }
+        sessionStorage.removeItem('clicked_article_id');
+        sessionStorage.removeItem('clicked_article_time');
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, []);
+
+  const handleArticleClick = (articleId: string) => {
+    sessionStorage.setItem('clicked_article_id', articleId);
+    sessionStorage.setItem('clicked_article_time', Date.now().toString());
+  };
+
+  const formatReadingTime = (articleId: string) => {
+    const timeMs = readTimes[articleId];
+    if (!timeMs) return 'Not visited yet';
+
+    const totalSeconds = Math.floor(timeMs / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    if (minutes > 0) {
+      return `Visited for ${minutes}m ${seconds}s`;
+    }
+    return `Visited for ${seconds}s`;
+  };
   const filtered = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
     if (!q) return allArticles;
@@ -66,7 +128,7 @@ export default function IdeasPage() {
                 <svg className="w-3 h-3 fill-[#2962FF] shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.4519-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
                 </svg>
-                <span>Editor's Pick = Selected by TradingView editors</span>
+                <span>Editor&apos;s Pick = Selected by TradingView editors</span>
               </div>
             </div>
             <div className="flex items-center gap-2.5 bg-bg-secondary border border-border rounded-xl px-4 py-2.5 w-64 max-w-full transition-all focus-within:border-accent/50 focus-within:shadow-[0_0_0_3px_rgba(251,225,120,0.08)]">
@@ -102,6 +164,7 @@ export default function IdeasPage() {
                     href={featured.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => handleArticleClick(featured.id)}
                     className="relative block overflow-hidden min-h-[240px]"
                   >
                     <div className="relative h-full">
@@ -118,7 +181,7 @@ export default function IdeasPage() {
                           <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0 animate-pulse" style={{ animationDuration: '3s' }} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.4519-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
                           </svg>
-                          <span>Editor's Pick</span>
+                          <span>Editor&apos;s Pick</span>
                         </span>
                       )}
                     </div>
@@ -133,7 +196,14 @@ export default function IdeasPage() {
                     <span className="text-[0.72rem] font-bold tracking-[0.1em] uppercase text-text-muted flex items-center gap-2">
                       <span>{formatDate(featured.date)}</span>
                       <span>•</span>
-                      <span>{featured.readingTime}</span>
+                      {readTimes[featured.id] ? (
+                        <span className="flex items-center gap-1 text-[#2962FF] font-bold">
+                          <Clock className="w-3 h-3 text-[#2962FF]" />
+                          <span>{formatReadingTime(featured.id)}</span>
+                        </span>
+                      ) : (
+                        <span className="text-text-muted/60">Not visited yet</span>
+                      )}
                     </span>
                     {featured.company && (
                       <span className="text-[0.82rem] font-medium text-text-secondary flex items-center gap-2">
@@ -150,6 +220,7 @@ export default function IdeasPage() {
                       href={featured.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => handleArticleClick(featured.id)}
                       className="mt-4 inline-flex items-center gap-3 bg-bg-primary border border-border rounded-xl px-3 py-2 transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_6px_16px_-8px_rgba(0,0,0,0.4)] group/cta"
                     >
                       <span className="relative w-16 h-10 rounded-md overflow-hidden bg-bg-tertiary shrink-0">
@@ -192,6 +263,7 @@ export default function IdeasPage() {
                       href={article.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => handleArticleClick(article.id)}
                       className="relative block aspect-video overflow-hidden bg-bg-tertiary"
                     >
                       <img
@@ -208,7 +280,7 @@ export default function IdeasPage() {
                           <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0 animate-pulse" style={{ animationDuration: '3s' }} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.4519-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
                           </svg>
-                          <span>Editor's Pick</span>
+                          <span>Editor&apos;s Pick</span>
                         </span>
                       )}
                     </a>
@@ -218,7 +290,14 @@ export default function IdeasPage() {
                       <span className="text-[0.72rem] font-bold tracking-[0.1em] uppercase text-text-muted mb-1 flex items-center gap-2">
                         <span>{formatDate(article.date)}</span>
                         <span>•</span>
-                        <span>{article.readingTime}</span>
+                        {readTimes[article.id] ? (
+                          <span className="flex items-center gap-1 text-[#2962FF] font-bold">
+                            <Clock className="w-3 h-3 text-[#2962FF]" />
+                            <span>{formatReadingTime(article.id)}</span>
+                          </span>
+                        ) : (
+                          <span className="text-text-muted/60">Not visited yet</span>
+                        )}
                       </span>
                       {article.company && (
                         <span className="text-[0.82rem] font-medium text-text-secondary mb-2 flex items-center gap-2">
@@ -236,6 +315,7 @@ export default function IdeasPage() {
                           href={article.url}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={() => handleArticleClick(article.id)}
                           className="inline-flex items-center gap-3 bg-bg-primary border border-border rounded-xl px-3 py-2 w-full transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_6px_16px_-8px_rgba(0,0,0,0.4)] group/cta"
                         >
                           <span className="relative w-16 h-10 rounded-md overflow-hidden bg-bg-tertiary shrink-0">

@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -34,19 +34,142 @@ model Session {
 }
 
 model User {
-  id                  String    @id @default(cuid())
+  id                  String         @id @default(cuid())
   name                String?
-  email               String?   @unique
+  email               String?        @unique
   emailVerified       DateTime?
   image               String?
   password            String?
-  role                String    @default("USER")
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
+  role                String         @default("USER")
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
   provider            String?
   tradingViewUsername String?
   accounts            Account[]
   sessions            Session[]
+  payments            Payment[]
+  subscriptions       Subscription[]
+  auditLogs           AuditLog[]
+}
+
+model Plan {
+  id                 String         @id @default(cuid())
+  name               String
+  price              Float
+  currency           String         @default("USD")
+  billingCycle       String         @default("monthly")
+  description        String
+  includedIndicators String         @default("[]")
+  includedTools      String         @default("[]")
+  isActive           Boolean        @default(true)
+  sortOrder          Int            @default(0)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  subscriptions      Subscription[]
+  payments           Payment[]
+}
+
+model Subscription {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId      String
+  plan        Plan     @relation(fields: [planId], references: [id])
+  paymentId   String?  @unique
+  payment     Payment? @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+  status      String   @default("ACTIVE")
+  startDate   DateTime @default(now())
+  expiryDate  DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Payment {
+  id                  String        @id @default(cuid())
+  plan                String
+  planId              String?
+  planRef             Plan?         @relation(fields: [planId], references: [id], onDelete: SetNull)
+  amount              Float
+  currency            String        @default("USD")
+  billingPeriod       String        @default("monthly")
+  paymentMethod       String
+  network             String
+  walletAddressUsed   String
+  customerName        String
+  customerEmail       String
+  tradingViewUsername String
+  country             String?
+  status              String        @default("Pending")
+  txnHash             String?
+  paymentScreenshot   String?
+  verificationStatus  String?       @default("NOT_VERIFIED")
+  verificationResult  String?
+  gatewayProvider     String        @default("MANUAL")
+  gatewayReferenceId  String?
+  adminNotes          String?
+  refundedAt          DateTime?
+  refundReason        String?
+  userId              String?
+  user                User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  subscription        Subscription?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+}
+
+model IndicatorItem {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  description  String
+  accessStatus String   @default("Premium")
+  priceLabel   String   @default("$29/mo")
+  tvUrl        String   @default("")
+  category     String   @default("[]")
+  sortOrder    Int      @default(0)
+  rating       Float    @default(5.0)
+  numRatings   Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ToolItem {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  description  String
+  badge        String?
+  accessStatus String   @default("Premium")
+  href         String?
+  category     String?
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SupportTicket {
+  id                  String   @id @default(cuid())
+  name                String
+  email               String
+  tradingViewUsername String?
+  category            String   @default("General")
+  subject             String
+  message             String
+  status              String   @default("OPEN")
+  adminNotes          String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String
+  entityId  String?
+  details   String
+  ipAddress String?
+  createdAt DateTime @default(now())
 }
 
 model VerificationToken {

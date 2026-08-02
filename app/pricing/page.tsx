@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import ScrollReveal from '@/components/shared/ScrollReveal';
 import BillingToggle from '@/components/pricing/BillingToggle';
 import PricingCard from '@/components/pricing/PricingCard';
@@ -15,6 +16,7 @@ export default function PricingPage() {
   const [isYearly, setIsYearly] = useState(false);
   const pricing = useContent('pricing');
   const { isEditMode } = useEditStore();
+  const router = useRouter();
 
   return (
     <div className="pt-40 pb-24 relative overflow-hidden min-h-[100svh]">
@@ -76,7 +78,13 @@ export default function PricingPage() {
               <p className="text-text-secondary max-w-2xl mx-auto mb-10 text-lg leading-relaxed">
                 <EditableElement section="pricing" path={['trialGuarantee', 'description']} content={pricing.trialGuarantee.description} />
               </p>
-              <Button size="lg">
+              <Button 
+                size="lg"
+                onClick={() => {
+                  const priceVal = isYearly ? '$23' : '$29';
+                  router.push(`/checkout?plan=Samurai&price=${encodeURIComponent(priceVal)}&yearly=${isYearly}`);
+                }}
+              >
                 <EditableElement section="pricing" path={['trialGuarantee', 'button']} content={pricing.trialGuarantee.button} />
               </Button>
             </div>

@@ -441,6 +441,18 @@ export const staticContent = {
         readingTime: "5 min read",
       },
       {
+        id: "idea-6",
+        ticker: "BTCUSDT",
+        timeframe: "1D",
+        company: "Bitcoin / TetherUS",
+        title: "From One Candle to a Trade Decision",
+        date: "2026-07-06",
+        image: "https://s3.tradingview.com/2/2oMliUoE_big.png",
+        url: "https://www.tradingview.com/chart/BTCUSDT/2oMliUoE-From-One-Candle-to-a-Trade-Decision/",
+        editorPick: false,
+        readingTime: "5 min read",
+      },
+      {
         id: "idea-2",
         ticker: "VIRTUALUSDT",
         timeframe: "4h",
@@ -449,7 +461,7 @@ export const staticContent = {
         date: "2026-06-24",
         image: "https://s3.tradingview.com/7/77VOQHQq_big.png",
         url: "https://www.tradingview.com/chart/VIRTUALUSDT/77VOQHQq-Lagging-Span-and-Trendline-Interaction/",
-        editorPick: false,
+        editorPick: true,
         readingTime: "3 min read",
       },
       {
@@ -473,7 +485,7 @@ export const staticContent = {
         date: "2026-03-16",
         image: "https://s3.tradingview.com/i/ihprmleG_big.png",
         url: "https://www.tradingview.com/chart/EURUSD/ihprmleG-How-the-Lagging-Span-path-reveals-hidden-resistance-behind-price/",
-        editorPick: true,
+        editorPick: false,
         readingTime: "6 min read",
       },
       {
