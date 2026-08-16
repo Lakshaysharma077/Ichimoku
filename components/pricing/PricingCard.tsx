@@ -144,7 +144,7 @@ export default function PricingCard({
         </Button>
         {isFeatured && (
           <p className="text-[10px] text-center text-text-muted font-mono uppercase tracking-widest">
-            <EditableElement section="pricing" path={[...pathPrefix, 'subtext']} content={subtext || 'Then $29/mo. Cancel anytime.'} />
+            <EditableElement section="pricing" path={[...pathPrefix, 'subtext']} content={subtext || 'Then $22/mo. Cancel anytime.'} />
           </p>
         )}
       </div>

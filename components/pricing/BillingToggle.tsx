@@ -24,7 +24,7 @@ export default function BillingToggle({ isYearly, setIsYearly }: BillingTogglePr
       <div className="flex items-center gap-2">
         <span className={`text-sm font-bold uppercase tracking-widest ${isYearly ? 'text-text-primary' : 'text-text-muted'}`}>Yearly</span>
         <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 text-[10px] font-bold rounded-full uppercase tracking-tighter">
-          Save 20%
+          2 Months Free
         </span>
       </div>
     </div>

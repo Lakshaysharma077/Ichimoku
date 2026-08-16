@@ -81,7 +81,7 @@ export default function PricingPage() {
               <Button 
                 size="lg"
                 onClick={() => {
-                  const priceVal = isYearly ? '$23' : '$29';
+                  const priceVal = isYearly ? '$220' : '$22';
                   router.push(`/checkout?plan=Samurai&price=${encodeURIComponent(priceVal)}&yearly=${isYearly}`);
                 }}
               >

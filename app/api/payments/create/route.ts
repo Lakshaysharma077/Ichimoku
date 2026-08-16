@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getPaymentGateway } from "@/lib/payments";
+import {
+  getPaymentGateway,
+  isSupportedPaymentCombination,
+  getOfficialDepositAddress,
+  getOfficialPlanPrice,
+  NetworkId,
+  PaymentMethod,
+} from "@/lib/payments";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { sendEmailNotification } from "@/lib/email";
@@ -9,6 +16,17 @@ import { checkRateLimit } from "@/lib/rateLimit";
 import { sanitizeInput } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
+
+// Normalizes network string to NetworkId
+function normalizeNetworkId(net: string): NetworkId | null {
+  const s = net.toLowerCase().trim();
+  if (s.includes("arbitrum")) return "arbitrum";
+  if (s.includes("ethereum") || s.includes("erc-20") || s.includes("erc20")) return "ethereum";
+  if (s.includes("avalanche") || s.includes("avax") || s.includes("c-chain")) return "avalanche";
+  if (s.includes("tron") || s.includes("trc-20") || s.includes("trc20")) return "trc20";
+  if (s.includes("solana") || s.includes("spl")) return "solana";
+  return null;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,7 +42,6 @@ export async function POST(req: NextRequest) {
       plan,
       planId,
       amount,
-      currency,
       billingPeriod,
       paymentMethod,
       network,
@@ -42,12 +59,41 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Subscription plan is required" }, { status: 400 });
     }
 
-    if (typeof amount !== "number" || amount < 0) {
-      return NextResponse.json({ error: "Valid amount is required" }, { status: 400 });
+    const period: "monthly" | "yearly" = billingPeriod === "yearly" ? "yearly" : "monthly";
+    const expectedAmount = getOfficialPlanPrice(plan, period);
+
+    // Server-side amount validation: Validate that amount matches official pricing ($22 / $220)
+    if (typeof amount !== "number" || Math.abs(amount - expectedAmount) > 0.01) {
+      return NextResponse.json(
+        { error: `Invalid payment amount. Expected $${expectedAmount} USD for ${plan} (${period}).` },
+        { status: 400 }
+      );
     }
 
     if (!paymentMethod || !["USDT", "USDC"].includes(paymentMethod)) {
       return NextResponse.json({ error: "Payment method must be USDT or USDC" }, { status: 400 });
+    }
+
+    const normalizedNetId = normalizeNetworkId(network);
+    if (!normalizedNetId) {
+      return NextResponse.json({ error: "Unsupported blockchain network selected" }, { status: 400 });
+    }
+
+    // Validate supported token + network combination
+    if (!isSupportedPaymentCombination(paymentMethod as PaymentMethod, normalizedNetId)) {
+      return NextResponse.json(
+        { error: `${paymentMethod} is not supported on the ${network} network.` },
+        { status: 400 }
+      );
+    }
+
+    // Validate receiving wallet address against official single source of truth
+    const officialWallet = getOfficialDepositAddress(paymentMethod as PaymentMethod, normalizedNetId);
+    if (!officialWallet || !walletAddressUsed || walletAddressUsed.trim().toLowerCase() !== officialWallet.toLowerCase()) {
+      return NextResponse.json(
+        { error: "Invalid deposit wallet address used for this payment." },
+        { status: 400 }
+      );
     }
 
     if (!customerName || typeof customerName !== "string" || customerName.trim().length === 0) {
@@ -60,14 +106,6 @@ export async function POST(req: NextRequest) {
 
     if (!tradingViewUsername || typeof tradingViewUsername !== "string" || tradingViewUsername.trim().length === 0) {
       return NextResponse.json({ error: "TradingView Username is required" }, { status: 400 });
-    }
-
-    if (!network || typeof network !== "string") {
-      return NextResponse.json({ error: "Blockchain Network is required" }, { status: 400 });
-    }
-
-    if (!walletAddressUsed || typeof walletAddressUsed !== "string") {
-      return NextResponse.json({ error: "Wallet Address Used is required" }, { status: 400 });
     }
 
     if (!txnHash || typeof txnHash !== "string" || txnHash.trim().length === 0) {
@@ -94,12 +132,12 @@ export async function POST(req: NextRequest) {
     const gateway = getPaymentGateway();
     const result = await gateway.createPayment({
       plan,
-      amount,
-      currency: currency || "USD",
-      billingPeriod: billingPeriod === "yearly" ? "yearly" : "monthly",
-      paymentMethod,
+      amount: expectedAmount,
+      currency: "USD",
+      billingPeriod: period,
+      paymentMethod: paymentMethod as PaymentMethod,
       network,
-      walletAddressUsed,
+      walletAddressUsed: officialWallet,
       customerName: cleanCustomerName,
       customerEmail: cleanCustomerEmail,
       tradingViewUsername: cleanTvUsername,
@@ -116,9 +154,9 @@ export async function POST(req: NextRequest) {
       isVerified: false,
       statusText: "NOT_VERIFIED" as const,
       amountReceived: 0,
-      recipientWallet: walletAddressUsed,
+      recipientWallet: officialWallet,
       confirmationCount: 0,
-      failureReason: "Payment request submitted. Awaiting blockchain verification.",
+      failureReason: "Payment request submitted. Awaiting on-chain verification.",
       verifiedAt: new Date().toISOString(),
     };
 
@@ -127,6 +165,7 @@ export async function POST(req: NextRequest) {
       where: { id: result.paymentId },
       data: {
         status: "Pending Verification",
+        currency: "USD",
         planId: dbPlanId || null,
         paymentScreenshot: paymentScreenshot?.trim() || null,
         verificationStatus: "NOT_VERIFIED",
@@ -141,9 +180,11 @@ export async function POST(req: NextRequest) {
       entityId: result.paymentId,
       details: {
         plan,
-        amount,
+        amount: expectedAmount,
+        currency: "USD",
         paymentMethod,
         network,
+        walletAddressUsed: officialWallet,
         tradingViewUsername: cleanTvUsername,
         txnHash: cleanTxnHash,
       },
@@ -157,8 +198,8 @@ export async function POST(req: NextRequest) {
       type: "payment_submitted",
       tradingViewUsername: cleanTvUsername,
       plan,
-      amount,
-      currency: currency || "USD",
+      amount: expectedAmount,
+      currency: "USD",
       paymentMethod,
       network,
       paymentId: result.paymentId,
@@ -172,8 +213,8 @@ export async function POST(req: NextRequest) {
       type: "admin_new_payment",
       tradingViewUsername: cleanTvUsername,
       plan,
-      amount,
-      currency: currency || "USD",
+      amount: expectedAmount,
+      currency: "USD",
       paymentMethod,
       network,
       paymentId: result.paymentId,
@@ -184,7 +225,7 @@ export async function POST(req: NextRequest) {
       paymentId: result.paymentId,
       status: "Pending Verification",
       verification: initialVerification,
-      message: "Payment request submitted successfully. Our team is verifying your on-chain transfer.",
+      message: "Payment request registered. Blockchain verification is in progress.",
     });
   } catch (error: any) {
     console.error("PAYMENT_CREATE_API_ERROR:", error);

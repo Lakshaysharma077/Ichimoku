@@ -179,6 +179,8 @@ export async function PATCH(
           type: "payment_rejected",
           paymentId: updatedPayment.id,
           plan: updatedPayment.plan,
+          amount: updatedPayment.amount,
+          currency: updatedPayment.currency,
           adminNotes: updatedPayment.adminNotes || undefined,
         }).catch((err) => console.error("Rejected email error:", err));
       } else if (status === "Refunded") {

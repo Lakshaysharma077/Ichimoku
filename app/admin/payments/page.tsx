@@ -11,24 +11,21 @@ import {
   RefreshCw,
   Copy,
   Check,
-  Globe,
   Filter,
   ShieldCheck,
-  ArrowLeft,
   AlertTriangle,
   RotateCcw,
   X,
-  FileText,
   Mail,
   ExternalLink,
-  Image as ImageIcon,
   ShieldAlert,
   ShieldCheck as ShieldVerified,
   DollarSign,
   Users,
   Sliders,
   Calendar,
-  Trash2
+  Trash2,
+  Wallet
 } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -194,7 +191,8 @@ export default function AdminPaymentsPage() {
     setVerifyingId(id);
     try {
       const res = await fetch(`/api/admin/payments/${id}/verify`, { method: 'POST' });
-      if (!res.ok) throw new Error('Verification request failed');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Verification request failed');
       await fetchPaymentsData();
     } catch (err: any) {
       alert(`Verification error: ${err.message}`);
@@ -245,7 +243,7 @@ export default function AdminPaymentsPage() {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[160px] pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
-        
+
         {/* Top Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
@@ -257,7 +255,7 @@ export default function AdminPaymentsPage() {
               Payments & Subscriptions
             </h1>
             <p className="text-text-secondary text-sm">
-              Perform 6-point on-chain verification, grant invite-only TradingView access, and review telemetry logs.
+              Live on-chain blockchain verification, invite-only TradingView activation, and order management.
             </p>
           </div>
 
@@ -281,7 +279,7 @@ export default function AdminPaymentsPage() {
               <DollarSign className="w-3 h-3 text-accent" />
               <span>Total Revenue</span>
             </div>
-            <div className="syne font-bold text-2xl text-accent">${analytics.totalRevenue || 0}</div>
+            <div className="syne font-bold text-2xl text-accent">${analytics.totalRevenue || 0} USD</div>
           </Card>
 
           <Card className="p-4 border-amber-500/20 bg-amber-500/5">
@@ -328,7 +326,7 @@ export default function AdminPaymentsPage() {
         {/* Controls Bar */}
         <Card className="p-4 md:p-6 mb-8 bg-bg-secondary/40 border-border/80">
           <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
-            
+
             <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
               <div className="relative w-full sm:w-80">
                 <Search className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -396,12 +394,13 @@ export default function AdminPaymentsPage() {
                 <thead className="bg-bg-secondary/80 border-b border-border text-text-muted font-mono uppercase tracking-widest text-[10px]">
                   <tr>
                     <th className="py-3.5 px-4 font-semibold">Customer Info</th>
-                    <th className="py-3.5 px-4 font-semibold">TradingView Username</th>
+                    <th className="py-3.5 px-4 font-semibold">TradingView User</th>
                     <th className="py-3.5 px-4 font-semibold">Plan & Amount</th>
-                    <th className="py-3.5 px-4 font-semibold">TXID & Explorer Link</th>
-                    <th className="py-3.5 px-4 font-semibold">Screenshot</th>
-                    <th className="py-3.5 px-4 font-semibold">On-Chain Verification</th>
-                    <th className="py-3.5 px-4 font-semibold">Workflow Status</th>
+                    <th className="py-3.5 px-4 font-semibold">Network & Wallet</th>
+                    <th className="py-3.5 px-4 font-semibold">TXID & Explorer</th>
+                    <th className="py-3.5 px-4 font-semibold">Receipt</th>
+                    <th className="py-3.5 px-4 font-semibold">On-Chain Check</th>
+                    <th className="py-3.5 px-4 font-semibold">Status</th>
                     <th className="py-3.5 px-4 font-semibold text-right">Actions</th>
                   </tr>
                 </thead>
@@ -421,9 +420,18 @@ export default function AdminPaymentsPage() {
 
                     const { url: explorerUrl, explorerName } = getExplorerTxUrl(p.network, p.txnHash || '');
 
+                    const formattedDate = new Date(p.createdAt).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    });
+
                     return (
                       <tr key={p.id} className="hover:bg-bg-secondary/30 transition-colors">
-                        
+
+                        {/* Customer Info */}
                         <td className="py-4 px-4 align-top">
                           <div className="space-y-0.5">
                             <div className="font-bold text-text-primary text-sm">{p.customerName}</div>
@@ -431,6 +439,7 @@ export default function AdminPaymentsPage() {
                               <Mail className="w-3 h-3 text-text-muted" />
                               <span>{p.customerEmail}</span>
                             </div>
+                            <div className="text-[10px] text-text-muted font-mono">{formattedDate}</div>
                           </div>
                         </td>
 
@@ -450,21 +459,49 @@ export default function AdminPaymentsPage() {
                           </div>
                         </td>
 
+                        {/* Plan & Amount (USD) */}
                         <td className="py-4 px-4 align-top space-y-0.5">
-                          <span className="font-bold text-text-primary uppercase text-xs block">{p.plan}</span>
-                          <span className="font-mono text-accent font-extrabold text-sm block">${p.amount} USD</span>
+                          <span className="font-bold text-text-primary uppercase text-xs block">
+                            {p.plan} ({p.billingPeriod})
+                          </span>
+                          <span className="font-mono text-accent font-extrabold text-sm block">
+                            ${p.amount} {p.currency || 'USD'}
+                          </span>
                         </td>
 
-                        {/* TXID with 1-Click Copy */}
+                        {/* Network & Wallet Address with 1-Click Copy */}
                         <td className="py-4 px-4 align-top space-y-1.5">
                           <div className="font-bold text-text-primary font-mono text-[11px]">
                             {p.paymentMethod} on {p.network}
                           </div>
 
+                          {p.walletAddressUsed ? (
+                            <div className="text-[10px] font-mono text-text-secondary flex items-center gap-1">
+                              <Wallet className="w-3 h-3 text-text-muted shrink-0" />
+                              <span className="truncate max-w-[110px] select-all font-mono" title={p.walletAddressUsed}>
+                                {p.walletAddressUsed}
+                              </span>
+                              <button
+                                onClick={() => handleCopyText(p.walletAddressUsed, `w-${p.id}`)}
+                                title="Copy Wallet Address"
+                                className="text-text-muted hover:text-white transition-colors"
+                              >
+                                {copiedId === `w-${p.id}` ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                              </button>
+                            </div>
+                          ) : (
+                            <span className="text-[10px] font-mono text-text-muted">N/A</span>
+                          )}
+                        </td>
+
+                        {/* TXID with 1-Click Copy & Explorer Link */}
+                        <td className="py-4 px-4 align-top space-y-1.5">
                           {p.txnHash ? (
                             <div className="space-y-1">
                               <div className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
-                                <span className="truncate max-w-[120px] select-all font-bold" title={p.txnHash}>TX: {p.txnHash}</span>
+                                <span className="truncate max-w-[110px] select-all font-bold font-mono" title={p.txnHash}>
+                                  {p.txnHash}
+                                </span>
                                 <button onClick={() => handleCopyText(p.txnHash!, `tx-${p.id}`)} title="Copy TXID">
                                   {copiedId === `tx-${p.id}` ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3 text-emerald-400 hover:text-white" />}
                                 </button>
@@ -476,15 +513,16 @@ export default function AdminPaymentsPage() {
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded text-[10px] font-mono transition-all"
                               >
-                                <span>View on {explorerName}</span>
+                                <span>{explorerName}</span>
                                 <ExternalLink className="w-2.5 h-2.5" />
                               </a>
                             </div>
                           ) : (
-                            <span className="text-[10px] font-mono text-red-400 block">No TXID Submitted</span>
+                            <span className="text-[10px] font-mono text-red-400 block">No TXID</span>
                           )}
                         </td>
 
+                        {/* Payment Screenshot */}
                         <td className="py-4 px-4 align-top">
                           {p.paymentScreenshot ? (
                             <button
@@ -495,10 +533,11 @@ export default function AdminPaymentsPage() {
                               <img src={p.paymentScreenshot} alt="Receipt" className="w-12 h-12 object-cover" />
                             </button>
                           ) : (
-                            <span className="text-[10px] font-mono text-text-muted italic">No screenshot</span>
+                            <span className="text-[10px] font-mono text-text-muted italic">None</span>
                           )}
                         </td>
 
+                        {/* On-Chain Verification Status & Live Check */}
                         <td className="py-4 px-4 align-top space-y-1.5">
                           {isVerified ? (
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
@@ -506,10 +545,17 @@ export default function AdminPaymentsPage() {
                               <span>Verified On-Chain</span>
                             </span>
                           ) : isVerificationFailed ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-500/15 text-red-400 border border-red-500/30">
-                              <ShieldAlert className="w-3 h-3 text-red-400" />
-                              <span>Check Failed</span>
-                            </span>
+                            <div className="space-y-0.5">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-500/15 text-red-400 border border-red-500/30">
+                                <ShieldAlert className="w-3 h-3 text-red-400" />
+                                <span>Check Failed</span>
+                              </span>
+                              {vData?.failureReason && (
+                                <p className="text-[9px] text-red-300 font-mono line-clamp-2 max-w-[130px]" title={vData.failureReason}>
+                                  {vData.failureReason}
+                                </p>
+                              )}
+                            </div>
                           ) : (
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/15 text-amber-400 border border-amber-500/30">
                               <Clock className="w-3 h-3" />
@@ -522,10 +568,11 @@ export default function AdminPaymentsPage() {
                             disabled={verifyingId === p.id}
                             className="block text-[9px] font-mono text-blue-400 hover:underline"
                           >
-                            {verifyingId === p.id ? "Re-checking..." : "Re-Verify On-Chain"}
+                            {verifyingId === p.id ? "Checking Blockchain..." : "Verify On-Chain"}
                           </button>
                         </td>
 
+                        {/* Workflow Status */}
                         <td className="py-4 px-4 align-top">
                           <span className={`inline-block px-2.5 py-1 rounded-md text-[10px] font-mono font-bold ${
                             isApproved ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' :
@@ -537,6 +584,7 @@ export default function AdminPaymentsPage() {
                           </span>
                         </td>
 
+                        {/* Admin Actions: Approve, Reject, Refund, Delete */}
                         <td className="py-4 px-4 align-top text-right space-y-1">
                           {!isApproved && (
                             <button
@@ -544,7 +592,7 @@ export default function AdminPaymentsPage() {
                               disabled={updatingId === p.id}
                               className="px-2.5 py-1 bg-emerald-500 hover:bg-emerald-600 text-black font-bold text-[10px] rounded transition-all block w-full text-center"
                             >
-                              Approve Payment
+                              Approve
                             </button>
                           )}
 
@@ -553,7 +601,16 @@ export default function AdminPaymentsPage() {
                               onClick={() => setRejectingPayment(p)}
                               className="px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-[10px] rounded transition-all block w-full text-center"
                             >
-                              Reject Payment
+                              Reject
+                            </button>
+                          )}
+
+                          {isApproved && !isRefunded && (
+                            <button
+                              onClick={() => setRefundingPayment(p)}
+                              className="px-2.5 py-1 bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 border border-purple-500/30 text-[10px] rounded transition-all block w-full text-center"
+                            >
+                              Refund
                             </button>
                           )}
 
@@ -564,7 +621,7 @@ export default function AdminPaymentsPage() {
                             title="Permanently delete payment record"
                           >
                             <Trash2 className="w-3 h-3" />
-                            <span>Delete Record</span>
+                            <span>Delete</span>
                           </button>
                         </td>
 
@@ -685,7 +742,7 @@ export default function AdminPaymentsPage() {
               </div>
 
               <p className="text-xs text-text-secondary">
-                Refunding <strong className="text-text-primary">{refundingPayment.customerName}</strong> (${refundingPayment.amount}).
+                Refunding <strong className="text-text-primary">{refundingPayment.customerName}</strong> (${refundingPayment.amount} {refundingPayment.currency || 'USD'}).
               </p>
 
               <div>

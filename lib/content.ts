@@ -343,12 +343,12 @@ export const staticContent = {
       },
       {
         name: "Samurai",
-        monthlyPrice: "$29",
-        yearlyPrice: "$23",
+        monthlyPrice: "$22",
+        yearlyPrice: "$18.33",
         tagline: "The complete Ichimoku Edge system",
-        ctaText: "Start 14-Day Free Trial",
+        ctaText: "Get Samurai Access",
         isFeatured: true,
-        isTrial: true,
+        isTrial: false,
         features: [
           { text: "ALL free indicators", included: true },
           { text: "Ichimoku Edge Pro indicator", included: true },
@@ -571,13 +571,13 @@ export const staticContent = {
         id: "q10",
         categories: ["Billing & Pricing"],
         question: "Can I pay with cryptocurrency?",
-        answer: "Yes. You can pay with cryptocurrency using USDT or USDC only. Several blockchain networks may be available, such as Tron, Arbitrum, and Ethereum. The exact payment address and network are shown during the checkout process. Always make sure you send the correct token on the correct network."
+        answer: "Yes. Ichimoku Edge accepts cryptocurrency payments exclusively using USDT or USDC. Supported networks are Ethereum, Arbitrum, Avalanche, TRON (USDT only), and Solana (USDC only). The exact payment address and network instructions are shown during checkout."
       },
       {
         id: "q11",
         categories: ["Billing & Pricing"],
         question: "Do you offer a discount for yearly billing?",
-        answer: "Yes. Annual plans include 2 months free compared to monthly billing."
+        answer: "Yes. The annual plan is $220 USD / year, effectively giving you 2 months free compared to paying $22 USD monthly."
       },
       {
         id: "q12",

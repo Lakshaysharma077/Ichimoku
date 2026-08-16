@@ -7,7 +7,7 @@ export type PaymentStatus = "Pending" | "Approved" | "Rejected" | "Processing" |
 
 export type PaymentMethod = "USDT" | "USDC";
 
-export type NetworkId = "ethereum" | "arbitrum" | "avalanche" | "solana" | "trc20" | "polygon";
+export type NetworkId = "ethereum" | "arbitrum" | "avalanche" | "trc20" | "solana";
 
 export interface CryptoNetworkOption {
   id: NetworkId;

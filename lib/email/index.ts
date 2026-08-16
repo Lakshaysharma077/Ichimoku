@@ -322,12 +322,13 @@ function generateEmailHtml(payload: GenericEmailPayload): { subject: string; htm
             Payment Could Not Be Verified
           </h2>
           <p style="font-size: 14px; line-height: 1.7; color: #CBD5E1; margin-bottom: 24px;">
-            Hello <strong style="color: #FFFFFF;">${customerName}</strong>, we were unable to verify your submitted crypto transfer for the <strong>${plan} Plan</strong>.
+            Hello <strong style="color: #FFFFFF;">${customerName}</strong>, we were unable to verify your submitted crypto transfer for the <strong>${plan} Plan</strong> ($${amount} ${currency}).
           </p>
 
           <div style="background-color: #1E293B; border: 1px solid #EF4444; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
-            <p style="margin: 0 0 8px 0; font-size: 13px; color: #94A3B8;">Payment ID: <span style="color: #FFFFFF; font-family: monospace;">${paymentId}</span></p>
-            ${adminNotes ? `<p style="margin: 12px 0 0 0; font-size: 13px; color: #FCA5A5; line-height: 1.6;"><strong>Note from Audit Team:</strong> ${adminNotes}</p>` : ""}
+            <p style="margin: 0 0 8px 0; font-size: 13px; color: #94A3B8;">Payment Reference ID: <span style="color: #FFFFFF; font-family: monospace;">${paymentId}</span></p>
+            <p style="margin: 0 0 8px 0; font-size: 13px; color: #94A3B8;">Plan & Amount: <span style="color: #FBE178; font-family: monospace; font-weight: bold;">${plan} — $${amount} ${currency}</span></p>
+            ${adminNotes ? `<p style="margin: 12px 0 0 0; font-size: 13px; color: #FCA5A5; line-height: 1.6;"><strong>Reason for Rejection:</strong> ${adminNotes}</p>` : ""}
           </div>
 
           <p style="font-size: 13px; line-height: 1.6; color: #94A3B8;">
