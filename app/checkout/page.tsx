@@ -133,12 +133,15 @@ function CheckoutContent() {
 
   // Auto-populate from logged-in session
   useEffect(() => {
-    if (session?.user) {
-      if (session.user.name) setCustomerName((prev) => prev || session.user.name || '');
-      if (session.user.email) setCustomerEmail((prev) => prev || session.user.email || '');
-      if ((session.user as any).tradingViewUsername) {
-        setTradingViewUsername((prev) => prev || (session.user as any).tradingViewUsername || '');
-      }
+    const user = session?.user;
+    if (user) {
+      const name = user.name || '';
+      const email = user.email || '';
+      const tvUsername = (user as any).tradingViewUsername || '';
+
+      if (name) setCustomerName((prev) => prev || name);
+      if (email) setCustomerEmail((prev) => prev || email);
+      if (tvUsername) setTradingViewUsername((prev) => prev || tvUsername);
     }
   }, [session]);
 
