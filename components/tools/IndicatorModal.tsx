@@ -23,7 +23,7 @@ export default function IndicatorModal({
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [accessStatus, setAccessStatus] = useState("Premium");
-  const [priceLabel, setPriceLabel] = useState("$29/mo");
+  const [priceLabel, setPriceLabel] = useState("$22/mo");
   const [tvUrl, setTvUrl] = useState("");
   const [category, setCategory] = useState("ICHIMOKU, TREND");
   const [sortOrder, setSortOrder] = useState(0);
@@ -35,7 +35,7 @@ export default function IndicatorModal({
       setName(initialData.name || "");
       setDescription(initialData.description || "");
       setAccessStatus(initialData.accessStatus || "Premium");
-      setPriceLabel(initialData.priceLabel || "$29/mo");
+      setPriceLabel(initialData.priceLabel || "$22/mo");
       setTvUrl(initialData.tvUrl || "");
       const catVal = typeof initialData.category === "string"
         ? (() => { try { return JSON.parse(initialData.category).join(", "); } catch { return initialData.category; } })()
@@ -46,7 +46,7 @@ export default function IndicatorModal({
       setName("");
       setDescription("");
       setAccessStatus("Premium");
-      setPriceLabel("$29/mo");
+      setPriceLabel("$22/mo");
       setTvUrl("");
       setCategory("ICHIMOKU, TREND");
       setSortOrder(0);
@@ -147,7 +147,7 @@ export default function IndicatorModal({
                 type="text"
                 value={priceLabel}
                 onChange={(e) => setPriceLabel(e.target.value)}
-                placeholder="e.g. Free Access or $29/mo"
+                placeholder="e.g. Free Access or $22/mo"
                 className="w-full bg-bg-primary border border-border rounded-xl px-3 py-2 text-text-primary focus:outline-none focus:border-accent"
               />
             </div>

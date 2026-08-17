@@ -125,7 +125,7 @@ export default function IndicatorCard({
       {/* Footer CTA */}
       <div className="px-6 py-4 border-t border-border flex items-center justify-between bg-bg-tertiary/30">
         <span className="text-sm font-bold syne text-text-primary">
-          {indicator.priceLabel || (status === 'Free' ? 'Free Access' : '$29/mo')}
+          {indicator.priceLabel || (status === 'Free' ? 'Free Access' : '$22/mo')}
         </span>
 
         {status === 'Coming Soon' ? (

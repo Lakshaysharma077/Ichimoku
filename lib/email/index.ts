@@ -22,6 +22,8 @@ export type EmailType =
   | "payment_rejected"
   | "subscription_expiring"
   | "subscription_expired"
+  | "trial_activated"
+  | "trial_expired"
   | "refund_processed"
   | "support_reply"
   | "admin_new_payment"
@@ -148,7 +150,7 @@ function generateEmailHtml(payload: GenericEmailPayload): { subject: string; htm
                 <ul style="margin: 0; padding-left: 18px; color: #CBD5E1; font-size: 13px; line-height: 1.8;">
                   <li>Explore free TradingView indicators on our platform</li>
                   <li>Read the <strong>Ichimoku Kinkō Hyō</strong> glossary & guide</li>
-                  <li>Subscribe to a 14-day free trial for full indicator access</li>
+                  <li>Subscribe to a 7-day free trial for full indicator access</li>
                 </ul>
               </td>
             </tr>
@@ -378,6 +380,78 @@ function generateEmailHtml(payload: GenericEmailPayload): { subject: string; htm
           <div style="text-align: center; margin: 32px 0;">
             <a href="https://ichimokuedge.com/pricing" style="background-color: #2962FF; color: #FFFFFF; padding: 14px 36px; border-radius: 10px; text-decoration: none; font-weight: 800; font-size: 13px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; display: inline-block;">
               Reactivate Access →
+            </a>
+          </div>
+        </div>
+      `;
+      break;
+
+    case "trial_activated":
+      subject = `[Ichimoku Edge] 7-Day Free Trial Activated! (${plan})`;
+      bodyContent = `
+        <div style="padding: 36px 28px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #E2E8F0; background-color: #0F172A;">
+          <div style="display: inline-block; padding: 4px 12px; background-color: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 6px; margin-bottom: 16px;">
+            <span style="color: #10B981; font-family: monospace; font-size: 11px; font-weight: bold;">⚡ 7-DAY FREE TRIAL ACTIVE</span>
+          </div>
+
+          <h2 style="color: #10B981; font-size: 22px; font-weight: 700; margin-top: 0; margin-bottom: 16px;">
+            Your 7-Day Free Trial is Live!
+          </h2>
+          <p style="font-size: 14px; line-height: 1.7; color: #CBD5E1; margin-bottom: 24px;">
+            Hello <strong style="color: #FFFFFF;">${customerName}</strong>, your 7-day trial for the <strong style="color: #FBE178;">${plan} Plan</strong> has been successfully activated. You have full access to all premium TradingView Pine Script v5 indicators and scanners.
+          </p>
+
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #1E293B; border: 1px solid #10B981; border-radius: 12px; margin-bottom: 28px; font-size: 13px;">
+            <tr>
+              <td style="padding: 16px 20px; border-bottom: 1px solid #334155; color: #94A3B8; font-weight: bold;">Trial Plan</td>
+              <td style="padding: 16px 20px; border-bottom: 1px solid #334155; color: #FFFFFF; font-weight: bold;">${plan} (7 Days Free)</td>
+            </tr>
+            <tr>
+              <td style="padding: 14px 20px; border-bottom: 1px solid #334155; color: #94A3B8; font-weight: bold;">TradingView Username</td>
+              <td style="padding: 14px 20px; border-bottom: 1px solid #334155; color: #10B981; font-family: monospace; font-weight: bold;">${tradingViewUsername}</td>
+            </tr>
+            <tr>
+              <td style="padding: 14px 20px; border-bottom: 1px solid #334155; color: #94A3B8; font-weight: bold;">Trial Started</td>
+              <td style="padding: 14px 20px; border-bottom: 1px solid #334155; color: #CBD5E1; font-family: monospace;">${purchaseDate}</td>
+            </tr>
+            <tr>
+              <td style="padding: 14px 20px; color: #94A3B8; font-weight: bold;">Trial Expiry Date</td>
+              <td style="padding: 14px 20px; color: #FBE178; font-family: monospace; font-weight: bold;">${expiryDate}</td>
+            </tr>
+          </table>
+
+          <div style="background-color: rgba(41, 98, 255, 0.1); border-left: 4px solid #2962FF; padding: 18px 20px; border-radius: 0 8px 8px 0; margin-bottom: 28px;">
+            <p style="margin: 0; color: #CBD5E1; font-size: 13px; line-height: 1.6;">
+              <strong style="color: #38BDF8;">No Payment Required:</strong> You will not be charged during your 7-day trial period. When your trial concludes, you can purchase a paid subscription to continue accessing the indicator suite.
+            </p>
+          </div>
+
+          <div style="text-align: center; margin: 32px 0 12px 0;">
+            <a href="https://ichimokuedge.com/tools" style="background: linear-gradient(135deg, #FBE178 0%, #EAB308 100%); color: #000000; padding: 14px 36px; border-radius: 10px; text-decoration: none; font-weight: 800; font-size: 13px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; display: inline-block;">
+              Launch Indicator Suite →
+            </a>
+          </div>
+        </div>
+      `;
+      break;
+
+    case "trial_expired":
+      subject = `[Ichimoku Edge] Your 7-day free trial has expired`;
+      bodyContent = `
+        <div style="padding: 36px 28px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #E2E8F0; background-color: #0F172A;">
+          <h2 style="color: #F59E0B; font-size: 22px; font-weight: 700; margin-top: 0; margin-bottom: 16px;">
+            Free Trial Concluded — Payment Required
+          </h2>
+          <p style="font-size: 14px; line-height: 1.7; color: #CBD5E1; margin-bottom: 24px;">
+            Hello <strong style="color: #FFFFFF;">${customerName}</strong>, your 7-day free trial for the <strong>${plan}</strong> expired on <strong>${expiryDate}</strong>.
+          </p>
+          <p style="font-size: 13px; line-height: 1.6; color: #94A3B8; margin-bottom: 28px;">
+            To restore your TradingView script whitelist and continue using multi-timeframe scanners, complete your paid subscription.
+          </p>
+
+          <div style="text-align: center; margin: 32px 0;">
+            <a href="https://ichimokuedge.com/pricing" style="background: linear-gradient(135deg, #2962FF 0%, #1D4ED8 100%); color: #FFFFFF; padding: 14px 36px; border-radius: 10px; text-decoration: none; font-weight: 800; font-size: 13px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; display: inline-block;">
+              Upgrade to Paid Plan →
             </a>
           </div>
         </div>

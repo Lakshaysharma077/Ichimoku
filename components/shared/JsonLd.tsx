@@ -33,7 +33,7 @@ export default function JsonLd({ type = "Organization", data }: JsonLdProps) {
       ratingCount: "1200",
       offers: {
         "@type": "Offer",
-        price: "29.00",
+        price: "22.00",
         priceCurrency: "USD",
         priceValidUntil: "2027-12-31",
       },

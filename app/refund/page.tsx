@@ -5,8 +5,8 @@ import ScrollReveal from '@/components/shared/ScrollReveal';
 export default function RefundPage() {
   const sections = [
     {
-      title: "1. 14-Day Free Trial",
-      content: "All premium subscriptions come with a 14-day free trial. You will not be charged during this period, and you can cancel anytime to prevent any future billing."
+      title: "1. 7-Day Free Trial",
+      content: "All premium subscriptions come with a 7-day free trial. You will not be charged during this period, and you can cancel anytime to prevent any future billing."
     },
     {
       title: "2. Monthly Subscriptions",
@@ -22,7 +22,7 @@ export default function RefundPage() {
     },
     {
       title: "5. Digital Goods Policy",
-      content: "Because our indicators are digital goods delivered via TradingView, 'Invite-only' access is considered the delivery of service. Please ensure you use the 14-day trial to verify the tools meet your needs before subscribing."
+      content: "Because our indicators are digital goods delivered via TradingView, 'Invite-only' access is considered the delivery of service. Please ensure you use the 7-day trial to verify the tools meet your needs before subscribing."
     }
   ];
 

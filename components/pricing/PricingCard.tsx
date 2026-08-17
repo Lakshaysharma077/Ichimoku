@@ -43,7 +43,14 @@ export default function PricingCard({
     const planParam = encodeURIComponent(name);
     const priceParam = encodeURIComponent(price);
     const isYearlyParam = isYearly ? 'true' : 'false';
-    router.push(`/checkout?plan=${planParam}&price=${priceParam}&yearly=${isYearlyParam}`);
+    const isFreePlan = price === '$0' || price === '$0.00' || name.toLowerCase() === 'explorer';
+    
+    if (isFreePlan) {
+      router.push('/tools');
+      return;
+    }
+
+    router.push(`/checkout?plan=${planParam}&price=${priceParam}&yearly=${isYearlyParam}&trial=true`);
   };
   return (
     <motion.div
@@ -63,7 +70,7 @@ export default function PricingCard({
       {isTrial && (
         <div className="mb-6 py-2 px-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-center">
           <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">
-            <EditableElement section="pricing" path={['trialBadge']} content="14-Day Free Trial" />
+            <EditableElement section="pricing" path={['trialBadge']} content="7-Day Free Trial" />
           </span>
         </div>
       )}

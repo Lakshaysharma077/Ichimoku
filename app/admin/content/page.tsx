@@ -578,7 +578,7 @@ export default function AdminContentPage() {
                               {ind.accessStatus || "Premium"}
                             </span>
                             <span className="text-[10px] font-mono text-text-muted">
-                              {ind.priceLabel || "$29/mo"}
+                              {ind.priceLabel || "$22/mo"}
                             </span>
                           </div>
                           <h4 className="font-bold text-xs text-text-primary mt-1 line-clamp-1">{ind.name}</h4>

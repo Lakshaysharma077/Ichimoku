@@ -5,7 +5,7 @@ export interface Indicator {
   id: string;
   name: string;
   description: string;
-  badgeType: 'FREE' | 'PREMIUM' | '14-DAY TRIAL';
+  badgeType: 'FREE' | 'PREMIUM' | '7-DAY TRIAL' | '14-DAY TRIAL';
   price: string;
   tvUrl: string;
   category: string[];

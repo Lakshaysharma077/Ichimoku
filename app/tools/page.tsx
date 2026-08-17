@@ -25,6 +25,8 @@ export default function ToolsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingIndicator, setEditingIndicator] = useState<IndicatorData | null>(null);
 
+  const [trialInfo, setTrialInfo] = useState<{ isTrial: boolean; daysRemaining: number } | null>(null);
+
   const fetchIndicators = async () => {
     setLoading(true);
     try {
@@ -53,8 +55,14 @@ export default function ToolsPage() {
         fetch('/api/user/profile')
           .then((r) => r.json())
           .then((data) => {
-            if (data.user?.subscriptions?.some((s: any) => s.status === 'ACTIVE')) {
-              setAccessProfile({ canAccessPremium: true, accessLevel: 'Active Subscriber' });
+            if (data.accessProfile) {
+              setAccessProfile(data.accessProfile);
+            }
+            if (data.subscriptionInfo?.isTrial) {
+              setTrialInfo({
+                isTrial: true,
+                daysRemaining: data.subscriptionInfo.trialDaysRemaining ?? 14,
+              });
             }
           })
           .catch(() => {});
@@ -120,6 +128,28 @@ export default function ToolsPage() {
   return (
     <div className="pt-40 pb-24 relative overflow-hidden min-h-[100svh]">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
+        {trialInfo?.isTrial && (
+          <div className="mb-8 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+            <div className="flex items-center gap-3 text-emerald-400">
+              <span className="p-2 rounded-xl bg-emerald-500/20">⚡</span>
+              <div>
+                <span className="font-bold text-xs uppercase tracking-wider block">
+                  7-Day Free Trial Active ({trialInfo.daysRemaining} {trialInfo.daysRemaining === 1 ? 'Day' : 'Days'} Remaining)
+                </span>
+                <span className="text-[11px] text-text-muted">
+                  Website tools & scanners unlocked immediately • TradingView whitelisting queued for admin review.
+                </span>
+              </div>
+            </div>
+            <a
+              href="/checkout?plan=Samurai"
+              className="px-4 py-2 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 rounded-xl text-emerald-300 font-mono text-xs font-bold uppercase tracking-wider transition-all shrink-0"
+            >
+              Upgrade to Pro →
+            </a>
+          </div>
+        )}
+
         <ScrollReveal>
           <div className="flex flex-col mb-12">
             <div className="flex items-center justify-between mb-4">

@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
         const accessStatus =
           ind.badgeType === "FREE"
             ? "Free"
-            : ind.badgeType === "14-DAY TRIAL"
+            : ind.badgeType === "7-DAY TRIAL" || (ind.badgeType as any) === "14-DAY TRIAL"
             ? "Beta"
             : "Premium";
 
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
         slug,
         description: description || "",
         accessStatus: accessStatus || "Premium",
-        priceLabel: priceLabel || "$29/mo",
+        priceLabel: priceLabel || "$22/mo",
         tvUrl: tvUrl || "",
         category: typeof category === "string" ? category : JSON.stringify(category || ["ICHIMOKU"]),
         sortOrder: sortOrder || 0,

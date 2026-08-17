@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { signIn } from 'next-auth/react';
 import { signInWithGoogle, signInWithEmail } from '@/lib/supabase';
@@ -9,13 +10,19 @@ import { Mail, Lock, Eye, EyeOff, User, CheckCircle2, ShieldCheck, Zap, Globe } 
 import Link from 'next/link';
 import TradingViewIcon from '@/components/ui/TradingViewIcon';
 
-export default function AuthPage() {
-  const [isLogin, setIsLogin] = useState(true);
+function AuthContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const callbackUrl = searchParams.get('callbackUrl') || searchParams.get('redirect') || '/';
+  const initialMode = searchParams.get('mode') === 'register' ? false : true;
+  const initialTv = searchParams.get('tvUsername') || searchParams.get('tradingViewUsername') || '';
+
+  const [isLogin, setIsLogin] = useState(initialMode);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [tvUsername, setTvUsername] = useState("");
+  const [tvUsername, setTvUsername] = useState(initialTv);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -55,7 +62,7 @@ export default function AuthPage() {
           setError("Invalid email or password in database");
           setIsLoading(false);
         } else {
-          window.location.href = '/';
+          window.location.href = callbackUrl;
         }
       } else {
         const res = await fetch('/api/auth/register', {
@@ -81,7 +88,7 @@ export default function AuthPage() {
           setError("Account created, but failed to log in automatically. Please log in manually.");
           setIsLogin(true);
         } else {
-          window.location.href = '/';
+          window.location.href = callbackUrl;
         }
       }
     } catch (err) {
@@ -120,7 +127,7 @@ export default function AuthPage() {
             {[
               { icon: Zap, title: "Invite-Only Access", desc: "Get direct access to our premium TradingView scripts." },
               { icon: Globe, title: "Multi-Timeframe Context", desc: "See the bigger picture across all major liquid markets." },
-              { icon: ShieldCheck, title: "14-Day Full Trial", desc: "Test the complete Samurai Vision system, no strings attached." }
+              { icon: ShieldCheck, title: "7-Day Full Trial", desc: "Test the complete Samurai Vision system, no strings attached." }
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -331,7 +338,7 @@ export default function AuthPage() {
                         PROCESSING...
                       </div>
                     ) : (
-                      isLogin ? "LOG IN TO ACCOUNT" : "START YOUR 14-DAY TRIAL"
+                      isLogin ? "LOG IN TO ACCOUNT" : "START YOUR 7-DAY TRIAL"
                     )}
                   </Button>
                 </div>
@@ -388,5 +395,19 @@ export default function AuthPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center pt-32">
+          <div className="w-8 h-8 border-4 border-accent/20 border-t-accent rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <AuthContent />
+    </Suspense>
   );
 }

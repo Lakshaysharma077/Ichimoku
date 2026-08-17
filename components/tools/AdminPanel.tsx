@@ -118,7 +118,7 @@ export default function AdminPanel() {
               >
                 <option value="FREE">FREE</option>
                 <option value="PREMIUM">PREMIUM</option>
-                <option value="14-DAY TRIAL">14-DAY TRIAL</option>
+                <option value="7-DAY TRIAL">7-DAY TRIAL</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">

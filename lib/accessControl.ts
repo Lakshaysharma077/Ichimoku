@@ -17,6 +17,9 @@ export interface UserAccessProfile {
   canAccessPremium: boolean;
   canAccessBeta: boolean;
   unlockedPlans: string[];
+  isTrial?: boolean;
+  trialDaysRemaining?: number;
+  hasUsedTrial?: boolean;
 }
 
 /**
@@ -34,6 +37,9 @@ export async function getAccessProfile(
       canAccessPremium: false,
       canAccessBeta: false,
       unlockedPlans: [],
+      isTrial: false,
+      trialDaysRemaining: 0,
+      hasUsedTrial: false,
     };
   }
 
@@ -45,6 +51,9 @@ export async function getAccessProfile(
       canAccessPremium: true,
       canAccessBeta: true,
       unlockedPlans: ["ALL"],
+      isTrial: false,
+      trialDaysRemaining: 0,
+      hasUsedTrial: true,
     };
   }
 
@@ -58,6 +67,9 @@ export async function getAccessProfile(
       canAccessPremium: true,
       canAccessBeta: true,
       unlockedPlans: subInfo.subscribedPlanNames,
+      isTrial: subInfo.isTrial,
+      trialDaysRemaining: subInfo.trialDaysRemaining,
+      hasUsedTrial: subInfo.hasUsedTrial,
     };
   }
 
@@ -77,6 +89,9 @@ export async function getAccessProfile(
       canAccessPremium: false,
       canAccessBeta: false,
       unlockedPlans: [],
+      isTrial: false,
+      trialDaysRemaining: 0,
+      hasUsedTrial: subInfo.hasUsedTrial,
     };
   }
 
@@ -95,6 +110,9 @@ export async function getAccessProfile(
         canAccessPremium: false,
         canAccessBeta: false,
         unlockedPlans: [],
+        isTrial: false,
+        trialDaysRemaining: 0,
+        hasUsedTrial: subInfo.hasUsedTrial,
       };
     }
     if (lastSub.status === "CANCELLED") {
@@ -105,6 +123,9 @@ export async function getAccessProfile(
         canAccessPremium: false,
         canAccessBeta: false,
         unlockedPlans: [],
+        isTrial: false,
+        trialDaysRemaining: 0,
+        hasUsedTrial: subInfo.hasUsedTrial,
       };
     }
   }
@@ -116,6 +137,9 @@ export async function getAccessProfile(
     canAccessPremium: false,
     canAccessBeta: false,
     unlockedPlans: [],
+    isTrial: false,
+    trialDaysRemaining: 0,
+    hasUsedTrial: subInfo.hasUsedTrial,
   };
 }
 

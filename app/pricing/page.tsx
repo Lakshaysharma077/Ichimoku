@@ -82,7 +82,7 @@ export default function PricingPage() {
                 size="lg"
                 onClick={() => {
                   const priceVal = isYearly ? '$220' : '$22';
-                  router.push(`/checkout?plan=Samurai&price=${encodeURIComponent(priceVal)}&yearly=${isYearly}`);
+                  router.push(`/checkout?plan=Samurai&price=${encodeURIComponent(priceVal)}&yearly=${isYearly}&trial=true`);
                 }}
               >
                 <EditableElement section="pricing" path={['trialGuarantee', 'button']} content={pricing.trialGuarantee.button} />

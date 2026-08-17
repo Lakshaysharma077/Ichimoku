@@ -105,6 +105,17 @@ function CheckoutContent() {
   // URL Params
   const plan = searchParams.get('plan') || 'Samurai';
   const isYearly = searchParams.get('yearly') === 'true';
+  const initialTrialParam = searchParams.get('trial') === 'true';
+
+  // Trial Mode State
+  const [isTrialMode, setIsTrialMode] = useState<boolean>(initialTrialParam);
+  const [submittedTrial, setSubmittedTrial] = useState<{
+    plan: string;
+    trialDaysRemaining: number;
+    tradingViewUsername: string;
+    customerEmail: string;
+    expiryDate: string;
+  } | null>(null);
 
   // Official Confirmed Pricing in USD
   const amountDue = isYearly ? OFFICIAL_PRICING.yearly.amount : OFFICIAL_PRICING.monthly.amount;
@@ -150,7 +161,6 @@ function CheckoutContent() {
     setSelectedToken(token);
     const validNetworks = SUPPORTED_PAYMENT_COMBINATIONS[token];
     if (!validNetworks.includes(selectedNetwork)) {
-      // Default to Arbitrum or Ethereum if current network is invalid for this token
       setSelectedNetwork('arbitrum');
     }
   };
@@ -198,7 +208,70 @@ function CheckoutContent() {
     }
   };
 
-  // Submit payment request
+  // Start 7-Day Free Trial (Zero Cost, No Crypto/TXID required)
+  const handleStartTrial = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
+
+    if (!tradingViewUsername.trim()) {
+      setErrorMessage('TradingView Username is required so we can register your account for indicator access.');
+      return;
+    }
+
+    if (!session) {
+      const authRedirectUrl = `/auth?mode=register&callbackUrl=${encodeURIComponent('/checkout?plan=' + plan + '&trial=true')}&tvUsername=${encodeURIComponent(tradingViewUsername.trim())}`;
+      router.push(authRedirectUrl);
+      return;
+    }
+
+    if (!customerName.trim()) {
+      setErrorMessage('Please enter your Full Name.');
+      return;
+    }
+    if (!customerEmail.trim() || !customerEmail.includes('@')) {
+      setErrorMessage('Please enter a valid Email Address.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch('/api/user/trial', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          planName: plan,
+          tradingViewUsername: tradingViewUsername.trim(),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to activate 7-day free trial.');
+      }
+
+      const expiryDateFormatted = new Date(Date.now() + 7 * 86400000).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+
+      setSubmittedTrial({
+        plan,
+        trialDaysRemaining: 7,
+        tradingViewUsername: tradingViewUsername.trim(),
+        customerEmail: customerEmail.trim(),
+        expiryDate: expiryDateFormatted,
+      });
+    } catch (err: any) {
+      setErrorMessage(err.message || 'An unexpected error occurred during trial activation.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Submit paid payment request
   const handleSubmitPayment = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -326,24 +399,143 @@ function CheckoutContent() {
         </button>
 
         {/* Page Title */}
-        <div className="mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/10 border border-accent/20 rounded-full text-accent text-xs font-mono font-bold uppercase tracking-wider mb-3">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Secure Crypto Checkout</span>
+        <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/10 border border-accent/20 rounded-full text-accent text-xs font-mono font-bold uppercase tracking-wider mb-3">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>{isTrialMode ? '7-Day Free Trial Activation' : 'Secure Crypto Checkout'}</span>
+            </div>
+            <h1 className="syne font-extrabold text-3xl lg:text-4xl text-text-primary uppercase tracking-tight">
+              {isTrialMode ? 'Start 7-Day Free Trial' : 'Checkout & Indicator Activation'}
+            </h1>
+            <p className="text-text-secondary text-sm mt-1">
+              {isTrialMode
+                ? 'Zero payment required today. Instant website access unlocked + TradingView username submitted to admin.'
+                : 'Pay with USDT or USDC, submit your TXID, and activate your invite-only TradingView indicator suite.'}
+            </p>
           </div>
-          <h1 className="syne font-extrabold text-3xl lg:text-4xl text-text-primary uppercase tracking-tight">
-            Checkout & Indicator Activation
-          </h1>
-          <p className="text-text-secondary text-sm mt-1">
-            Pay with USDT or USDC, submit your Transaction Hash (TXID), and activate your invite-only TradingView indicator suite.
-          </p>
+
+          {/* Trial / Paid Switcher Toggle */}
+          {!submittedPayment && !submittedTrial && (
+            <div className="inline-flex p-1 bg-bg-secondary border border-border rounded-xl self-start md:self-auto">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsTrialMode(true);
+                  setErrorMessage(null);
+                }}
+                className={`px-4 py-2 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all ${
+                  isTrialMode
+                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.15)]'
+                    : 'text-text-muted hover:text-text-primary'
+                }`}
+              >
+                7-Day Free Trial ($0)
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsTrialMode(false);
+                  setErrorMessage(null);
+                }}
+                className={`px-4 py-2 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all ${
+                  !isTrialMode
+                    ? 'bg-accent/20 text-accent border border-accent/30 shadow-[0_0_15px_rgba(251,225,120,0.15)]'
+                    : 'text-text-muted hover:text-text-primary'
+                }`}
+              >
+                Direct Paid Purchase
+              </button>
+            </div>
+          )}
         </div>
 
         <AnimatePresence mode="wait">
-          {submittedPayment ? (
-            /* SUCCESS / CONFIRMATION VIEW */
+          {/* TRIAL CONFIRMATION VIEW */}
+          {submittedTrial ? (
             <motion.div
-              key="confirmation"
+              key="trial-confirmation"
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="max-w-2xl mx-auto py-8"
+            >
+              <Card className="p-8 md:p-12 relative overflow-hidden border-emerald-500/40">
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500" />
+
+                <div className="flex justify-center mb-6">
+                  <div className="p-4 bg-emerald-500/10 rounded-full border border-emerald-500/20 shadow-[0_0_30px_rgba(16,185,129,0.25)]">
+                    <CheckCircle2 className="w-14 h-14 text-emerald-500 animate-pulse" />
+                  </div>
+                </div>
+
+                <div className="text-center mb-8">
+                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full">
+                    7-Day Free Trial Activated
+                  </span>
+                  <h2 className="syne font-bold text-2xl lg:text-3xl text-text-primary uppercase mt-3 mb-2 tracking-tight">
+                    Welcome to the Edge, {customerName}!
+                  </h2>
+                  <p className="text-text-secondary text-sm leading-relaxed max-w-md mx-auto">
+                    Your 7-day free trial is live with zero upfront payment. You can start exploring all tools and scanners on our website immediately.
+                  </p>
+                </div>
+
+                {/* Trial Details with Clear Status Separation */}
+                <div className="bg-bg-primary/60 border border-border rounded-2xl p-6 mb-8 text-xs space-y-3.5">
+                  <div className="flex justify-between items-center border-b border-border/50 pb-3">
+                    <span className="text-text-muted">Plan:</span>
+                    <span className="font-bold text-text-primary uppercase">{submittedTrial.plan} (7-Day Trial)</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-text-muted">Total Charged Today:</span>
+                    <span className="font-bold font-mono text-emerald-400 text-sm">$0.00 USD (No Payment Required)</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-text-muted">Website Access:</span>
+                    <span className="font-bold text-emerald-400 font-mono bg-emerald-500/10 px-2.5 py-0.5 rounded border border-emerald-500/20">
+                      Active (Instant Access)
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-text-muted">TradingView Access:</span>
+                    <span className="font-bold text-amber-400 font-mono bg-amber-400/10 px-2.5 py-0.5 rounded border border-amber-400/20">
+                      Pending Whitelist (@{submittedTrial.tradingViewUsername})
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-text-muted">Trial Days Remaining:</span>
+                    <span className="font-mono font-bold text-text-primary">
+                      7 Days Remaining
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center pt-2 border-t border-border/50">
+                    <span className="text-text-muted">Trial Expiry Date:</span>
+                    <span className="font-bold text-text-primary font-mono">{submittedTrial.expiryDate}</span>
+                  </div>
+                </div>
+
+                {/* Accurate Info Note */}
+                <div className="p-4 rounded-xl bg-bg-primary/40 border border-border text-[11px] text-text-secondary leading-relaxed mb-8">
+                  <strong className="text-text-primary block mb-0.5">TradingView Access Note:</strong>
+                  Our admin team has received your username <strong className="text-accent font-mono">@{submittedTrial.tradingViewUsername}</strong>. Invite-only Pine Script v5 indicators will appear in your TradingView account once manually granted. Website tools and dashboard scanners are available right now.
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button size="lg" className="w-full" onClick={() => router.push('/tools')}>
+                    Open Website Tools
+                  </Button>
+                  <Button size="lg" variant="outline" className="w-full" onClick={() => router.push('/profile')}>
+                    View Account Status
+                  </Button>
+                </div>
+              </Card>
+            </motion.div>
+          ) : submittedPayment ? (
+            /* PAID PAYMENT CONFIRMATION VIEW */
+            <motion.div
+              key="payment-confirmation"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
@@ -431,10 +623,37 @@ function CheckoutContent() {
               </Card>
             </motion.div>
           ) : (
-            /* MAIN FORM VIEW */
-            <form onSubmit={handleSubmitPayment} className="grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-8 items-start">
+            /* MAIN CHECKOUT FORM */
+            <form onSubmit={isTrialMode ? handleStartTrial : handleSubmitPayment} className="grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-8 items-start">
 
               <div className="space-y-6">
+
+                {/* Unauthenticated Notification for Trial Mode */}
+                {isTrialMode && !session && (
+                  <div className="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="flex items-start gap-3">
+                      <Lock className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                      <div>
+                        <h4 className="text-xs font-bold text-amber-300 uppercase font-mono tracking-wider">
+                          Account Required for 7-Day Free Trial
+                        </h4>
+                        <p className="text-xs text-text-secondary mt-0.5">
+                          You must be signed in so we can assign the 7-day trial to your account.
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const authUrl = `/auth?mode=register&callbackUrl=${encodeURIComponent('/checkout?plan=' + plan + '&trial=true')}&tvUsername=${encodeURIComponent(tradingViewUsername.trim())}`;
+                        router.push(authUrl);
+                      }}
+                      className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-bg-primary font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors shrink-0"
+                    >
+                      Sign In / Register →
+                    </button>
+                  </div>
+                )}
 
                 {/* Step 1: Customer Information */}
                 <Card className="p-6 md:p-8 space-y-6">
@@ -444,7 +663,7 @@ function CheckoutContent() {
                     </div>
                     <div>
                       <h3 className="syne font-bold text-lg text-text-primary uppercase">Customer Information</h3>
-                      <p className="text-xs text-text-muted uppercase font-mono tracking-widest mt-0.5">Required for TradingView Indicator Activation</p>
+                      <p className="text-xs text-text-muted uppercase font-mono tracking-widest mt-0.5">Required for Account & TradingView Registration</p>
                     </div>
                   </div>
 
@@ -488,7 +707,7 @@ function CheckoutContent() {
                           <Sparkles className="w-3.5 h-3.5 text-accent" />
                           <span>TradingView Username <span className="text-red-400">*</span></span>
                         </span>
-                        <span className="text-[10px] text-accent lowercase">required to grant invite-only indicators</span>
+                        <span className="text-[10px] text-accent lowercase">stored for admin indicator whitelisting</span>
                       </label>
                       <input
                         type="text"
@@ -517,287 +736,374 @@ function CheckoutContent() {
                   </div>
                 </Card>
 
-                {/* Step 2: Payment Method & Deposit Details */}
-                <Card className="p-6 md:p-8 space-y-6">
-                  <div className="flex items-center gap-3.5 border-b border-border pb-5">
-                    <div className="w-8 h-8 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-sm font-bold font-mono">
-                      2
-                    </div>
-                    <div>
-                      <h3 className="syne font-bold text-lg text-text-primary uppercase">Payment Options</h3>
-                      <p className="text-xs text-text-muted uppercase font-mono tracking-widest mt-0.5">Select USDT or USDC & Network</p>
-                    </div>
-                  </div>
+                {/* Step 2: Trial Activation OR Crypto Payment Details */}
+                {isTrialMode ? (
+                  /* 7-DAY TRIAL ACTIVATION PANEL */
+                  <Card className="p-6 md:p-8 space-y-6 border-emerald-500/30 bg-bg-secondary/40 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500" />
 
-                  {/* Token Selection (USDT vs USDC) */}
-                  <div className="space-y-3">
-                    <label className="text-xs text-text-muted uppercase font-mono tracking-widest block">
-                      Select Cryptocurrency
-                    </label>
-                    <div className="grid grid-cols-2 gap-4">
-                      {(['USDT', 'USDC'] as const).map((token) => (
-                        <button
-                          type="button"
-                          key={token}
-                          onClick={() => handleSelectToken(token)}
-                          className={`p-4 rounded-xl border flex items-center gap-3.5 transition-all duration-300 ${
-                            selectedToken === token
-                              ? 'border-[#2962FF] bg-[#2962FF]/10 shadow-[0_0_15px_rgba(41,98,255,0.18)]'
-                              : 'border-border bg-bg-primary/40 hover:border-text-secondary/30'
-                          }`}
-                        >
-                          <div className={`w-9 h-9 rounded-full flex items-center justify-center font-extrabold text-sm ${
-                            token === 'USDC' ? 'bg-[#2775CA] text-white' : 'bg-[#26A17B] text-white'
-                          }`}>
-                            {token === 'USDC' ? '$' : '₮'}
-                          </div>
-                          <div className="text-left">
-                            <span className="font-bold text-text-primary block text-base">{token}</span>
-                            <span className="text-[10px] text-text-muted font-mono uppercase tracking-wide">
-                              {token === 'USDC' ? 'USD Coin' : 'Tether USD'}
-                            </span>
-                          </div>
-                        </button>
-                      ))}
+                    <div className="flex items-center gap-3.5 border-b border-border pb-5">
+                      <div className="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-sm font-bold font-mono">
+                        2
+                      </div>
+                      <div>
+                        <h3 className="syne font-bold text-lg text-text-primary uppercase">7-Day Free Trial Activation</h3>
+                        <p className="text-xs text-text-muted uppercase font-mono tracking-widest mt-0.5">Instant Website Access • Zero Payment Today</p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Blockchain Network Selector - Strictly Enforcing Supported Pairs */}
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
+                    <div className="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 space-y-3">
+                      <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+                        <ShieldCheck className="w-5 h-5" />
+                        <span>Zero Charge • No Crypto Deposit or Credit Card Required</span>
+                      </div>
+                      <p className="text-xs text-text-secondary leading-relaxed">
+                        Enjoy 7 days of free access to the <strong>{plan} system</strong>. Website tools and scanners are available immediately. TradingView invite-only indicator access is submitted to our team for manual activation under your username.
+                      </p>
+                    </div>
+
+                    {/* Error Alert */}
+                    {errorMessage && (
+                      <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 text-xs text-red-400 flex items-center gap-2">
+                        <AlertTriangle className="w-4 h-4 shrink-0" />
+                        <span>{errorMessage}</span>
+                      </div>
+                    )}
+
+                    <div className="pt-2">
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="w-full py-4 text-base font-bold tracking-wide shadow-[0_0_25px_rgba(16,185,129,0.2)]"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          <span className="flex items-center justify-center gap-2">
+                            <Clock className="w-4 h-4 animate-spin" />
+                            Activating 7-Day Free Trial...
+                          </span>
+                        ) : !session ? (
+                          "Sign In / Register to Start Free Trial ($0.00)"
+                        ) : (
+                          "Start My 7-Day Free Trial ($0.00)"
+                        )}
+                      </Button>
+                      <p className="text-[10px] text-center text-text-muted font-mono uppercase tracking-widest mt-3 flex items-center justify-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>Instant website access • TradingView username queued for admin review</span>
+                      </p>
+                    </div>
+
+                    <div className="pt-4 border-t border-border/40 text-center">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsTrialMode(false);
+                          setErrorMessage(null);
+                        }}
+                        className="text-xs font-mono text-accent hover:underline"
+                      >
+                        Want to make a direct crypto payment instead? Switch to Paid Checkout →
+                      </button>
+                    </div>
+                  </Card>
+                ) : (
+                  /* CRYPTO PAYMENT & TXID PANEL */
+                  <Card className="p-6 md:p-8 space-y-6">
+                    <div className="flex items-center gap-3.5 border-b border-border pb-5">
+                      <div className="w-8 h-8 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-sm font-bold font-mono">
+                        2
+                      </div>
+                      <div>
+                        <h3 className="syne font-bold text-lg text-text-primary uppercase">Payment Options</h3>
+                        <p className="text-xs text-text-muted uppercase font-mono tracking-widest mt-0.5">Select USDT or USDC & Network</p>
+                      </div>
+                    </div>
+
+                    {/* Token Selection (USDT vs USDC) */}
+                    <div className="space-y-3">
                       <label className="text-xs text-text-muted uppercase font-mono tracking-widest block">
-                        Select Blockchain Network
+                        Select Cryptocurrency
                       </label>
-                      <span className="text-[10px] font-mono text-accent uppercase">
-                        {selectedToken === 'USDT' ? 'Ethereum, Arbitrum, Avalanche, TRON' : 'Ethereum, Arbitrum, Avalanche, Solana'}
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                      {NETWORK_OPTIONS.map((net) => {
-                        const isValidForToken = SUPPORTED_PAYMENT_COMBINATIONS[selectedToken].includes(net.id);
-                        const isSelected = selectedNetwork === net.id && isValidForToken;
-
-                        if (!isValidForToken) {
-                          return (
-                            <div
-                              key={net.id}
-                              className="p-3 rounded-xl border border-border/30 bg-bg-primary/20 opacity-40 cursor-not-allowed flex flex-col items-center justify-center text-center gap-1.5"
-                              title={`${net.name} does not support ${selectedToken}`}
-                            >
-                              <span className="text-[10px] font-bold uppercase tracking-wider font-mono text-text-muted">
-                                {net.badge}
-                              </span>
-                              <span className="text-xs text-text-muted font-bold font-sans">
-                                {net.name}
-                              </span>
-                              <span className="text-[9px] text-red-400 font-mono">Not Supported</span>
-                            </div>
-                          );
-                        }
-
-                        return (
+                      <div className="grid grid-cols-2 gap-4">
+                        {(['USDT', 'USDC'] as const).map((token) => (
                           <button
                             type="button"
-                            key={net.id}
-                            onClick={() => setSelectedNetwork(net.id)}
-                            className={`p-3 rounded-xl border flex flex-col items-center justify-center text-center gap-1.5 transition-all duration-300 ${
-                              isSelected
-                                ? `${net.activeBorderColor} ${net.glowClass} bg-bg-secondary`
-                                : `border-border bg-bg-primary/40 ${net.hoverBgColor}`
+                            key={token}
+                            onClick={() => handleSelectToken(token)}
+                            className={`p-4 rounded-xl border flex items-center gap-3.5 transition-all duration-300 ${
+                              selectedToken === token
+                                ? 'border-[#2962FF] bg-[#2962FF]/10 shadow-[0_0_15px_rgba(41,98,255,0.18)]'
+                                : 'border-border bg-bg-primary/40 hover:border-text-secondary/30'
                             }`}
                           >
-                            <span className={`text-[10px] font-bold uppercase tracking-wider font-mono ${net.color}`}>
-                              {net.badge}
-                            </span>
-                            <span className="text-xs text-text-primary font-bold font-sans">
-                              {net.name}
-                            </span>
+                            <div className={`w-9 h-9 rounded-full flex items-center justify-center font-extrabold text-sm ${
+                              token === 'USDC' ? 'bg-[#2775CA] text-white' : 'bg-[#26A17B] text-white'
+                            }`}>
+                              {token === 'USDC' ? '$' : '₮'}
+                            </div>
+                            <div className="text-left">
+                              <span className="font-bold text-text-primary block text-base">{token}</span>
+                              <span className="text-[10px] text-text-muted font-mono uppercase tracking-wide">
+                                {token === 'USDC' ? 'USD Coin' : 'Tether USD'}
+                              </span>
+                            </div>
                           </button>
-                        );
-                      })}
+                        ))}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Deposit Wallet Instructions & QR Code Panel */}
-                  <div className="bg-bg-secondary/60 border border-border/70 rounded-2xl p-6 space-y-6 relative overflow-hidden">
-                    <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-current to-transparent opacity-60 ${currentNetworkConfig.color}`} />
-
-                    <div className="flex flex-col md:flex-row items-center gap-6">
-                      {/* QR Code */}
-                      <div className="shrink-0 flex flex-col items-center gap-2">
-                        <QRCodeDisplay value={`${selectedToken.toLowerCase()}:${activeWalletAddress}?amount=${amountDue}`} />
-                        <span className="text-[10px] text-text-muted font-mono uppercase tracking-wider">
-                          Scan to Deposit
+                    {/* Blockchain Network Selector */}
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <label className="text-xs text-text-muted uppercase font-mono tracking-widest block">
+                          Select Blockchain Network
+                        </label>
+                        <span className="text-[10px] font-mono text-accent uppercase">
+                          {selectedToken === 'USDT' ? 'Ethereum, Arbitrum, Avalanche, TRON' : 'Ethereum, Arbitrum, Avalanche, Solana'}
                         </span>
                       </div>
 
-                      {/* Payment Details & Address Copy */}
-                      <div className="flex-1 w-full space-y-4">
-                        <div className="space-y-1">
-                          <span className="text-[10px] text-text-muted uppercase font-mono tracking-widest block">
-                            Exact Payment Amount
-                          </span>
-                          <div className="flex items-baseline gap-2 flex-wrap">
-                            <span className="text-3xl font-extrabold text-text-primary syne tracking-tight font-mono">
-                              ${amountDue}
-                            </span>
-                            <span className="text-base font-bold text-accent">
-                              USD ({selectedToken})
-                            </span>
-                            {isYearly && (
-                              <span className="text-[11px] text-emerald-400 font-mono bg-emerald-400/10 px-2 py-0.5 rounded border border-emerald-400/20">
-                                2 Months Free Included
-                              </span>
-                            )}
-                          </div>
-                        </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {NETWORK_OPTIONS.map((net) => {
+                          const isValidForToken = SUPPORTED_PAYMENT_COMBINATIONS[selectedToken].includes(net.id);
+                          const isSelected = selectedNetwork === net.id && isValidForToken;
 
-                        {/* Deposit Address Box */}
-                        <div className="space-y-1.5">
-                          <div className="flex justify-between items-center">
-                            <span className="text-[10px] text-text-muted uppercase font-mono tracking-widest block">
-                              Deposit Wallet Address ({currentNetworkConfig.name})
-                            </span>
-                            <span className={`text-[10px] font-mono font-bold uppercase ${currentNetworkConfig.color}`}>
-                              {currentNetworkConfig.badge}
-                            </span>
-                          </div>
+                          if (!isValidForToken) {
+                            return (
+                              <div
+                                key={net.id}
+                                className="p-3 rounded-xl border border-border/30 bg-bg-primary/20 opacity-40 cursor-not-allowed flex flex-col items-center justify-center text-center gap-1.5"
+                                title={`${net.name} does not support ${selectedToken}`}
+                              >
+                                <span className="text-[10px] font-bold uppercase tracking-wider font-mono text-text-muted">
+                                  {net.badge}
+                                </span>
+                                <span className="text-xs text-text-muted font-bold font-sans">
+                                  {net.name}
+                                </span>
+                                <span className="text-[9px] text-red-400 font-mono">Not Supported</span>
+                              </div>
+                            );
+                          }
 
-                          <div className="flex items-center gap-2 bg-bg-primary border border-border rounded-xl px-3.5 py-3 w-full justify-between group hover:border-accent/40 transition-colors">
-                            <span className="text-xs font-mono text-text-primary truncate pr-2 select-all">
-                              {activeWalletAddress}
-                            </span>
+                          return (
                             <button
                               type="button"
-                              onClick={handleCopy}
-                              className="shrink-0 px-3 py-1.5 bg-bg-secondary hover:bg-accent/10 border border-border hover:border-accent/30 rounded-lg text-text-muted hover:text-accent transition-all flex items-center gap-1.5 text-xs font-mono"
+                              key={net.id}
+                              onClick={() => setSelectedNetwork(net.id)}
+                              className={`p-3 rounded-xl border flex flex-col items-center justify-center text-center gap-1.5 transition-all duration-300 ${
+                                isSelected
+                                  ? `${net.activeBorderColor} ${net.glowClass} bg-bg-secondary`
+                                  : `border-border bg-bg-primary/40 ${net.hoverBgColor}`
+                              }`}
                             >
-                              {copied ? (
-                                <>
-                                  <Check className="w-3.5 h-3.5 text-emerald-500" />
-                                  <span className="text-emerald-500 font-bold">Copied!</span>
-                                </>
-                              ) : (
-                                <>
-                                  <Copy className="w-3.5 h-3.5" />
-                                  <span>Copy Address</span>
-                                </>
-                              )}
+                              <span className={`text-[10px] font-bold uppercase tracking-wider font-mono ${net.color}`}>
+                                {net.badge}
+                              </span>
+                              <span className="text-xs text-text-primary font-bold font-sans">
+                                {net.name}
+                              </span>
                             </button>
-                          </div>
-                        </div>
-
-                        {/* Network Warning Note */}
-                        <div className="bg-bg-primary/50 border border-amber-500/30 rounded-xl p-3.5 text-xs text-text-secondary flex items-start gap-2.5">
-                          <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                          <p className="text-[11px] leading-relaxed text-text-muted font-sans">
-                            <strong className="text-amber-300 block mb-0.5">NETWORK WARNING:</strong>
-                            {warningText}
-                          </p>
-                        </div>
+                          );
+                        })}
                       </div>
                     </div>
 
-                    {/* Transaction Hash (TXID) - REQUIRED */}
-                    <div className="pt-4 border-t border-border/40 space-y-2">
-                      <label className="text-xs font-mono uppercase tracking-wider text-text-secondary flex justify-between">
-                        <span className="flex items-center gap-1.5">
-                          <FileCheck className="w-3.5 h-3.5 text-accent" />
-                          <span>Transaction Hash (TXID) <span className="text-red-400">*</span></span>
-                        </span>
-                        <span className="text-[10px] text-accent font-normal lowercase">required to verify transfer on-chain</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={txnHash}
-                        onChange={(e) => setTxnHash(e.target.value)}
-                        placeholder="e.g. 0x7a89f... or Solana / TRON transaction hash"
-                        className="w-full bg-bg-primary border border-accent/40 rounded-xl px-4 py-3 text-xs font-mono text-text-primary focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted/40 shadow-[0_0_10px_rgba(41,98,255,0.08)]"
-                      />
-                    </div>
+                    {/* Deposit Wallet Instructions & QR Code Panel */}
+                    <div className="bg-bg-secondary/60 border border-border/70 rounded-2xl p-6 space-y-6 relative overflow-hidden">
+                      <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-current to-transparent opacity-60 ${currentNetworkConfig.color}`} />
 
-                    {/* Payment Screenshot Uploader (OPTIONAL) */}
-                    <div className="pt-4 border-t border-border/40 space-y-2">
-                      <label className="text-xs font-mono uppercase tracking-wider text-text-secondary flex items-center justify-between">
-                        <span className="flex items-center gap-1.5">
-                          <ImageIcon className="w-3.5 h-3.5 text-text-muted" />
-                          <span>Payment Screenshot <span className="text-text-muted text-[10px] font-normal">(Optional)</span></span>
-                        </span>
-                        <span className="text-[10px] text-text-muted">JPG, PNG, WEBP max 10MB</span>
-                      </label>
+                      <div className="flex flex-col md:flex-row items-center gap-6">
+                        {/* QR Code */}
+                        <div className="shrink-0 flex flex-col items-center gap-2">
+                          <QRCodeDisplay value={`${selectedToken.toLowerCase()}:${activeWalletAddress}?amount=${amountDue}`} />
+                          <span className="text-[10px] text-text-muted font-mono uppercase tracking-wider">
+                            Scan to Deposit
+                          </span>
+                        </div>
 
-                      {screenshotUrl ? (
-                        <div className="flex items-center justify-between bg-bg-primary border border-emerald-500/40 rounded-xl p-3">
-                          <div className="flex items-center gap-3">
-                            <img src={screenshotUrl} alt="Receipt preview" className="w-12 h-12 object-cover rounded-lg border border-border" />
-                            <div>
-                              <span className="text-xs font-mono text-emerald-400 font-bold block flex items-center gap-1">
-                                <Check className="w-3.5 h-3.5" /> Screenshot Uploaded
+                        {/* Payment Details & Address Copy */}
+                        <div className="flex-1 w-full space-y-4">
+                          <div className="space-y-1">
+                            <span className="text-[10px] text-text-muted uppercase font-mono tracking-widest block">
+                              Exact Payment Amount
+                            </span>
+                            <div className="flex items-baseline gap-2 flex-wrap">
+                              <span className="text-3xl font-extrabold text-text-primary syne tracking-tight font-mono">
+                                ${amountDue}
                               </span>
-                              <span className="text-[10px] text-text-muted truncate max-w-[200px] block">{screenshotUrl}</span>
+                              <span className="text-base font-bold text-accent">
+                                USD ({selectedToken})
+                              </span>
+                              {isYearly && (
+                                <span className="text-[11px] text-emerald-400 font-mono bg-emerald-400/10 px-2 py-0.5 rounded border border-emerald-400/20">
+                                  2 Months Free Included
+                                </span>
+                              )}
                             </div>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => setScreenshotUrl(null)}
-                            className="p-1.5 text-text-muted hover:text-red-400 rounded-lg"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
+
+                          {/* Deposit Address Box */}
+                          <div className="space-y-1.5">
+                            <div className="flex justify-between items-center">
+                              <span className="text-[10px] text-text-muted uppercase font-mono tracking-widest block">
+                                Deposit Wallet Address ({currentNetworkConfig.name})
+                              </span>
+                              <span className={`text-[10px] font-mono font-bold uppercase ${currentNetworkConfig.color}`}>
+                                {currentNetworkConfig.badge}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-2 bg-bg-primary border border-border rounded-xl px-3.5 py-3 w-full justify-between group hover:border-accent/40 transition-colors">
+                              <span className="text-xs font-mono text-text-primary truncate pr-2 select-all">
+                                {activeWalletAddress}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={handleCopy}
+                                className="shrink-0 px-3 py-1.5 bg-bg-secondary hover:bg-accent/10 border border-border hover:border-accent/30 rounded-lg text-text-muted hover:text-accent transition-all flex items-center gap-1.5 text-xs font-mono"
+                              >
+                                {copied ? (
+                                  <>
+                                    <Check className="w-3.5 h-3.5 text-emerald-500" />
+                                    <span className="text-emerald-500 font-bold">Copied!</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Copy className="w-3.5 h-3.5" />
+                                    <span>Copy Address</span>
+                                  </>
+                                )}
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Network Warning Note */}
+                          <div className="bg-bg-primary/50 border border-amber-500/30 rounded-xl p-3.5 text-xs text-text-secondary flex items-start gap-2.5">
+                            <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                            <p className="text-[11px] leading-relaxed text-text-muted font-sans">
+                              <strong className="text-amber-300 block mb-0.5">NETWORK WARNING:</strong>
+                              {warningText}
+                            </p>
+                          </div>
                         </div>
-                      ) : (
-                        <label className="flex flex-col items-center justify-center w-full p-4 bg-bg-primary/50 hover:bg-bg-primary border border-dashed border-border hover:border-accent/50 rounded-xl cursor-pointer transition-colors group">
-                          <Upload className="w-5 h-5 text-text-muted group-hover:text-accent transition-colors mb-1.5" />
-                          <span className="text-xs text-text-secondary font-sans font-medium">
-                            {isUploading ? 'Uploading screenshot...' : 'Click to attach payment receipt / screenshot'}
+                      </div>
+
+                      {/* Transaction Hash (TXID) - REQUIRED */}
+                      <div className="pt-4 border-t border-border/40 space-y-2">
+                        <label className="text-xs font-mono uppercase tracking-wider text-text-secondary flex justify-between">
+                          <span className="flex items-center gap-1.5">
+                            <FileCheck className="w-3.5 h-3.5 text-accent" />
+                            <span>Transaction Hash (TXID) <span className="text-red-400">*</span></span>
                           </span>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleFileUpload}
-                            disabled={isUploading}
-                            className="hidden"
-                          />
+                          <span className="text-[10px] text-accent font-normal lowercase">required to verify transfer on-chain</span>
                         </label>
-                      )}
+                        <input
+                          type="text"
+                          required
+                          value={txnHash}
+                          onChange={(e) => setTxnHash(e.target.value)}
+                          placeholder="e.g. 0x7a89f... or Solana / TRON transaction hash"
+                          className="w-full bg-bg-primary border border-accent/40 rounded-xl px-4 py-3 text-xs font-mono text-text-primary focus:outline-none focus:border-accent transition-colors placeholder:text-text-muted/40 shadow-[0_0_10px_rgba(41,98,255,0.08)]"
+                        />
+                      </div>
+
+                      {/* Payment Screenshot Uploader (OPTIONAL) */}
+                      <div className="pt-4 border-t border-border/40 space-y-2">
+                        <label className="text-xs font-mono uppercase tracking-wider text-text-secondary flex items-center justify-between">
+                          <span className="flex items-center gap-1.5">
+                            <ImageIcon className="w-3.5 h-3.5 text-text-muted" />
+                            <span>Payment Screenshot <span className="text-text-muted text-[10px] font-normal">(Optional)</span></span>
+                          </span>
+                          <span className="text-[10px] text-text-muted">JPG, PNG, WEBP max 10MB</span>
+                        </label>
+
+                        {screenshotUrl ? (
+                          <div className="flex items-center justify-between bg-bg-primary border border-emerald-500/40 rounded-xl p-3">
+                            <div className="flex items-center gap-3">
+                              <img src={screenshotUrl} alt="Receipt preview" className="w-12 h-12 object-cover rounded-lg border border-border" />
+                              <div>
+                                <span className="text-xs font-mono text-emerald-400 font-bold block flex items-center gap-1">
+                                  <Check className="w-3.5 h-3.5" /> Screenshot Uploaded
+                                </span>
+                                <span className="text-[10px] text-text-muted truncate max-w-[200px] block">{screenshotUrl}</span>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => setScreenshotUrl(null)}
+                              className="p-1.5 text-text-muted hover:text-red-400 rounded-lg"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ) : (
+                          <label className="flex flex-col items-center justify-center w-full p-4 bg-bg-primary/50 hover:bg-bg-primary border border-dashed border-border hover:border-accent/50 rounded-xl cursor-pointer transition-colors group">
+                            <Upload className="w-5 h-5 text-text-muted group-hover:text-accent transition-colors mb-1.5" />
+                            <span className="text-xs text-text-secondary font-sans font-medium">
+                              {isUploading ? 'Uploading screenshot...' : 'Click to attach payment receipt / screenshot'}
+                            </span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleFileUpload}
+                              disabled={isUploading}
+                              className="hidden"
+                            />
+                          </label>
+                        )}
+                      </div>
+
                     </div>
 
-                  </div>
+                    {/* Error Alert */}
+                    {errorMessage && (
+                      <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 text-xs text-red-400 flex items-center gap-2">
+                        <AlertTriangle className="w-4 h-4 shrink-0" />
+                        <span>{errorMessage}</span>
+                      </div>
+                    )}
 
-                  {/* Error Alert */}
-                  {errorMessage && (
-                    <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 text-xs text-red-400 flex items-center gap-2">
-                      <AlertTriangle className="w-4 h-4 shrink-0" />
-                      <span>{errorMessage}</span>
+                    {/* Action Button: "I've Sent the Payment" */}
+                    <div className="pt-2">
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="w-full py-4 text-base font-bold tracking-wide"
+                        disabled={isSubmitting || isUploading}
+                      >
+                        {isSubmitting ? (
+                          <span className="flex items-center justify-center gap-2">
+                            <Clock className="w-4 h-4 animate-spin" />
+                            Registering Payment Request...
+                          </span>
+                        ) : (
+                          "I've Sent the Payment"
+                        )}
+                      </Button>
+                      <p className="text-[10px] text-center text-text-muted font-mono uppercase tracking-widest mt-3 flex items-center justify-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5" />
+                        <span>Triggers blockchain verification & admin indicator activation</span>
+                      </p>
                     </div>
-                  )}
 
-                  {/* Action Button: "I've Sent the Payment" */}
-                  <div className="pt-2">
-                    <Button
-                      type="submit"
-                      size="lg"
-                      className="w-full py-4 text-base font-bold tracking-wide"
-                      disabled={isSubmitting || isUploading}
-                    >
-                      {isSubmitting ? (
-                        <span className="flex items-center justify-center gap-2">
-                          <Clock className="w-4 h-4 animate-spin" />
-                          Registering Payment Request...
-                        </span>
-                      ) : (
-                        "I've Sent the Payment"
-                      )}
-                    </Button>
-                    <p className="text-[10px] text-center text-text-muted font-mono uppercase tracking-widest mt-3 flex items-center justify-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5" />
-                      <span>Triggers blockchain verification & admin indicator activation</span>
-                    </p>
-                  </div>
+                    <div className="pt-4 border-t border-border/40 text-center">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsTrialMode(true);
+                          setErrorMessage(null);
+                        }}
+                        className="text-xs font-mono text-emerald-400 hover:underline"
+                      >
+                        Eligible for a 7-day free trial? Switch to Free Trial mode ($0) →
+                      </button>
+                    </div>
 
-                </Card>
+                  </Card>
+                )}
+
               </div>
 
               {/* Order Summary Sidebar */}
@@ -814,26 +1120,48 @@ function CheckoutContent() {
                     <div>
                       <h4 className="font-bold text-text-primary uppercase text-lg">{plan} Plan</h4>
                       <span className="text-xs text-text-muted font-mono uppercase tracking-wider block mt-1">
-                        Billed {billingPeriodLabel} {isYearly && '(2 Months Free)'}
+                        {isTrialMode ? '7-Day Free Trial Access' : `Billed ${billingPeriodLabel} ${isYearly ? '(2 Months Free)' : ''}`}
                       </span>
                     </div>
                     <div className="text-right">
-                      <span className="text-xl font-bold text-text-primary block font-mono">
-                        ${amountDue} USD
-                      </span>
-                      <span className="text-[10px] text-text-muted font-mono uppercase tracking-widest block">
-                        {isYearly ? '/ year' : '/ month'}
-                      </span>
+                      {isTrialMode ? (
+                        <>
+                          <span className="text-xl font-bold text-emerald-400 block font-mono">
+                            $0.00 USD
+                          </span>
+                          <span className="text-[10px] text-text-muted font-mono uppercase tracking-widest block">
+                            Free 7 Days
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="text-xl font-bold text-text-primary block font-mono">
+                            ${amountDue} USD
+                          </span>
+                          <span className="text-[10px] text-text-muted font-mono uppercase tracking-widest block">
+                            {isYearly ? '/ year' : '/ month'}
+                          </span>
+                        </>
+                      )}
                     </div>
                   </div>
 
                   {/* Line Item Breakdown */}
                   <div className="space-y-3.5 text-sm border-b border-border pb-6 mb-6 font-sans">
                     <div className="flex justify-between">
-                      <span className="text-text-secondary">Subscription ({billingPeriodLabel})</span>
-                      <span className="font-mono text-text-primary">${amountDue}.00 USD</span>
+                      <span className="text-text-secondary">
+                        {isTrialMode ? '7-Day Full Indicator Trial' : `Subscription (${billingPeriodLabel})`}
+                      </span>
+                      <span className="font-mono text-text-primary">
+                        {isTrialMode ? '$0.00 USD' : `$${amountDue}.00 USD`}
+                      </span>
                     </div>
-                    {isYearly && (
+                    {isTrialMode ? (
+                      <div className="flex justify-between text-emerald-400 text-xs font-mono uppercase tracking-wide">
+                        <span>Trial Discount</span>
+                        <span>100% OFF (7 Days)</span>
+                      </div>
+                    ) : isYearly && (
                       <div className="flex justify-between text-emerald-400 text-xs font-mono uppercase tracking-wide">
                         <span>Annual Savings</span>
                         <span>2 Months Free</span>
@@ -841,7 +1169,7 @@ function CheckoutContent() {
                     )}
                     <div className="flex justify-between text-xs text-text-muted">
                       <span className="flex items-center gap-1">
-                        <Lock className="w-3 h-3" /> Crypto Processing Fee
+                        <Lock className="w-3 h-3" /> Processing Fee
                       </span>
                       <span className="font-mono text-emerald-400">$0.00</span>
                     </div>
@@ -851,11 +1179,11 @@ function CheckoutContent() {
                   <div className="flex justify-between items-baseline mb-8">
                     <span className="font-bold text-text-primary uppercase text-sm">Total Due Today</span>
                     <div className="text-right">
-                      <span className="text-3xl font-extrabold text-accent syne tracking-tight font-mono">
-                        ${amountDue}
+                      <span className={`text-3xl font-extrabold syne tracking-tight font-mono ${isTrialMode ? 'text-emerald-400' : 'text-accent'}`}>
+                        {isTrialMode ? '$0.00' : `$${amountDue}`}
                       </span>
                       <span className="text-xs text-text-muted font-mono block mt-0.5 uppercase">
-                        USD in {selectedToken} ({currentNetworkConfig.name})
+                        {isTrialMode ? 'No Payment or Crypto Required' : `USD in ${selectedToken} (${currentNetworkConfig.name})`}
                       </span>
                     </div>
                   </div>
@@ -863,7 +1191,7 @@ function CheckoutContent() {
                   {/* Included Tools / Indicators */}
                   <div className="space-y-4">
                     <h5 className="text-[10px] text-text-muted uppercase font-mono tracking-widest border-b border-border pb-2.5">
-                      Included with {plan} subscription
+                      Included with {plan} {isTrialMode ? 'Trial' : 'Subscription'}
                     </h5>
                     <div className="space-y-3 text-xs text-text-secondary font-medium">
                       {getFeatures().map((feature, idx) => (

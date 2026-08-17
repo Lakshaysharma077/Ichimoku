@@ -16,8 +16,8 @@ export async function GET(req: NextRequest) {
     if (plans.length === 0) {
       const defaultPlans = [
         {
-          name: "Pro Pass",
-          price: 29.0,
+          name: "Samurai",
+          price: 22.0,
           currency: "USD",
           billingCycle: "monthly",
           description: "Full access to our flagship Ichimoku Edge indicator suite, multi-timeframe tables, and active signal scanners.",
@@ -28,10 +28,10 @@ export async function GET(req: NextRequest) {
         },
         {
           name: "Annual Samurai Pass",
-          price: 269.0,
+          price: 220.0,
           currency: "USD",
           billingCycle: "yearly",
-          description: "Save 25% with annual access. Unlocks the entire indicator suite, private Discord signals, and beta tools.",
+          description: "Save with annual access (2 months free). Unlocks the entire indicator suite, private Discord signals, and beta tools.",
           includedIndicators: JSON.stringify(["1", "2", "3", "4", "5", "6", "7", "8"]),
           includedTools: JSON.stringify(["t1", "t2", "t3"]),
           isActive: true,

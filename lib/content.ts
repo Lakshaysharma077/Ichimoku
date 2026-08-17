@@ -59,7 +59,7 @@ export const staticContent = {
     { value: 1200, label: 'Active Traders', suffix: '+' },
     { value: 12, label: 'Indicators & Scripts', suffix: '+' },
     { value: 4.9, label: 'TradingView Rating', suffix: '★' },
-    { value: 14, label: 'Free Trial, No Card', suffix: ' Days' },
+    { value: 7, label: 'Free Trial, No Card', suffix: ' Days' },
   ],
 
   // Home Page - Philosophy Section
@@ -322,7 +322,7 @@ export const staticContent = {
   pricing: {
     hero: {
       heading: "Simple Pricing",
-      description: "Start with 14 days completely free. No credit card required."
+      description: "Start with 7 days completely free. No credit card required."
     },
     tiers: [
       {
@@ -365,7 +365,7 @@ export const staticContent = {
         monthlyPrice: "$79",
         yearlyPrice: "$63",
         tagline: "For serious institutional traders",
-        ctaText: "Start 14-Day Free Trial",
+        ctaText: "Start 7-Day Free Trial",
         isTrial: true,
         features: [
           { text: "Everything in Samurai PLUS:", included: true },
@@ -379,8 +379,8 @@ export const staticContent = {
       },
     ],
     trialGuarantee: {
-      heading: "14 Days. Full Access. Zero Risk.",
-      description: "Try every premium indicator free for 14 days. If it's not the best Ichimoku toolset you've ever used, cancel with one click. No questions asked.",
+      heading: "7 Days. Full Access. Zero Risk.",
+      description: "Try every premium indicator free for 7 days. If it's not the best Ichimoku toolset you've ever used, cancel with one click. No questions asked.",
       button: "Start Your Free Trial Now →"
     }
   },
@@ -559,7 +559,7 @@ export const staticContent = {
         id: "q8",
         categories: ["Billing & Pricing", "Getting Started"],
         question: "Do you offer a trial version?",
-        answer: "Yes. Subscription indicators include a 14-day trial period. This allows you to test the tools before committing to a paid subscription."
+        answer: "Yes. Subscription indicators include a 7-day trial period. This allows you to test the tools before committing to a paid subscription."
       },
       {
         id: "q9",
@@ -711,11 +711,11 @@ export const staticContent = {
       title: "Refund Policy",
       description: "Transparent rules for cancellations, trials, and subscription management.",
       sections: [
-        { title: "1. 14-Day Free Trial", content: "All premium subscriptions come with a 14-day free trial. You will not be charged during this period, and you can cancel anytime to prevent any future billing." },
+        { title: "1. 7-Day Free Trial", content: "All premium subscriptions come with a 7-day free trial. You will not be charged during this period, and you can cancel anytime to prevent any future billing." },
         { title: "2. Monthly Subscriptions", content: "Monthly subscriptions are non-refundable once the billing period has commenced. You may cancel at any time to prevent the next month's charge, and you will retain access until the end of your current cycle." },
         { title: "3. Annual Subscriptions", content: "Annual subscriptions are eligible for prorated refunds in specific cases. If you wish to cancel an annual plan mid-cycle, please contact support to discuss your options." },
         { title: "4. Cryptocurrency Payments", content: "Refunds for payments made in USDT/USDC are subject to network fees and will be processed back to the original sending wallet address. We are not responsible for funds sent to incorrect addresses." },
-        { title: "5. Digital Goods Policy", content: "Because our indicators are digital goods delivered via TradingView, 'Invite-only' access is considered the delivery of service. Please ensure you use the 14-day trial to verify the tools meet your needs before subscribing." }
+        { title: "5. Digital Goods Policy", content: "Because our indicators are digital goods delivered via TradingView, 'Invite-only' access is considered the delivery of service. Please ensure you use the 7-day trial to verify the tools meet your needs before subscribing." }
       ]
     },
     cookies: {
