@@ -134,8 +134,8 @@ export const staticContent = {
         title: "Support",
         links: [
           { name: 'FAQ', href: '/faq' },
-          { name: 'Contact Us', href: '#' },
-          { name: 'Report an Issue', href: '#' },
+          { name: 'Contact Us', href: '/contact' },
+          { name: 'Report an Issue', href: '/report-issue' },
         ]
       }
     ],

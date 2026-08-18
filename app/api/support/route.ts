@@ -14,9 +14,30 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { name, email, tradingViewUsername, category, subject, message } = body;
+    const {
+      name,
+      email,
+      tradingViewUsername,
+      category,
+      subject,
+      message,
+      indicator,
+      symbolTimeframe,
+      environment,
+      screenshotUrl
+    } = body;
 
-    const validCategories = ["General", "Payment", "Subscription", "Technical", "Indicator", "Bug Report"];
+    const validCategories = [
+      "General",
+      "Payment",
+      "Subscription",
+      "Technical",
+      "Indicator",
+      "Bug Report",
+      "Partnership",
+      "Feature Request",
+      "Institutional"
+    ];
 
     if (!name || typeof name !== "string" || name.trim().length === 0) {
       return NextResponse.json({ error: "Name is required" }, { status: 400 });
@@ -36,6 +57,18 @@ export async function POST(req: NextRequest) {
 
     const selectedCategory = validCategories.includes(category) ? category : "General";
 
+    // Format full diagnostic details if technical metadata is provided
+    let fullMessage = sanitizeInput(message.trim());
+    const diagnosticFields: string[] = [];
+    if (indicator) diagnosticFields.push(`Target Tool/Indicator: ${sanitizeInput(indicator)}`);
+    if (symbolTimeframe) diagnosticFields.push(`Symbol & Timeframe: ${sanitizeInput(symbolTimeframe)}`);
+    if (environment) diagnosticFields.push(`Environment/Client: ${sanitizeInput(environment)}`);
+    if (screenshotUrl) diagnosticFields.push(`Proof/Snapshot URL: ${sanitizeInput(screenshotUrl)}`);
+
+    if (diagnosticFields.length > 0) {
+      fullMessage = `${fullMessage}\n\n--- Diagnostic Metadata ---\n${diagnosticFields.join("\n")}`;
+    }
+
     const ticket = await prisma.supportTicket.create({
       data: {
         name: sanitizeInput(name.trim()),
@@ -43,7 +76,7 @@ export async function POST(req: NextRequest) {
         tradingViewUsername: tradingViewUsername ? sanitizeInput(tradingViewUsername.trim()) : null,
         category: selectedCategory,
         subject: sanitizeInput(subject.trim()),
-        message: sanitizeInput(message.trim()),
+        message: fullMessage,
         status: "OPEN",
       },
     });
@@ -67,13 +100,13 @@ export async function POST(req: NextRequest) {
       ticketId: ticket.id,
       tradingViewUsername: tradingViewUsername ? sanitizeInput(tradingViewUsername.trim()) : undefined,
       adminNotes: subject,
-      supportMessage: message,
+      supportMessage: fullMessage,
     }).catch((err) => console.error("Admin support notification error:", err));
 
     return NextResponse.json({
       success: true,
       ticketId: ticket.id,
-      message: "Your support request has been submitted successfully. We will reply shortly.",
+      message: "Your submission has been received successfully. Our team will review and reply shortly.",
     });
   } catch (error: any) {
     console.error("SUPPORT_POST_ERROR:", error);

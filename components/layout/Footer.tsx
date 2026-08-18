@@ -79,13 +79,23 @@ export default function Footer() {
                     <EditableElement section="footer" path={['sections', idx.toString(), 'title']} content={section.title} />
                   </h4>
                   <ul className="space-y-1.5 text-[13px] text-text-secondary font-medium">
-                    {section.links.map((link: any, lIdx: number) => (
-                      <li key={lIdx}>
-                        <Link href={link.href} className="hover:text-accent transition-colors">
-                          <EditableElement section="footer" path={['sections', idx.toString(), 'links', lIdx.toString(), 'name']} content={link.name} />
-                        </Link>
-                      </li>
-                    ))}
+                    {section.links.map((link: any, lIdx: number) => {
+                      let targetHref = link.href;
+                      if (!targetHref || targetHref === '#') {
+                        const nameLow = (link.name || '').toLowerCase();
+                        if (nameLow.includes('contact')) targetHref = '/contact';
+                        else if (nameLow.includes('issue') || nameLow.includes('report')) targetHref = '/report-issue';
+                        else if (nameLow.includes('faq')) targetHref = '/faq';
+                      }
+
+                      return (
+                        <li key={lIdx}>
+                          <Link href={targetHref || '#'} className="hover:text-accent transition-colors">
+                            <EditableElement section="footer" path={['sections', idx.toString(), 'links', lIdx.toString(), 'name']} content={link.name} />
+                          </Link>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               ))}
