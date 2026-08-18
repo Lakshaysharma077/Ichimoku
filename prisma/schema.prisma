@@ -34,25 +34,26 @@ model Session {
 }
 
 model User {
-  id                  String         @id @default(cuid())
-  name                String?
-  email               String?        @unique
-  emailVerified       DateTime?
-  image               String?
-  password            String?
-  role                String         @default("USER")
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
-  provider            String?
-  tradingViewUsername String?
-  hasUsedTrial        Boolean        @default(false)
-  trialStartedAt      DateTime?
-  trialExpiresAt      DateTime?
-  accounts            Account[]
-  sessions            Session[]
-  payments            Payment[]
-  subscriptions       Subscription[]
-  auditLogs           AuditLog[]
+  id                       String         @id @default(cuid())
+  name                     String?
+  email                    String?        @unique
+  emailVerified            DateTime?
+  image                    String?
+  password                 String?
+  role                     String         @default("USER")
+  createdAt                DateTime       @default(now())
+  updatedAt                DateTime       @updatedAt
+  provider                 String?
+  tradingViewUsername      String?
+  tradingViewAccessGranted Boolean        @default(false)
+  hasUsedTrial             Boolean        @default(false)
+  trialStartedAt           DateTime?
+  trialExpiresAt           DateTime?
+  accounts                 Account[]
+  sessions                 Session[]
+  payments                 Payment[]
+  subscriptions            Subscription[]
+  auditLogs                AuditLog[]
 }
 
 model Plan {
@@ -73,21 +74,23 @@ model Plan {
 }
 
 model Subscription {
-  id             String    @id @default(cuid())
-  userId         String
-  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  planId         String
-  plan           Plan      @relation(fields: [planId], references: [id])
-  paymentId      String?   @unique
-  payment        Payment?  @relation(fields: [paymentId], references: [id], onDelete: SetNull)
-  status         String    @default("ACTIVE")
-  isTrial        Boolean   @default(false)
-  trialStartDate DateTime?
-  trialEndDate   DateTime?
-  startDate      DateTime  @default(now())
-  expiryDate     DateTime
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id                       String    @id @default(cuid())
+  userId                   String
+  user                     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId                   String
+  plan                     Plan      @relation(fields: [planId], references: [id])
+  paymentId                String?   @unique
+  payment                  Payment?  @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+  status                   String    @default("ACTIVE")
+  isTrial                  Boolean   @default(false)
+  trialStartDate           DateTime?
+  trialEndDate             DateTime?
+  trialExpiredEmailSent    Boolean   @default(false)
+  tradingViewAccessGranted Boolean   @default(false)
+  startDate                DateTime  @default(now())
+  expiryDate               DateTime
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
 }
 
 model Payment {
