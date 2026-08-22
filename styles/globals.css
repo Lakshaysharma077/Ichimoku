@@ -13,8 +13,6 @@
   --border: rgba(251,225,120,0.15);
   --chart-blend: screen;
   --chart-filter: invert(1) sepia(0.2) hue-rotate(190deg) brightness(0.8) contrast(1.1);
-  --chart-filter-dark-source: sepia(0.4) hue-rotate(195deg) saturate(2.4) brightness(0.85) contrast(1.12);
-  --chart-filter-light-source: invert(1) sepia(0.4) hue-rotate(195deg) saturate(2.4) brightness(0.85) contrast(1.15);
 }
 
 [data-theme='light'] {
@@ -28,8 +26,6 @@
   --border: rgba(0,0,0,0.1);
   --chart-blend: multiply;
   --chart-filter: none;
-  --chart-filter-dark-source: invert(1) hue-rotate(180deg) contrast(1.15) brightness(1.05);
-  --chart-filter-light-source: contrast(1.02) brightness(1.0);
 }
 
 [data-theme='dark'] {
@@ -43,8 +39,6 @@
   --border: rgba(255,255,255,0.08);
   --chart-blend: screen;
   --chart-filter: invert(1) hue-rotate(180deg);
-  --chart-filter-dark-source: brightness(0.95) contrast(1.05);
-  --chart-filter-light-source: invert(1) hue-rotate(180deg) brightness(0.92) contrast(1.1);
 }
 
 [data-theme='signature'] {
@@ -58,8 +52,6 @@
   --border: rgba(251,225,120,0.15);
   --chart-blend: screen;
   --chart-filter: invert(1) sepia(0.2) hue-rotate(190deg) brightness(0.8) contrast(1.1);
-  --chart-filter-dark-source: sepia(0.4) hue-rotate(195deg) saturate(2.4) brightness(0.85) contrast(1.12);
-  --chart-filter-light-source: invert(1) sepia(0.4) hue-rotate(195deg) saturate(2.4) brightness(0.85) contrast(1.15);
 }
 
 @layer base {
@@ -175,51 +167,4 @@ h2.syne {
   0%   { transform: translateX(-120%); opacity: 0; }
   15%  { opacity: 1; }
   100% { transform: translateX(280%); opacity: 0; }
-}
-
-/* Theme-adaptive idea chart photos */
-.idea-chart-dark,
-.idea-image-dark-source {
-  filter: var(--chart-filter-dark-source) !important;
-  transition: filter 0.35s ease, opacity 0.35s ease !important;
-}
-
-.idea-chart-light,
-.idea-image-light-source {
-  filter: var(--chart-filter-light-source) !important;
-  transition: filter 0.35s ease, opacity 0.35s ease !important;
-}
-
-/* ── 1. LIGHT / WHITE THEME: ALL chart photos have clean white backgrounds ── */
-[data-theme='light'] .idea-chart-dark,
-[data-theme='light'] .idea-image-dark-source {
-  filter: invert(1) hue-rotate(180deg) contrast(1.15) brightness(1.05) !important;
-}
-[data-theme='light'] .idea-chart-light,
-[data-theme='light'] .idea-image-light-source {
-  filter: contrast(1.02) brightness(1.0) !important;
-}
-
-/* ── 2. DARK / BLACK THEME: ALL chart photos have deep black backgrounds ── */
-[data-theme='dark'] .idea-chart-dark,
-[data-theme='dark'] .idea-image-dark-source {
-  filter: brightness(0.95) contrast(1.05) !important;
-}
-[data-theme='dark'] .idea-chart-light,
-[data-theme='dark'] .idea-image-light-source {
-  filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(1.1) !important;
-}
-
-/* ── 3. SIGNATURE / EDGE THEME: ALL chart photos have midnight blue backgrounds ── */
-[data-theme='signature'] .idea-chart-dark,
-[data-theme='signature'] .idea-image-dark-source,
-:root:not([data-theme='light']):not([data-theme='dark']) .idea-chart-dark,
-:root:not([data-theme='light']):not([data-theme='dark']) .idea-image-dark-source {
-  filter: sepia(0.4) hue-rotate(195deg) saturate(2.4) brightness(0.85) contrast(1.12) !important;
-}
-[data-theme='signature'] .idea-chart-light,
-[data-theme='signature'] .idea-image-light-source,
-:root:not([data-theme='light']):not([data-theme='dark']) .idea-chart-light,
-:root:not([data-theme='light']):not([data-theme='dark']) .idea-image-light-source {
-  filter: invert(1) sepia(0.4) hue-rotate(195deg) saturate(2.4) brightness(0.85) contrast(1.15) !important;
 }

@@ -439,7 +439,6 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/BTCUSD/7dVPWChI-Bitcoin-Bulls-Face-a-Major-Test-at-79K/",
         editorPick: false,
         readingTime: "5 min read",
-        sourceTheme: "dark",
       },
       {
         id: "idea-7",
@@ -452,7 +451,6 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/ZECUSD/Abxl8u0p-Zcash-Awakens-A-Decade-Long-Structure-Is-Finally-Breaking/",
         editorPick: false,
         readingTime: "5 min read",
-        sourceTheme: "light",
       },
       {
         id: "idea-6",
@@ -465,7 +463,6 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/BTCUSDT/2oMliUoE-From-One-Candle-to-a-Trade-Decision/",
         editorPick: false,
         readingTime: "5 min read",
-        sourceTheme: "light",
       },
       {
         id: "idea-1",
@@ -478,7 +475,6 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/BNBUSDT/bp9o4Ou5-Flat-Ichimoku-Levels-What-They-Are-and-Why-They-Matter/",
         editorPick: true,
         readingTime: "5 min read",
-        sourceTheme: "dark",
       },
       {
         id: "idea-2",
@@ -491,7 +487,6 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/VIRTUALUSDT/77VOQHQq-Lagging-Span-and-Trendline-Interaction/",
         editorPick: true,
         readingTime: "3 min read",
-        sourceTheme: "dark",
       },
       {
         id: "idea-4",
@@ -504,7 +499,6 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/EURUSD/ihprmleG-How-the-Lagging-Span-path-reveals-hidden-resistance-behind-price/",
         editorPick: false,
         readingTime: "6 min read",
-        sourceTheme: "dark",
       },
       {
         id: "idea-3",
@@ -517,7 +511,6 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/AKTUSDT/0zDnSXMI-AKT-Ichimoku-Bullish-Setup-Awaiting-an-SSB-Breakout/",
         editorPick: false,
         readingTime: "4 min read",
-        sourceTheme: "dark",
       },
       {
         id: "idea-5",
@@ -530,7 +523,6 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/BTCUSDT/aeblQqxQ-BTC-A-Subtle-Insight-Historical-Ichimoku-Flat-Levels/",
         editorPick: false,
         readingTime: "5 min read",
-        sourceTheme: "dark",
       }
     ]
   },
