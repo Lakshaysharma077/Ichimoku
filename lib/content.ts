@@ -426,7 +426,7 @@ export const staticContent = {
     noResults: "No ideas found for this search.",
     ctaText: "Read on TradingView",
     featuredLabel: "Latest Idea",
-    // Articles sorted newest-first. The first entry becomes the featured card.
+    // Articles: First entry is the featured Editor's Pick card, rest are in the grid below.
     articles: [
       {
         id: "idea-1",
@@ -438,6 +438,18 @@ export const staticContent = {
         image: "https://s3.tradingview.com/b/bp9o4Ou5_big.png",
         url: "https://www.tradingview.com/chart/BNBUSDT/bp9o4Ou5-Flat-Ichimoku-Levels-What-They-Are-and-Why-They-Matter/",
         editorPick: true,
+        readingTime: "5 min read",
+      },
+      {
+        id: "idea-7",
+        ticker: "ZECUSD",
+        timeframe: "1M",
+        company: "Zcash / U.S. Dollar",
+        title: "Zcash Awakens: A Decade-Long Structure Is Finally Breaking",
+        date: "2026-08-22",
+        image: "https://s3.tradingview.com/a/Abxl8u0p_big.png",
+        url: "https://www.tradingview.com/chart/ZECUSD/Abxl8u0p-Zcash-Awakens-A-Decade-Long-Structure-Is-Finally-Breaking/",
+        editorPick: false,
         readingTime: "5 min read",
       },
       {
