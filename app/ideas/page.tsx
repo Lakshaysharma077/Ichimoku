@@ -203,8 +203,8 @@ export default function IdeasPage() {
                       <img
                         src={featured.image}
                         alt={`${featured.ticker} — ${featured.title}`}
-                        style={{ filter: getChartImageFilter(featured.id, featured.sourceTheme, theme), transition: 'filter 0.4s ease' }}
-                        className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035]"
+                        style={{ filter: getChartImageFilter(featured.id, featured.sourceTheme, theme), transition: 'filter 0.35s ease' }}
+                        className={`w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035] ${getImageThemeClass(featured.sourceTheme)} ${lightSourceIds.has(featured.id) || featured.sourceTheme === 'light' ? 'idea-chart-light' : 'idea-chart-dark'}`}
                       />
                       {/* Scrim */}
                       <div className="absolute inset-0 bg-gradient-to-b from-bg-primary/20 via-transparent to-transparent pointer-events-none transition-colors duration-300" />
@@ -262,8 +262,8 @@ export default function IdeasPage() {
                         <img
                           src={featured.image}
                           alt=""
-                          style={{ filter: getChartImageFilter(featured.id, featured.sourceTheme, theme), transition: 'filter 0.4s ease' }}
-                          className="w-full h-full object-cover"
+                          style={{ filter: getChartImageFilter(featured.id, featured.sourceTheme, theme), transition: 'filter 0.35s ease' }}
+                          className={`w-full h-full object-cover ${getImageThemeClass(featured.sourceTheme)} ${lightSourceIds.has(featured.id) || featured.sourceTheme === 'light' ? 'idea-chart-light' : 'idea-chart-dark'}`}
                           loading="lazy"
                         />
                       </span>
@@ -310,8 +310,8 @@ export default function IdeasPage() {
                       <img
                         src={article.image}
                         alt={`${article.ticker} — ${article.title}`}
-                        style={{ filter: getChartImageFilter(article.id, article.sourceTheme, theme), transition: 'filter 0.4s ease' }}
-                        className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035]"
+                        style={{ filter: getChartImageFilter(article.id, article.sourceTheme, theme), transition: 'filter 0.35s ease' }}
+                        className={`w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035] ${getImageThemeClass(article.sourceTheme)} ${lightSourceIds.has(article.id) || article.sourceTheme === 'light' ? 'idea-chart-light' : 'idea-chart-dark'}`}
                         loading="lazy"
                       />
                       {/* Scrim */}
@@ -366,8 +366,8 @@ export default function IdeasPage() {
                             <img
                               src={article.image}
                               alt=""
-                              style={{ filter: getChartImageFilter(article.id, article.sourceTheme, theme), transition: 'filter 0.4s ease' }}
-                              className="w-full h-full object-cover"
+                              style={{ filter: getChartImageFilter(article.id, article.sourceTheme, theme), transition: 'filter 0.35s ease' }}
+                              className={`w-full h-full object-cover ${getImageThemeClass(article.sourceTheme)} ${lightSourceIds.has(article.id) || article.sourceTheme === 'light' ? 'idea-chart-light' : 'idea-chart-dark'}`}
                               loading="lazy"
                             />
                           </span>
