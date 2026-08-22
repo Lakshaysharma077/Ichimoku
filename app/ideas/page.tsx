@@ -189,6 +189,13 @@ export default function IdeasPage() {
                       />
                       {/* Scrim */}
                       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
+
+                      {/* TV ribbon mark on upper-left (only for Editor's Pick) */}
+                      {featured.editorPick && (
+                        <div className="absolute top-0 left-3 z-10 w-6 h-7 bg-[#2962FF] flex items-center justify-center rounded-b-[2px] shadow-[0_2px_8px_rgba(41,98,255,0.4)]">
+                          <span className="text-white text-[10px] font-black tracking-tighter">TV</span>
+                        </div>
+                      )}
                     </div>
                   </a>
 
@@ -291,6 +298,13 @@ export default function IdeasPage() {
                       />
                       {/* Scrim */}
                       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
+
+                      {/* TV ribbon mark on upper-left (only for Editor's Pick) */}
+                      {article.editorPick && (
+                        <div className="absolute top-0 left-2.5 z-10 w-6 h-7 bg-[#2962FF] flex items-center justify-center rounded-b-[2px] shadow-[0_2px_8px_rgba(41,98,255,0.4)]">
+                          <span className="text-white text-[10px] font-black tracking-tighter">TV</span>
+                        </div>
+                      )}
                     </a>
 
                     {/* Body */}
