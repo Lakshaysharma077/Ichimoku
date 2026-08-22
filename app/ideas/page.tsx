@@ -189,25 +189,6 @@ export default function IdeasPage() {
                       />
                       {/* Scrim */}
                       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
-
-                      {/* TV ribbon tag on top-left */}
-                      <div className="absolute top-0 left-3 z-10 w-6 h-7 bg-[#2962FF] flex items-center justify-center rounded-b-[2px] shadow-[0_2px_8px_rgba(41,98,255,0.4)]">
-                        <span className="text-white text-[10px] font-black tracking-tighter">TV</span>
-                      </div>
-
-                      {/* Ticker pill */}
-                      {featured.ticker && (
-                        <span className="absolute top-2 left-11 z-10 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md border border-white/10 text-white font-mono text-[11px] font-bold shadow-sm">
-                          {featured.ticker}
-                        </span>
-                      )}
-
-                      {/* Timeframe pill */}
-                      {featured.timeframe && (
-                        <span className="absolute top-2 right-2.5 z-10 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md border border-accent/40 text-accent font-mono text-[11px] font-bold shadow-sm">
-                          {featured.timeframe}
-                        </span>
-                      )}
                     </div>
                   </a>
 
@@ -241,9 +222,9 @@ export default function IdeasPage() {
                       {featured.title}
                     </h2>
 
-                    {/* Editors' Pick Badge */}
+                    {/* Editors' Pick Badge (only if editorPick is true) */}
                     {featured.editorPick && (
-                      <div className="flex items-center gap-1.5 text-[0.75rem] font-bold tracking-[0.06em] uppercase text-[#2962FF] mt-2 mb-1">
+                      <div className="flex items-center gap-1.5 text-[0.74rem] font-bold tracking-[0.06em] uppercase text-[#2962FF] mt-2 mb-1">
                         <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
                           <path d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1z"/>
                         </svg>
@@ -310,25 +291,6 @@ export default function IdeasPage() {
                       />
                       {/* Scrim */}
                       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
-
-                      {/* TV ribbon tag on top-left */}
-                      <div className="absolute top-0 left-2.5 z-10 w-6 h-7 bg-[#2962FF] flex items-center justify-center rounded-b-[2px] shadow-[0_2px_8px_rgba(41,98,255,0.4)]">
-                        <span className="text-white text-[10px] font-black tracking-tighter">TV</span>
-                      </div>
-
-                      {/* Ticker pill */}
-                      {article.ticker && (
-                        <span className="absolute top-2 left-10 z-10 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md border border-white/10 text-white font-mono text-[11px] font-bold shadow-sm">
-                          {article.ticker}
-                        </span>
-                      )}
-
-                      {/* Timeframe pill */}
-                      {article.timeframe && (
-                        <span className="absolute top-2 right-2.5 z-10 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md border border-accent/40 text-accent font-mono text-[11px] font-bold shadow-sm">
-                          {article.timeframe}
-                        </span>
-                      )}
                     </a>
 
                     {/* Body */}
@@ -357,7 +319,7 @@ export default function IdeasPage() {
                         {article.title}
                       </h3>
 
-                      {/* Editors' Pick Badge */}
+                      {/* Editors' Pick Badge (only for articles with editorPick: true) */}
                       {article.editorPick && (
                         <div className="flex items-center gap-1.5 text-[0.72rem] font-bold tracking-[0.06em] uppercase text-[#2962FF] mb-3 mt-auto">
                           <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
