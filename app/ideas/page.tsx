@@ -139,10 +139,10 @@ export default function IdeasPage() {
                 {ideas.sectionLabel}
               </span>
               <div className="flex items-center gap-1.5 text-[10px] font-mono text-text-muted bg-bg-secondary/40 border border-[#2962FF]/20 rounded-full px-2.5 py-0.5 shadow-sm">
-                <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
+                <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
+                  <path d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1z"/>
                 </svg>
-                <span>Editor&apos;s Pick = Selected by TradingView editors</span>
+                <span>EDITORS&apos; PICK = Selected by TradingView editors</span>
               </div>
             </div>
             <div className="flex items-center gap-2.5 bg-bg-secondary border border-border rounded-xl px-4 py-2.5 w-64 max-w-full transition-all focus-within:border-accent/50 focus-within:shadow-[0_0_0_3px_rgba(251,225,120,0.08)]">
@@ -189,13 +189,23 @@ export default function IdeasPage() {
                       />
                       {/* Scrim */}
                       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
-                      {/* Editor's Pick badge */}
-                      {featured.editorPick && (
-                        <span className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-3 py-1 rounded-lg text-[0.74rem] font-bold uppercase tracking-wider text-accent bg-bg-primary border border-[#2962FF] shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
-                          <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0 animate-pulse" style={{ animationDuration: '3s' }} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.4519-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
-                          </svg>
-                          <span>Editor&apos;s Pick</span>
+
+                      {/* TV ribbon tag on top-left */}
+                      <div className="absolute top-0 left-3 z-10 w-6 h-7 bg-[#2962FF] flex items-center justify-center rounded-b-[2px] shadow-[0_2px_8px_rgba(41,98,255,0.4)]">
+                        <span className="text-white text-[10px] font-black tracking-tighter">TV</span>
+                      </div>
+
+                      {/* Ticker pill */}
+                      {featured.ticker && (
+                        <span className="absolute top-2 left-11 z-10 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md border border-white/10 text-white font-mono text-[11px] font-bold shadow-sm">
+                          {featured.ticker}
+                        </span>
+                      )}
+
+                      {/* Timeframe pill */}
+                      {featured.timeframe && (
+                        <span className="absolute top-2 right-2.5 z-10 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md border border-accent/40 text-accent font-mono text-[11px] font-bold shadow-sm">
+                          {featured.timeframe}
                         </span>
                       )}
                     </div>
@@ -230,6 +240,16 @@ export default function IdeasPage() {
                     <h2 className="text-[1.55rem] font-bold text-text-primary leading-snug mt-1">
                       {featured.title}
                     </h2>
+
+                    {/* Editors' Pick Badge */}
+                    {featured.editorPick && (
+                      <div className="flex items-center gap-1.5 text-[0.75rem] font-bold tracking-[0.06em] uppercase text-[#2962FF] mt-2 mb-1">
+                        <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
+                          <path d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1z"/>
+                        </svg>
+                        <span>EDITORS&apos; PICK</span>
+                      </div>
+                    )}
 
                     {/* Action: Read on TradingView */}
                     <a
@@ -290,13 +310,23 @@ export default function IdeasPage() {
                       />
                       {/* Scrim */}
                       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
-                      {/* Editor's Pick badge */}
-                      {article.editorPick && (
-                        <span className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[0.72rem] font-bold uppercase tracking-wider text-accent bg-bg-primary border border-[#2962FF] shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
-                          <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0 animate-pulse" style={{ animationDuration: '3s' }} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
-                          </svg>
-                          <span>Editor&apos;s Pick</span>
+
+                      {/* TV ribbon tag on top-left */}
+                      <div className="absolute top-0 left-2.5 z-10 w-6 h-7 bg-[#2962FF] flex items-center justify-center rounded-b-[2px] shadow-[0_2px_8px_rgba(41,98,255,0.4)]">
+                        <span className="text-white text-[10px] font-black tracking-tighter">TV</span>
+                      </div>
+
+                      {/* Ticker pill */}
+                      {article.ticker && (
+                        <span className="absolute top-2 left-10 z-10 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md border border-white/10 text-white font-mono text-[11px] font-bold shadow-sm">
+                          {article.ticker}
+                        </span>
+                      )}
+
+                      {/* Timeframe pill */}
+                      {article.timeframe && (
+                        <span className="absolute top-2 right-2.5 z-10 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-md border border-accent/40 text-accent font-mono text-[11px] font-bold shadow-sm">
+                          {article.timeframe}
                         </span>
                       )}
                     </a>
@@ -323,12 +353,22 @@ export default function IdeasPage() {
                           {article.company}
                         </span>
                       )}
-                      <h3 className="text-[1.05rem] font-semibold text-text-primary leading-snug mb-4">
+                      <h3 className="text-[1.05rem] font-semibold text-text-primary leading-snug mb-3">
                         {article.title}
                       </h3>
 
+                      {/* Editors' Pick Badge */}
+                      {article.editorPick && (
+                        <div className="flex items-center gap-1.5 text-[0.72rem] font-bold tracking-[0.06em] uppercase text-[#2962FF] mb-3 mt-auto">
+                          <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
+                            <path d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1z"/>
+                          </svg>
+                          <span>EDITORS&apos; PICK</span>
+                        </div>
+                      )}
+
                       {/* Action */}
-                      <div className="mt-auto">
+                      <div className={article.editorPick ? "" : "mt-auto"}>
                         <a
                           href={article.url}
                           target="_blank"
