@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '@/components/shared/ScrollReveal';
 import { Search, ArrowRight, Clock } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
+import { useThemeStore } from '@/store/themeStore';
 
 /** Format ISO date string to readable format */
 function formatDate(dateStr: string): string {
@@ -18,11 +19,23 @@ function formatDate(dateStr: string): string {
 
 export default function IdeasPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const { theme } = useThemeStore();
   const ideas = useContent('ideas');
 
   // Split: first = featured, rest = grid
   const allArticles = ideas.articles;
   const [readTimes, setReadTimes] = useState<Record<string, number>>({});
+
+  // Helper to switch image based on theme (e.g. for light mode vs dark/edge)
+  const getArticleImage = (article: any) => {
+    if (theme === 'light' && article.imageLight) {
+      return article.imageLight;
+    }
+    if ((theme === 'dark' || theme === 'signature') && article.imageDark) {
+      return article.imageDark;
+    }
+    return article.image;
+  };
 
   // Load times from localStorage on mount
   useEffect(() => {
@@ -170,7 +183,7 @@ export default function IdeasPage() {
                   >
                     <div className="relative h-full">
                       <img
-                        src={featured.image}
+                        src={getArticleImage(featured)}
                         alt={`${featured.ticker} — ${featured.title}`}
                         className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035]"
                       />
@@ -180,7 +193,7 @@ export default function IdeasPage() {
                       {featured.editorPick && (
                         <span className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-3 py-1 rounded-lg text-[0.74rem] font-bold uppercase tracking-wider text-accent bg-bg-primary border border-[#2962FF] shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
                           <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0 animate-pulse" style={{ animationDuration: '3s' }} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
+                            <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.4519-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
                           </svg>
                           <span>Editor&apos;s Pick</span>
                         </span>
@@ -227,7 +240,7 @@ export default function IdeasPage() {
                       className="mt-4 inline-flex items-center gap-3 bg-bg-primary border border-border rounded-xl px-3 py-2 transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_6px_16px_-8px_rgba(0,0,0,0.4)] group/cta"
                     >
                       <span className="relative w-16 h-10 rounded-md overflow-hidden bg-bg-tertiary shrink-0">
-                        <img src={featured.image} alt="" className="w-full h-full object-cover" loading="lazy" />
+                        <img src={getArticleImage(featured)} alt="" className="w-full h-full object-cover" loading="lazy" />
                       </span>
                       <span className="text-[0.88rem] font-bold tracking-tight text-text-primary flex items-center gap-1.5">
                         {ideas.ctaText}
@@ -270,7 +283,7 @@ export default function IdeasPage() {
                       className="relative block aspect-video overflow-hidden bg-bg-tertiary"
                     >
                       <img
-                        src={article.image}
+                        src={getArticleImage(article)}
                         alt={`${article.ticker} — ${article.title}`}
                         className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035] saturate-[0.96] brightness-[0.97] group-hover:saturate-100 group-hover:brightness-100"
                         loading="lazy"
@@ -324,7 +337,7 @@ export default function IdeasPage() {
                           className="inline-flex items-center gap-3 bg-bg-primary border border-border rounded-xl px-3 py-2 w-full transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_6px_16px_-8px_rgba(0,0,0,0.4)] group/cta"
                         >
                           <span className="relative w-16 h-10 rounded-md overflow-hidden bg-bg-tertiary shrink-0">
-                            <img src={article.image} alt="" className="w-full h-full object-cover" loading="lazy" />
+                            <img src={getArticleImage(article)} alt="" className="w-full h-full object-cover" loading="lazy" />
                           </span>
                           <span className="text-[0.88rem] font-semibold tracking-tight text-text-primary flex items-center gap-1.5">
                             {ideas.ctaText}
