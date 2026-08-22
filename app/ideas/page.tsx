@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '@/components/shared/ScrollReveal';
 import { Search, ArrowRight, Clock } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
+import { useThemeStore } from '@/store/themeStore';
 
 /** Format ISO date string to readable format */
 function formatDate(dateStr: string): string {
@@ -16,12 +17,104 @@ function formatDate(dateStr: string): string {
   }).format(date);
 }
 
+const lightSourceIds = new Set(['idea-7', 'idea-6']);
+
+/** Helper to get theme adaptation filter directly based on active theme */
+function getChartImageFilter(articleId: string, sourceTheme?: string, activeTheme: string = 'signature'): string {
+  const isLightSource = sourceTheme === 'light' || lightSourceIds.has(articleId);
+
+  if (activeTheme === 'light') {
+    return isLightSource
+      ? 'contrast(1.02) brightness(1.0)'
+      : 'invert(1) hue-rotate(180deg) contrast(1.12) brightness(1.05)';
+  }
+
+  if (activeTheme === 'dark') {
+    return isLightSource
+      ? 'invert(1) hue-rotate(180deg) brightness(0.92) contrast(1.1)'
+      : 'brightness(0.95) contrast(1.05)';
+  }
+
+  // Signature (Edge) theme: distinctive blueish / navy tint
+  return isLightSource
+    ? 'invert(1) sepia(0.35) hue-rotate(195deg) saturate(2.2) brightness(0.9) contrast(1.15)'
+    : 'sepia(0.35) hue-rotate(195deg) saturate(2.2) brightness(0.9) contrast(1.12)';
+}
+
+/** Helper to get theme adaptation class for idea images */
+function getImageThemeClass(sourceTheme?: string): string {
+  return sourceTheme === 'light' ? 'idea-image-light-source' : 'idea-image-dark-source';
+}
+
 export default function IdeasPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const { theme } = useThemeStore();
   const ideas = useContent('ideas');
 
   // Split: first = featured, rest = grid
   const allArticles = ideas.articles;
+  const [readTimes, setReadTimes] = useState<Record<string, number>>({});
+
+  // Load times from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const times: Record<string, number> = {};
+      allArticles.forEach((article: any) => {
+        const stored = localStorage.getItem(`read_time_${article.id}`);
+        if (stored) {
+          times[article.id] = parseInt(stored, 10);
+        }
+      });
+      setReadTimes(times);
+    }
+  }, [allArticles]);
+
+  // Track window focus events to calculate reading time
+  useEffect(() => {
+    const handleFocus = () => {
+      const clickedId = sessionStorage.getItem('clicked_article_id');
+      const clickedTimeStr = sessionStorage.getItem('clicked_article_time');
+      if (clickedId && clickedTimeStr) {
+        const clickTime = parseInt(clickedTimeStr, 10);
+        const elapsed = Date.now() - clickTime;
+        if (elapsed > 1000) {
+          // Cap elapsed time to 30 mins to avoid background tab artifacts
+          const cappedElapsed = Math.min(elapsed, 30 * 60 * 1000);
+          const prevTime = parseInt(localStorage.getItem(`read_time_${clickedId}`) || '0', 10);
+          const newTime = prevTime + cappedElapsed;
+          localStorage.setItem(`read_time_${clickedId}`, newTime.toString());
+          setReadTimes(prev => ({
+            ...prev,
+            [clickedId]: newTime
+          }));
+        }
+        sessionStorage.removeItem('clicked_article_id');
+        sessionStorage.removeItem('clicked_article_time');
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, []);
+
+  const handleArticleClick = (articleId: string) => {
+    sessionStorage.setItem('clicked_article_id', articleId);
+    sessionStorage.setItem('clicked_article_time', Date.now().toString());
+  };
+
+  const formatReadingTime = (articleId: string) => {
+    const timeMs = readTimes[articleId];
+    if (!timeMs) return 'Not visited yet';
+
+    const totalSeconds = Math.floor(timeMs / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    if (minutes > 0) {
+      return `Visited for ${minutes}m ${seconds}s`;
+    }
+    return `Visited for ${seconds}s`;
+  };
 
   const filtered = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
@@ -64,7 +157,7 @@ export default function IdeasPage() {
                 {ideas.sectionLabel}
               </span>
               <div className="flex items-center gap-1.5 text-[10px] font-mono text-text-muted bg-bg-secondary/40 border border-[#2962FF]/20 rounded-full px-2.5 py-0.5 shadow-sm">
-                <svg className="w-3 h-3 fill-[#2962FF] shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.4519-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
                 </svg>
                 <span>Editor&apos;s Pick = Selected by TradingView editors</span>
@@ -103,21 +196,23 @@ export default function IdeasPage() {
                     href={featured.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative block overflow-hidden min-h-[240px]"
+                    onClick={() => handleArticleClick(featured.id)}
+                    className="relative block overflow-hidden min-h-[240px] bg-bg-tertiary"
                   >
                     <div className="relative h-full">
                       <img
                         src={featured.image}
                         alt={`${featured.ticker} — ${featured.title}`}
+                        style={{ filter: getChartImageFilter(featured.id, featured.sourceTheme, theme), transition: 'filter 0.4s ease' }}
                         className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035]"
                       />
                       {/* Scrim */}
-                      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-b from-bg-primary/20 via-transparent to-transparent pointer-events-none transition-colors duration-300" />
                       {/* Editor's Pick badge */}
                       {featured.editorPick && (
                         <span className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-3 py-1 rounded-lg text-[0.74rem] font-bold uppercase tracking-wider text-accent bg-bg-primary border border-[#2962FF] shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
                           <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0 animate-pulse" style={{ animationDuration: '3s' }} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.4519-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
+                            <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
                           </svg>
                           <span>Editor&apos;s Pick</span>
                         </span>
@@ -134,9 +229,15 @@ export default function IdeasPage() {
                     <span className="text-[0.72rem] font-bold tracking-[0.1em] uppercase text-text-muted flex items-center gap-2">
                       <span>{formatDate(featured.date)}</span>
                       <span>•</span>
-                      <span className="inline-flex items-center gap-1.5 text-text-muted">
-                        <Clock className="w-3.5 h-3.5 text-accent/80" />
-                        <span>{featured.readingTime || '5 min read'}</span>
+                      <span className="flex items-center gap-1 text-text-muted">
+                        <Clock className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                        {readTimes[featured.id] ? (
+                          <span className="text-[#2962FF] font-bold">
+                            {formatReadingTime(featured.id)}
+                          </span>
+                        ) : (
+                          <span className="text-text-muted/60">Not visited yet</span>
+                        )}
                       </span>
                     </span>
                     {featured.company && (
@@ -154,10 +255,17 @@ export default function IdeasPage() {
                       href={featured.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => handleArticleClick(featured.id)}
                       className="mt-4 inline-flex items-center gap-3 bg-bg-primary border border-border rounded-xl px-3 py-2 transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_6px_16px_-8px_rgba(0,0,0,0.4)] group/cta"
                     >
                       <span className="relative w-16 h-10 rounded-md overflow-hidden bg-bg-tertiary shrink-0">
-                        <img src={featured.image} alt="" className="w-full h-full object-cover" loading="lazy" />
+                        <img
+                          src={featured.image}
+                          alt=""
+                          style={{ filter: getChartImageFilter(featured.id, featured.sourceTheme, theme), transition: 'filter 0.4s ease' }}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
                       </span>
                       <span className="text-[0.88rem] font-bold tracking-tight text-text-primary flex items-center gap-1.5">
                         {ideas.ctaText}
@@ -196,21 +304,23 @@ export default function IdeasPage() {
                       href={article.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => handleArticleClick(article.id)}
                       className="relative block aspect-video overflow-hidden bg-bg-tertiary"
                     >
                       <img
                         src={article.image}
                         alt={`${article.ticker} — ${article.title}`}
-                        className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035] saturate-[0.96] brightness-[0.97] group-hover:saturate-100 group-hover:brightness-100"
+                        style={{ filter: getChartImageFilter(article.id, article.sourceTheme, theme), transition: 'filter 0.4s ease' }}
+                        className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035]"
                         loading="lazy"
                       />
                       {/* Scrim */}
-                      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-b from-bg-primary/20 via-transparent to-transparent pointer-events-none transition-colors duration-300" />
                       {/* Editor's Pick badge */}
                       {article.editorPick && (
                         <span className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[0.72rem] font-bold uppercase tracking-wider text-accent bg-bg-primary border border-[#2962FF] shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
                           <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0 animate-pulse" style={{ animationDuration: '3s' }} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.4519-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
+                            <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z"/>
                           </svg>
                           <span>Editor&apos;s Pick</span>
                         </span>
@@ -222,9 +332,15 @@ export default function IdeasPage() {
                       <span className="text-[0.72rem] font-bold tracking-[0.1em] uppercase text-text-muted mb-1 flex items-center gap-2">
                         <span>{formatDate(article.date)}</span>
                         <span>•</span>
-                        <span className="inline-flex items-center gap-1.5 text-text-muted">
-                          <Clock className="w-3.5 h-3.5 text-accent/80" />
-                          <span>{article.readingTime || '5 min read'}</span>
+                        <span className="flex items-center gap-1 text-text-muted">
+                          <Clock className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                          {readTimes[article.id] ? (
+                            <span className="text-[#2962FF] font-bold">
+                              {formatReadingTime(article.id)}
+                            </span>
+                          ) : (
+                            <span className="text-text-muted/60">Not visited yet</span>
+                          )}
                         </span>
                       </span>
                       {article.company && (
@@ -243,10 +359,17 @@ export default function IdeasPage() {
                           href={article.url}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={() => handleArticleClick(article.id)}
                           className="inline-flex items-center gap-3 bg-bg-primary border border-border rounded-xl px-3 py-2 w-full transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_6px_16px_-8px_rgba(0,0,0,0.4)] group/cta"
                         >
                           <span className="relative w-16 h-10 rounded-md overflow-hidden bg-bg-tertiary shrink-0">
-                            <img src={article.image} alt="" className="w-full h-full object-cover" loading="lazy" />
+                            <img
+                              src={article.image}
+                              alt=""
+                              style={{ filter: getChartImageFilter(article.id, article.sourceTheme, theme), transition: 'filter 0.4s ease' }}
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                            />
                           </span>
                           <span className="text-[0.88rem] font-semibold tracking-tight text-text-primary flex items-center gap-1.5">
                             {ideas.ctaText}

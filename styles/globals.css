@@ -168,3 +168,33 @@ h2.syne {
   15%  { opacity: 1; }
   100% { transform: translateX(280%); opacity: 0; }
 }
+
+/* Theme-adaptive idea chart photos */
+.idea-image-dark-source,
+.idea-image-light-source {
+  transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+/* Light / White Theme: Crisp white backgrounds for all photos */
+[data-theme='light'] .idea-image-dark-source {
+  filter: invert(1) hue-rotate(180deg) contrast(1.12) brightness(1.05);
+}
+[data-theme='light'] .idea-image-light-source {
+  filter: contrast(1.02) brightness(1.0);
+}
+
+/* Dark / Black Theme: Deep neutral black backgrounds for all photos */
+[data-theme='dark'] .idea-image-dark-source {
+  filter: brightness(0.95) contrast(1.05);
+}
+[data-theme='dark'] .idea-image-light-source {
+  filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(1.1);
+}
+
+/* Edge / Signature Theme: Distinctive blueish / navy backgrounds for all photos */
+[data-theme='signature'] .idea-image-dark-source {
+  filter: sepia(0.3) hue-rotate(195deg) saturate(2.2) brightness(0.9) contrast(1.12);
+}
+[data-theme='signature'] .idea-image-light-source {
+  filter: invert(1) sepia(0.3) hue-rotate(195deg) saturate(2.2) brightness(0.9) contrast(1.15);
+}
