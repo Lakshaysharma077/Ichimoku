@@ -429,6 +429,18 @@ export const staticContent = {
     // Articles sorted newest-first according to TradingView published dates.
     articles: [
       {
+        id: "idea-8",
+        ticker: "BTCUSD",
+        timeframe: "1W",
+        company: "Bitcoin / U.S. Dollar",
+        title: "Bitcoin Bulls Face a Major Test at $79K",
+        date: "2026-08-22",
+        image: "https://s3.tradingview.com/7/7dVPWChI_big.png",
+        url: "https://www.tradingview.com/chart/BTCUSD/7dVPWChI-Bitcoin-Bulls-Face-a-Major-Test-at-79K/",
+        editorPick: false,
+        readingTime: "5 min read",
+      },
+      {
         id: "idea-7",
         ticker: "ZECUSD",
         timeframe: "1M",
