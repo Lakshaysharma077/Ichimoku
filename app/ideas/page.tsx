@@ -26,7 +26,7 @@ function getChartImageFilter(articleId: string, sourceTheme?: string, activeThem
   if (activeTheme === 'light') {
     return isLightSource
       ? 'contrast(1.02) brightness(1.0)'
-      : 'invert(1) hue-rotate(180deg) contrast(1.12) brightness(1.05)';
+      : 'invert(1) hue-rotate(180deg) contrast(1.15) brightness(1.05)';
   }
 
   if (activeTheme === 'dark') {
@@ -35,10 +35,10 @@ function getChartImageFilter(articleId: string, sourceTheme?: string, activeThem
       : 'brightness(0.95) contrast(1.05)';
   }
 
-  // Signature (Edge) theme: distinctive blueish / navy tint
+  // Signature (Edge) theme: midnight blue background tint
   return isLightSource
-    ? 'invert(1) sepia(0.35) hue-rotate(195deg) saturate(2.2) brightness(0.9) contrast(1.15)'
-    : 'sepia(0.35) hue-rotate(195deg) saturate(2.2) brightness(0.9) contrast(1.12)';
+    ? 'invert(1) sepia(0.4) hue-rotate(195deg) saturate(2.4) brightness(0.85) contrast(1.15)'
+    : 'sepia(0.4) hue-rotate(195deg) saturate(2.4) brightness(0.85) contrast(1.12)';
 }
 
 /** Helper to get theme adaptation class for idea images */
