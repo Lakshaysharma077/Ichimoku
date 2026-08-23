@@ -54,6 +54,16 @@ function getReadingTimeMinutes(wordCount?: number): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
+/** Standardize asset / market name to use USDT uniformly */
+function formatAssetName(company?: string, ticker?: string): string {
+  const raw = company || ticker || '';
+  return raw
+    .replace(/\bTetherUS\b/gi, 'USDT')
+    .replace(/\bTether US\b/gi, 'USDT')
+    .replace(/\bTether\b/gi, 'USDT')
+    .trim();
+}
+
 export default function IdeasPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const ideas = useContent('ideas');
@@ -184,13 +194,13 @@ export default function IdeasPage() {
                   {/* Body Content */}
                   <div className="p-6 md:p-7 flex flex-col justify-between gap-4">
                     <div className="space-y-3">
-                      {/* Last Published Badge */}
+                      {/* 1. LAST PUBLISHED Badge */}
                       <span className="inline-flex items-center gap-1.5 text-[0.64rem] font-bold tracking-[0.14em] uppercase text-accent">
                         <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_0_3px_rgba(251,225,120,0.18)]" />
-                        Last Published
+                        LAST PUBLISHED
                       </span>
 
-                      {/* 2. Title — immediately below the image */}
+                      {/* 2. Title — immediately below the image / badge */}
                       <a
                         href={featured.url || featured.image}
                         target="_blank"
@@ -203,12 +213,12 @@ export default function IdeasPage() {
                         </h2>
                       </a>
 
-                      {/* 2-Row Metadata Section (Row 1: Asset • Date, Row 2: Reading Time • Unread) */}
+                      {/* 3. 2-Row Metadata Section (Row 1: Asset • Date, Row 2: Reading Time • Unread) */}
                       <div className="flex flex-col gap-1 text-xs text-text-muted">
                         {/* Row 1: Asset • Date */}
                         <div className="flex items-center gap-1.5 truncate">
                           {(featured.company || featured.ticker) && (
-                            <span className="truncate">{featured.company || featured.ticker}</span>
+                            <span className="truncate">{formatAssetName(featured.company, featured.ticker)}</span>
                           )}
                           {(featured.company || featured.ticker) && featured.date && <span>•</span>}
                           {featured.date && <span className="shrink-0">{formatDate(featured.date)}</span>}
@@ -310,12 +320,12 @@ export default function IdeasPage() {
                             </h3>
                           </a>
 
-                          {/* 2-Row Metadata Section (Row 1: Asset • Date, Row 2: Reading Time • Unread) */}
+                          {/* 3. 2-Row Metadata Section (Row 1: Asset • Date, Row 2: Reading Time • Unread) */}
                           <div className="flex flex-col gap-1 text-xs text-text-muted">
                             {/* Row 1: Asset • Date */}
                             <div className="flex items-center gap-1.5 truncate">
                               {(article.company || article.ticker) && (
-                                <span className="truncate">{article.company || article.ticker}</span>
+                                <span className="truncate">{formatAssetName(article.company, article.ticker)}</span>
                               )}
                               {(article.company || article.ticker) && article.date && <span>•</span>}
                               {article.date && <span className="shrink-0">{formatDate(article.date)}</span>}
