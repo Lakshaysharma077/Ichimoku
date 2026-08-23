@@ -197,32 +197,30 @@ export default function IdeasPage() {
                         </h2>
                       </a>
 
-                      {/* 3-8. Metadata Line: Date • Asset • Clock + X min • Unread (All in exact same uniform grey) */}
-                      <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-xs text-text-muted">
-                        {/* 3. Publication date */}
-                        {featured.date && <span>{formatDate(featured.date)}</span>}
+                      {/* 2-Row Metadata Section (Row 1: Asset • Date, Row 2: Reading Time • Unread) */}
+                      <div className="flex flex-col gap-1 text-xs text-text-muted">
+                        {/* Row 1: Asset • Date */}
+                        <div className="flex items-center gap-1.5 truncate">
+                          {(featured.company || featured.ticker) && (
+                            <span className="truncate">{featured.company || featured.ticker}</span>
+                          )}
+                          {(featured.company || featured.ticker) && featured.date && <span>•</span>}
+                          {featured.date && <span className="shrink-0">{formatDate(featured.date)}</span>}
+                        </div>
 
-                        {/* 4. Small dot separator */}
-                        {featured.date && (featured.company || featured.ticker) && <span>•</span>}
-
-                        {/* 5. Asset / market name */}
-                        {(featured.company || featured.ticker) && (
-                          <span>{featured.company || featured.ticker}</span>
-                        )}
-
-                        {/* 6. Reading time row (Clock icon + X min) */}
-                        <span className="inline-flex items-center gap-1">
-                          <Clock className="w-3 h-3 text-text-muted shrink-0" />
-                          <span>{getReadingTimeMinutes(featured.wordCount)} min</span>
-                        </span>
-
-                        {/* 7. Small dot separator & 8. Unread status (subtle and slightly smaller) */}
-                        {!readIdeaIds.has(featured.id) && (
-                          <>
-                            <span>•</span>
-                            <span className="text-[10.5px] tracking-wide text-text-muted">Unread</span>
-                          </>
-                        )}
+                        {/* Row 2: Reading Time • Unread */}
+                        <div className="flex items-center gap-1.5">
+                          <span className="inline-flex items-center gap-1">
+                            <Clock className="w-3 h-3 text-text-muted shrink-0" />
+                            <span>{getReadingTimeMinutes(featured.wordCount)} min</span>
+                          </span>
+                          {!readIdeaIds.has(featured.id) && (
+                            <>
+                              <span>•</span>
+                              <span className="text-[10.5px] tracking-wide text-text-muted">Unread</span>
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
 
@@ -306,32 +304,30 @@ export default function IdeasPage() {
                             </h3>
                           </a>
 
-                          {/* 3-8. Metadata Line: Date • Asset • Clock + X min • Unread (All in exact same uniform grey) */}
-                          <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-xs text-text-muted">
-                            {/* 3. Publication date */}
-                            {article.date && <span>{formatDate(article.date)}</span>}
+                          {/* 2-Row Metadata Section (Row 1: Asset • Date, Row 2: Reading Time • Unread) */}
+                          <div className="flex flex-col gap-1 text-xs text-text-muted">
+                            {/* Row 1: Asset • Date */}
+                            <div className="flex items-center gap-1.5 truncate">
+                              {(article.company || article.ticker) && (
+                                <span className="truncate">{article.company || article.ticker}</span>
+                              )}
+                              {(article.company || article.ticker) && article.date && <span>•</span>}
+                              {article.date && <span className="shrink-0">{formatDate(article.date)}</span>}
+                            </div>
 
-                            {/* 4. Small dot separator */}
-                            {article.date && (article.company || article.ticker) && <span>•</span>}
-
-                            {/* 5. Asset / market name */}
-                            {(article.company || article.ticker) && (
-                              <span>{article.company || article.ticker}</span>
-                            )}
-
-                            {/* 6. Reading time row (Clock icon + X min) */}
-                            <span className="inline-flex items-center gap-1">
-                              <Clock className="w-3 h-3 text-text-muted shrink-0" />
-                              <span>{getReadingTimeMinutes(article.wordCount)} min</span>
-                            </span>
-
-                            {/* 7. Small dot separator & 8. Unread status (subtle and slightly smaller) */}
-                            {isUnread && (
-                              <>
-                                <span>•</span>
-                                <span className="text-[10.5px] tracking-wide text-text-muted">Unread</span>
-                              </>
-                            )}
+                            {/* Row 2: Reading Time • Unread */}
+                            <div className="flex items-center gap-1.5">
+                              <span className="inline-flex items-center gap-1">
+                                <Clock className="w-3 h-3 text-text-muted shrink-0" />
+                                <span>{getReadingTimeMinutes(article.wordCount)} min</span>
+                              </span>
+                              {isUnread && (
+                                <>
+                                  <span>•</span>
+                                  <span className="text-[10.5px] tracking-wide text-text-muted">Unread</span>
+                                </>
+                              )}
+                            </div>
                           </div>
                         </div>
 
