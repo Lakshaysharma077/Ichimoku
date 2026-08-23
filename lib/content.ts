@@ -435,12 +435,10 @@ export const staticContent = {
         company: "Bitcoin / U.S. Dollar",
         title: "Bitcoin Bulls Face a Major Test at $79K",
         date: "2026-08-22",
-        image: "/ideas/btc-bulls-79k-dark.png",
-        imageLight: "/ideas/btc-bulls-79k-light.png",
-        imageDark: "/ideas/btc-bulls-79k-dark.png",
+        image: "https://s3.tradingview.com/7/7dVPWChI_big.png",
         url: "https://www.tradingview.com/chart/BTCUSD/7dVPWChI-Bitcoin-Bulls-Face-a-Major-Test-at-79K/",
         editorPick: false,
-        readingTime: "5 min read",
+        wordCount: 1150,
       },
       {
         id: "idea-7",
@@ -452,7 +450,7 @@ export const staticContent = {
         image: "https://s3.tradingview.com/a/Abxl8u0p_big.png",
         url: "https://www.tradingview.com/chart/ZECUSD/Abxl8u0p-Zcash-Awakens-A-Decade-Long-Structure-Is-Finally-Breaking/",
         editorPick: false,
-        readingTime: "5 min read",
+        wordCount: 980,
       },
       {
         id: "idea-6",
@@ -464,7 +462,7 @@ export const staticContent = {
         image: "https://s3.tradingview.com/2/2oMliUoE_big.png",
         url: "https://www.tradingview.com/chart/BTCUSDT/2oMliUoE-From-One-Candle-to-a-Trade-Decision/",
         editorPick: false,
-        readingTime: "5 min read",
+        wordCount: 920,
       },
       {
         id: "idea-1",
@@ -476,7 +474,7 @@ export const staticContent = {
         image: "https://s3.tradingview.com/b/bp9o4Ou5_big.png",
         url: "https://www.tradingview.com/chart/BNBUSDT/bp9o4Ou5-Flat-Ichimoku-Levels-What-They-Are-and-Why-They-Matter/",
         editorPick: true,
-        readingTime: "5 min read",
+        wordCount: 1050,
       },
       {
         id: "idea-2",
@@ -488,7 +486,7 @@ export const staticContent = {
         image: "https://s3.tradingview.com/7/77VOQHQq_big.png",
         url: "https://www.tradingview.com/chart/VIRTUALUSDT/77VOQHQq-Lagging-Span-and-Trendline-Interaction/",
         editorPick: true,
-        readingTime: "3 min read",
+        wordCount: 560,
       },
       {
         id: "idea-4",
@@ -500,7 +498,7 @@ export const staticContent = {
         image: "https://s3.tradingview.com/i/ihprmleG_big.png",
         url: "https://www.tradingview.com/chart/EURUSD/ihprmleG-How-the-Lagging-Span-path-reveals-hidden-resistance-behind-price/",
         editorPick: false,
-        readingTime: "6 min read",
+        wordCount: 1180,
       },
       {
         id: "idea-3",
@@ -512,7 +510,7 @@ export const staticContent = {
         image: "https://s3.tradingview.com/0/0zDnSXMI_big.png",
         url: "https://www.tradingview.com/chart/AKTUSDT/0zDnSXMI-AKT-Ichimoku-Bullish-Setup-Awaiting-an-SSB-Breakout/",
         editorPick: false,
-        readingTime: "4 min read",
+        wordCount: 780,
       },
       {
         id: "idea-5",
@@ -524,7 +522,7 @@ export const staticContent = {
         image: "https://s3.tradingview.com/a/aeblQqxQ_big.png",
         url: "https://www.tradingview.com/chart/BTCUSDT/aeblQqxQ-BTC-A-Subtle-Insight-Historical-Ichimoku-Flat-Levels/",
         editorPick: false,
-        readingTime: "5 min read",
+        wordCount: 950,
       }
     ]
   },

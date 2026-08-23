@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '@/components/shared/ScrollReveal';
 import { Search, ArrowRight, Clock } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
-import { useThemeStore } from '@/store/themeStore';
 
 /** Format ISO date string to readable format */
 function formatDate(dateStr: string): string {
@@ -19,23 +18,11 @@ function formatDate(dateStr: string): string {
 
 export default function IdeasPage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const { theme } = useThemeStore();
   const ideas = useContent('ideas');
 
   // Split: first = featured, rest = grid
   const allArticles = ideas.articles;
   const [readTimes, setReadTimes] = useState<Record<string, number>>({});
-
-  // Helper to switch image based on theme (e.g. for light mode vs dark/edge)
-  const getArticleImage = (article: any) => {
-    if (theme === 'light' && article.imageLight) {
-      return article.imageLight;
-    }
-    if ((theme === 'dark' || theme === 'signature') && article.imageDark) {
-      return article.imageDark;
-    }
-    return article.image;
-  };
 
   // Load times from localStorage on mount
   useEffect(() => {
@@ -51,7 +38,7 @@ export default function IdeasPage() {
     }
   }, [allArticles]);
 
-  // Track window focus events to calculate reading time
+  // Track window focus events to calculate reading time based on user visit
   useEffect(() => {
     const handleFocus = () => {
       const clickedId = sessionStorage.getItem('clicked_article_id');
@@ -93,9 +80,9 @@ export default function IdeasPage() {
     const seconds = totalSeconds % 60;
 
     if (minutes > 0) {
-      return `Visited for ${minutes}m ${seconds}s`;
+      return `${minutes}m ${seconds}s`;
     }
-    return `Visited for ${seconds}s`;
+    return `${seconds}s`;
   };
 
   const filtered = useMemo(() => {
@@ -179,16 +166,14 @@ export default function IdeasPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => handleArticleClick(featured.id)}
-                    className="relative block overflow-hidden min-h-[240px]"
+                    className="relative block overflow-hidden min-h-[240px] bg-bg-primary"
                   >
                     <div className="relative h-full">
                       <img
-                        src={getArticleImage(featured)}
+                        src={featured.image}
                         alt={`${featured.ticker} — ${featured.title}`}
                         className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035]"
                       />
-                      {/* Scrim */}
-                      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
 
                       {/* TV ribbon mark on upper-left (only for Editor's Pick) */}
                       {featured.editorPick && (
@@ -205,11 +190,14 @@ export default function IdeasPage() {
                       <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_0_3px_rgba(251,225,120,0.18)]" />
                       {ideas.featuredLabel}
                     </span>
-                    <span className="text-[0.72rem] font-bold tracking-[0.1em] uppercase text-text-muted flex items-center gap-2">
+
+                    {/* Metadata: Date • Reading time based on user visit */}
+                    <div className="text-[0.72rem] font-bold tracking-[0.08em] uppercase text-text-muted flex items-center flex-wrap gap-y-1 gap-x-2">
                       <span>{formatDate(featured.date)}</span>
                       <span>•</span>
-                      <span className="flex items-center gap-1.5 text-text-muted">
+                      <span className="inline-flex items-center gap-1.5 text-text-muted">
                         <Clock className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                        <span>Reading time: </span>
                         {readTimes[featured.id] ? (
                           <span className="text-[#2962FF] font-bold">
                             {formatReadingTime(featured.id)}
@@ -218,7 +206,8 @@ export default function IdeasPage() {
                           <span className="text-text-muted/60">Not visited yet</span>
                         )}
                       </span>
-                    </span>
+                    </div>
+
                     {featured.company && (
                       <span className="text-[0.82rem] font-medium text-text-secondary flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-accent/60" />
@@ -247,8 +236,8 @@ export default function IdeasPage() {
                       onClick={() => handleArticleClick(featured.id)}
                       className="mt-4 inline-flex items-center gap-3 bg-bg-primary border border-border rounded-xl px-3 py-2 transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_6px_16px_-8px_rgba(0,0,0,0.4)] group/cta"
                     >
-                      <span className="relative w-16 h-10 rounded-md overflow-hidden bg-bg-tertiary shrink-0">
-                        <img src={getArticleImage(featured)} alt="" className="w-full h-full object-cover" loading="lazy" />
+                      <span className="relative w-16 h-10 rounded-md overflow-hidden bg-bg-primary shrink-0">
+                        <img src={featured.image} alt="" className="w-full h-full object-cover" loading="lazy" />
                       </span>
                       <span className="text-[0.88rem] font-bold tracking-tight text-text-primary flex items-center gap-1.5">
                         {ideas.ctaText}
@@ -288,16 +277,14 @@ export default function IdeasPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => handleArticleClick(article.id)}
-                      className="relative block aspect-video overflow-hidden bg-bg-tertiary"
+                      className="relative block aspect-video overflow-hidden bg-bg-primary"
                     >
                       <img
-                        src={getArticleImage(article)}
+                        src={article.image}
                         alt={`${article.ticker} — ${article.title}`}
-                        className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035] saturate-[0.96] brightness-[0.97] group-hover:saturate-100 group-hover:brightness-100"
+                        className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035]"
                         loading="lazy"
                       />
-                      {/* Scrim */}
-                      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
 
                       {/* TV ribbon mark on upper-left (only for Editor's Pick) */}
                       {article.editorPick && (
@@ -309,11 +296,13 @@ export default function IdeasPage() {
 
                     {/* Body */}
                     <div className="p-5 flex flex-col flex-1">
-                      <span className="text-[0.72rem] font-bold tracking-[0.1em] uppercase text-text-muted mb-1 flex items-center gap-2">
+                      {/* Metadata: Date • Reading time based on user visit */}
+                      <div className="text-[0.72rem] font-bold tracking-[0.08em] uppercase text-text-muted mb-1 flex items-center flex-wrap gap-y-1 gap-x-2">
                         <span>{formatDate(article.date)}</span>
                         <span>•</span>
-                        <span className="flex items-center gap-1.5 text-text-muted">
+                        <span className="inline-flex items-center gap-1.5 text-text-muted">
                           <Clock className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                          <span>Reading time: </span>
                           {readTimes[article.id] ? (
                             <span className="text-[#2962FF] font-bold">
                               {formatReadingTime(article.id)}
@@ -322,7 +311,8 @@ export default function IdeasPage() {
                             <span className="text-text-muted/60">Not visited yet</span>
                           )}
                         </span>
-                      </span>
+                      </div>
+
                       {article.company && (
                         <span className="text-[0.82rem] font-medium text-text-secondary mb-2 flex items-center gap-2">
                           <span className="w-1 h-1 rounded-full bg-accent/60" />
@@ -352,8 +342,8 @@ export default function IdeasPage() {
                           onClick={() => handleArticleClick(article.id)}
                           className="inline-flex items-center gap-3 bg-bg-primary border border-border rounded-xl px-3 py-2 w-full transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_6px_16px_-8px_rgba(0,0,0,0.4)] group/cta"
                         >
-                          <span className="relative w-16 h-10 rounded-md overflow-hidden bg-bg-tertiary shrink-0">
-                            <img src={getArticleImage(article)} alt="" className="w-full h-full object-cover" loading="lazy" />
+                          <span className="relative w-16 h-10 rounded-md overflow-hidden bg-bg-primary shrink-0">
+                            <img src={article.image} alt="" className="w-full h-full object-cover" loading="lazy" />
                           </span>
                           <span className="text-[0.88rem] font-semibold tracking-tight text-text-primary flex items-center gap-1.5">
                             {ideas.ctaText}
