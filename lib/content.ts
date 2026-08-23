@@ -44,7 +44,7 @@ export const staticContent = {
       platform: 'Available on TradingView Pine Script v5'
     },
     mockup: {
-      badge: 'ICHIMOKU EDGE PRO',
+      badge: 'ICHIMOKU KINKŌ HYŌ',
       stats: [
         { label: "Cloud Signal", value: "BULLISH ▲", sub: "Strong Confirmation" },
         { label: "TK Cross", value: "ACTIVE", sub: "Bullish Breakout" },
@@ -332,31 +332,27 @@ export const staticContent = {
         tagline: "Start your Ichimoku journey",
         ctaText: "Get Started Free",
         features: [
-          { text: "TK Cross Alert (free indicator)", included: true },
-          { text: "S/R Auto indicator", included: true },
-          { text: "Community Discord access", included: true },
-          { text: "Education resources (YouTube)", included: true },
-          { text: "Premium indicators", included: false },
-          { text: "Multi-timeframe dashboard", included: false },
-          { text: "Email alerts", included: false },
+          { text: "Ichimoku Kinkō Hyō indicator access", included: true },
+          { text: "Basic cloud breakouts & signals", included: true },
+          { text: "Standard TradingView community access", included: true },
+          { text: "Community support", included: true },
         ],
       },
       {
         name: "Samurai",
         monthlyPrice: "$22",
-        yearlyPrice: "$18.33",
-        tagline: "The complete Ichimoku Edge system",
+        yearlyPrice: "$18",
+        tagline: "Our most popular trading tier",
         ctaText: "Get Samurai Access",
         isFeatured: true,
         isTrial: false,
         features: [
-          { text: "ALL free indicators", included: true },
-          { text: "Ichimoku Edge Pro indicator", included: true },
-          { text: "MTF Ichimoku Table dashboard", included: true },
-          { text: "Kumo Cloud Scanner", included: true },
-          { text: "Chikou Span Analyzer", included: true },
-          { text: "Ichimoku Trend Meter", included: true },
-          { text: "Session Dashboard", included: true },
+          { text: "Full Ichimoku Kinkō Hyō indicator suite", included: true },
+          { text: "Multi-component equilibrium flat detection", included: true },
+          { text: "Near-flat tolerance confluence engine", included: true },
+          { text: "Conditional forward projection lines", included: true },
+          { text: "On-chart real-time status matrix", included: true },
+          { text: "All future Pine Script v5 updates", included: true },
           { text: "Priority email support", included: true },
         ],
       },
@@ -613,7 +609,7 @@ export const staticContent = {
         id: "q13",
         categories: ["Getting Started", "Indicators", "Ichimoku Trading"],
         question: "Can beginners use these indicators?",
-        answer: "Yes. Beginners can use Ichimoku Edge indicators, but we recommend starting with our free educational content first so you understand the logic behind the system. The Ichimoku Edge Pro indicator includes built-in signal labels and on-chart interpretations, making it easier to understand than raw Ichimoku lines alone. The dashboard also helps you focus on higher-potential trading opportunities instead of trying to read every chart manually."
+        answer: "Yes. Beginners can use Ichimoku Edge indicators, but we recommend starting with our free educational content first so you understand the logic behind the system. The Ichimoku Kinkō Hyō indicator includes built-in signal labels and on-chart interpretations, making it easier to understand than raw Ichimoku lines alone. The indicator also helps you focus on higher-potential trading opportunities with flat-level equilibrium detection."
       },
       {
         id: "q14",

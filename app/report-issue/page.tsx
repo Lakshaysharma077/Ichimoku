@@ -30,7 +30,7 @@ export default function ReportIssuePage() {
     email: '',
     tradingViewUsername: '',
     category: 'Bug Report',
-    indicator: 'Ichimoku Edge Pro',
+    indicator: 'Ichimoku Kinkō Hyō',
     symbolTimeframe: '',
     environment: 'TradingView Web (Browser)',
     subject: '',
@@ -51,14 +51,12 @@ export default function ReportIssuePage() {
   ];
 
   const indicatorOptions = [
-    'Ichimoku Edge Pro (Flagship Suite)',
-    'MTF Ichimoku Cloud Table Dashboard',
-    'Kumo Cloud Scanner',
-    'Chikou Span Analyzer',
-    'Ichimoku Trend Meter',
-    'Session & Killzone Dashboard',
-    'Website Tools & Screeners',
-    'General Web Platform',
+    'Ichimoku Kinkō Hyō - (一目均衡表)',
+    'Equilibrium Flat Levels & Confluence',
+    'Forward Projection Rays & Status Table',
+    'TradingView Script Access / Whitelisting',
+    'Website Tools & Platform',
+    'Other Technical Module',
   ];
 
   const environmentOptions = [
@@ -107,7 +105,7 @@ export default function ReportIssuePage() {
         email: '',
         tradingViewUsername: '',
         category: 'Bug Report',
-        indicator: 'Ichimoku Edge Pro',
+        indicator: 'Ichimoku Kinkō Hyō',
         symbolTimeframe: '',
         environment: 'TradingView Web (Browser)',
         subject: '',

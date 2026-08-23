@@ -26,7 +26,7 @@ export default function JsonLd({ type = "Organization", data }: JsonLdProps) {
     schemaData = {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      name: "Ichimoku Edge Pro Indicator Suite",
+      name: "Ichimoku Kinkō Hyō Pine Script Suite",
       operatingSystem: "TradingView Pine Script v5",
       applicationCategory: "FinanceApplication",
       ratingValue: "4.9",

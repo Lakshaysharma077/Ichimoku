@@ -130,6 +130,12 @@ model IndicatorItem {
   name         String
   slug         String   @unique
   description  String
+  thumbnail    String?
+  screenshots  String   @default("[]")
+  overview     String?
+  howItWorks   String?
+  features     String   @default("[]")
+  howToUse     String?
   accessStatus String   @default("Premium")
   priceLabel   String   @default("$22/mo")
   tvUrl        String   @default("")
@@ -137,6 +143,7 @@ model IndicatorItem {
   sortOrder    Int      @default(0)
   rating       Float    @default(5.0)
   numRatings   Int      @default(0)
+  status       String   @default("Published")
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

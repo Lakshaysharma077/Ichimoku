@@ -4,7 +4,14 @@ import { persist } from 'zustand/middleware';
 export interface Indicator {
   id: string;
   name: string;
+  slug?: string;
   description: string;
+  thumbnail?: string;
+  screenshots?: any;
+  overview?: string;
+  howItWorks?: string;
+  features?: string[] | string;
+  howToUse?: string;
   badgeType: 'FREE' | 'PREMIUM' | '7-DAY TRIAL' | '14-DAY TRIAL';
   price: string;
   tvUrl: string;

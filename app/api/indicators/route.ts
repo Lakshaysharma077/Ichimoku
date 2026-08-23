@@ -9,12 +9,16 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
+    const isAdmin = (session?.user as any)?.role === "ADMIN";
+
     let indicators = await prisma.indicatorItem.findMany({
+      where: isAdmin ? undefined : { status: "Published" },
       orderBy: { sortOrder: "asc" },
     });
 
     if (indicators.length === 0) {
-      // Seed default indicators from lib/indicators.ts into DB
+      // Seed authentic indicator from lib/indicators.ts into DB
       for (const ind of seedIndicators) {
         const accessStatus =
           ind.badgeType === "FREE"
@@ -27,8 +31,14 @@ export async function GET(req: NextRequest) {
           data: {
             id: ind.id,
             name: ind.name,
-            slug: ind.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+            slug: ind.slug || ind.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
             description: ind.description,
+            thumbnail: ind.thumbnail || null,
+            screenshots: typeof ind.screenshots === "string" ? ind.screenshots : JSON.stringify(ind.screenshots || []),
+            overview: ind.overview || null,
+            howItWorks: ind.howItWorks || null,
+            features: typeof ind.features === "string" ? ind.features : JSON.stringify(ind.features || []),
+            howToUse: ind.howToUse || null,
             accessStatus,
             priceLabel: ind.price,
             tvUrl: ind.tvUrl,
@@ -36,11 +46,13 @@ export async function GET(req: NextRequest) {
             sortOrder: ind.sortOrder,
             rating: ind.rating,
             numRatings: ind.numRatings,
+            status: ind.status || "Published",
           },
         });
       }
 
       indicators = await prisma.indicatorItem.findMany({
+        where: isAdmin ? undefined : { status: "Published" },
         orderBy: { sortOrder: "asc" },
       });
     }
@@ -60,25 +72,59 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { name, description, accessStatus, priceLabel, tvUrl, category, sortOrder } = body;
+    const {
+      name,
+      slug: customSlug,
+      description,
+      thumbnail,
+      screenshots,
+      overview,
+      howItWorks,
+      features,
+      howToUse,
+      accessStatus,
+      priceLabel,
+      tvUrl,
+      category,
+      sortOrder,
+      rating,
+      numRatings,
+      status,
+    } = body;
 
     const validStatuses = ["Free", "Premium", "Coming Soon", "Beta", "Deprecated"];
     if (accessStatus && !validStatuses.includes(accessStatus)) {
-      return NextResponse.json({ error: `Invalid accessStatus. Must be one of: ${validStatuses.join(", ")}` }, { status: 400 });
+      return NextResponse.json(
+        { error: `Invalid accessStatus. Must be one of: ${validStatuses.join(", ")}` },
+        { status: 400 }
+      );
     }
 
-    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" + Date.now().toString().slice(-4);
+    const slug =
+      customSlug ||
+      name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") +
+        "-" +
+        Date.now().toString().slice(-4);
 
     const indicator = await prisma.indicatorItem.create({
       data: {
         name,
         slug,
         description: description || "",
+        thumbnail: thumbnail || null,
+        screenshots: typeof screenshots === "string" ? screenshots : JSON.stringify(screenshots || []),
+        overview: overview || null,
+        howItWorks: howItWorks || null,
+        features: typeof features === "string" ? features : JSON.stringify(features || []),
+        howToUse: howToUse || null,
         accessStatus: accessStatus || "Premium",
         priceLabel: priceLabel || "$22/mo",
         tvUrl: tvUrl || "",
         category: typeof category === "string" ? category : JSON.stringify(category || ["ICHIMOKU"]),
-        sortOrder: sortOrder || 0,
+        sortOrder: sortOrder !== undefined ? Number(sortOrder) : 0,
+        rating: rating !== undefined ? Number(rating) : 5.0,
+        numRatings: numRatings !== undefined ? Number(numRatings) : 0,
+        status: status || "Published",
       },
     });
 
@@ -93,7 +139,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, indicator });
   } catch (error: any) {
     console.error("INDICATOR_CREATE_ERROR:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -114,6 +160,21 @@ export async function PATCH(req: NextRequest) {
     if (updates.category && typeof updates.category !== "string") {
       updates.category = JSON.stringify(updates.category);
     }
+    if (updates.screenshots && typeof updates.screenshots !== "string") {
+      updates.screenshots = JSON.stringify(updates.screenshots);
+    }
+    if (updates.features && typeof updates.features !== "string") {
+      updates.features = JSON.stringify(updates.features);
+    }
+    if (updates.sortOrder !== undefined) {
+      updates.sortOrder = Number(updates.sortOrder);
+    }
+    if (updates.rating !== undefined) {
+      updates.rating = Number(updates.rating);
+    }
+    if (updates.numRatings !== undefined) {
+      updates.numRatings = Number(updates.numRatings);
+    }
 
     const indicator = await prisma.indicatorItem.update({
       where: { id },
@@ -131,7 +192,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ success: true, indicator });
   } catch (error: any) {
     console.error("INDICATOR_UPDATE_ERROR:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
   }
 }
 

@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '@/components/shared/ScrollReveal';
-import { Search, ArrowRight, BookOpen } from 'lucide-react';
+import { Search, ArrowRight, Clock } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
 
 const COOKIE_NAME = 'read_ideas';
@@ -48,11 +48,10 @@ function formatDate(dateStr?: string): string {
   }).format(date);
 }
 
-/** Calculate estimated reading time based on article word count (~200 words/min) */
-function getReadingTime(wordCount?: number): string {
+/** Calculate estimated reading time in minutes (~200 words/min) */
+function getReadingTimeMinutes(wordCount?: number): number {
   const words = typeof wordCount === 'number' && wordCount > 0 ? wordCount : 1000;
-  const minutes = Math.max(1, Math.ceil(words / 200));
-  return `Reading time: ${minutes} min`;
+  return Math.max(1, Math.ceil(words / 200));
 }
 
 export default function IdeasPage() {
@@ -143,7 +142,7 @@ export default function IdeasPage() {
           </div>
         </ScrollReveal>
 
-        {/* ── Featured Card (latest idea) ── */}
+        {/* ── Featured Card (Latest Idea) ── */}
         <AnimatePresence mode="wait">
           {featured && (
             <ScrollReveal delay={0.15}>
@@ -152,19 +151,19 @@ export default function IdeasPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="mb-7"
+                className="mb-8"
               >
-                <div className="group relative grid grid-cols-1 md:grid-cols-[1.35fr_1fr] border border-border rounded-2xl overflow-hidden bg-bg-secondary transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:border-accent/30 hover:shadow-[0_16px_36px_-12px_rgba(0,0,0,0.35)]">
-                  {/* Top accent line */}
+                <div className="group relative grid grid-cols-1 md:grid-cols-[1.35fr_1fr] border border-border rounded-2xl overflow-hidden bg-bg-secondary transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:border-accent/40 hover:shadow-[0_16px_36px_-12px_rgba(0,0,0,0.35)]">
+                  {/* Top subtle accent line */}
                   <div className="absolute top-0 left-0 right-0 h-[2px] z-10 bg-gradient-to-r from-accent via-accent/40 to-transparent" />
 
-                  {/* Image */}
+                  {/* 1. Chart / Image */}
                   <a
                     href={featured.url || featured.image}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => handleArticleClick(featured.id)}
-                    className="relative block overflow-hidden min-h-[200px] md:min-h-[220px] bg-bg-primary"
+                    className="relative block overflow-hidden min-h-[220px] md:min-h-[260px] bg-bg-primary"
                   >
                     <div className="relative h-full">
                       <img
@@ -182,67 +181,66 @@ export default function IdeasPage() {
                     </div>
                   </a>
 
-                  {/* Body */}
-                  <div className="p-6 flex flex-col justify-center gap-1.5">
-                    <span className="inline-flex items-center gap-1.5 text-[0.64rem] font-bold tracking-[0.14em] uppercase text-accent">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_0_3px_rgba(251,225,120,0.18)]" />
-                      {ideas.featuredLabel}
-                    </span>
+                  {/* Body Content */}
+                  <div className="p-6 md:p-7 flex flex-col justify-between gap-4">
+                    <div className="space-y-3">
+                      {/* 2. Title — immediately below the image */}
+                      <a
+                        href={featured.url || featured.image}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => handleArticleClick(featured.id)}
+                        className="block group/title"
+                      >
+                        <h2 className="syne font-bold text-xl sm:text-2xl text-text-primary group-hover/title:text-accent leading-snug transition-colors line-clamp-3">
+                          {featured.title}
+                        </h2>
+                      </a>
 
-                    {/* Metadata: Date • Estimated Reading time • (UNREAD badge if unread) */}
-                    <div className="text-[0.68rem] font-bold tracking-[0.05em] uppercase text-text-muted flex items-center flex-wrap gap-y-1 gap-x-1.5">
-                      <span>{formatDate(featured.date)}</span>
-                      <span>•</span>
-                      <span className="inline-flex items-center gap-1 text-text-muted">
-                        <BookOpen className="w-3 h-3 text-accent/80 shrink-0" />
-                        <span>{getReadingTime(featured.wordCount)}</span>
-                      </span>
-                      {!readIdeaIds.has(featured.id) && (
-                        <>
-                          <span>•</span>
-                          <span className="inline-flex items-center px-1.5 py-[1px] text-[0.58rem] font-black uppercase tracking-wider rounded bg-accent/15 text-accent border border-accent/30 shadow-sm">
-                            UNREAD
-                          </span>
-                        </>
-                      )}
+                      {/* 3-8. Metadata Line: Date • Asset • Clock + X min • Unread (All in exact same uniform grey) */}
+                      <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-xs text-text-muted">
+                        {/* 3. Publication date */}
+                        {featured.date && <span>{formatDate(featured.date)}</span>}
+
+                        {/* 4. Small dot separator */}
+                        {featured.date && (featured.company || featured.ticker) && <span>•</span>}
+
+                        {/* 5. Asset / market name */}
+                        {(featured.company || featured.ticker) && (
+                          <span>{featured.company || featured.ticker}</span>
+                        )}
+
+                        {/* 6. Reading time row (Clock icon + X min) */}
+                        <span className="inline-flex items-center gap-1">
+                          <Clock className="w-3 h-3 text-text-muted shrink-0" />
+                          <span>{getReadingTimeMinutes(featured.wordCount)} min</span>
+                        </span>
+
+                        {/* 7. Small dot separator & 8. Unread status (subtle and slightly smaller) */}
+                        {!readIdeaIds.has(featured.id) && (
+                          <>
+                            <span>•</span>
+                            <span className="text-[10.5px] tracking-wide text-text-muted">Unread</span>
+                          </>
+                        )}
+                      </div>
                     </div>
 
-                    {featured.company && (
-                      <span className="text-[0.76rem] font-medium text-text-secondary flex items-center gap-1.5 mt-0.5">
-                        <span className="w-1 h-1 rounded-full bg-accent/60" />
-                        {featured.company}
-                      </span>
-                    )}
-                    <h2 className="text-[1.25rem] font-bold text-text-primary leading-snug mt-0.5 line-clamp-2">
-                      {featured.title}
-                    </h2>
-
-                    {/* Editors' Pick Badge (only if editorPick is true) */}
-                    {featured.editorPick && (
-                      <div className="flex items-center gap-1.5 text-[0.7rem] font-bold tracking-[0.06em] uppercase text-[#2962FF] mt-1">
-                        <svg className="w-3 h-3 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
-                          <path d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1z"/>
-                        </svg>
-                        <span>EDITORS&apos; PICK</span>
-                      </div>
-                    )}
-
-                    {/* Action */}
-                    <a
-                      href={featured.url || featured.image}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => handleArticleClick(featured.id)}
-                      className="mt-3 inline-flex items-center gap-2.5 bg-bg-primary border border-border rounded-xl px-3 py-1.5 transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_-6px_rgba(0,0,0,0.4)] group/cta"
-                    >
-                      <span className="relative w-12 h-8 rounded-md overflow-hidden bg-bg-primary shrink-0">
-                        <img src={featured.image} alt="" className="w-full h-full object-cover" loading="lazy" />
-                      </span>
-                      <span className="text-[0.82rem] font-bold tracking-tight text-text-primary flex items-center gap-1.5">
-                        {featured.url ? ideas.ctaText : "View Market Chart"}
-                        <ArrowRight className="w-3 h-3 text-accent transition-transform duration-200 group-hover/cta:translate-x-1" />
-                      </span>
-                    </a>
+                    {/* Read on TradingView CTA inside clean rounded bordered box */}
+                    <div className="pt-1">
+                      <a
+                        href={featured.url || featured.image}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => handleArticleClick(featured.id)}
+                        className="inline-flex items-center justify-between w-full bg-bg-primary border border-border rounded-2xl px-4 py-2.5 transition-all duration-200 hover:border-accent/50 hover:bg-bg-primary/90 group/cta shadow-sm"
+                      >
+                        <span className="text-xs sm:text-[0.82rem] font-bold text-text-primary group-hover/cta:text-accent transition-colors">
+                          {featured.url ? (ideas.ctaText || "Read on TradingView") : "View Market Chart"}
+                        </span>
+                        <ArrowRight className="w-3.5 h-3.5 text-text-primary group-hover/cta:text-accent transition-transform duration-200 group-hover/cta:translate-x-0.5" />
+                      </a>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -259,26 +257,23 @@ export default function IdeasPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch"
             >
               {gridItems.map((article: any, i: number) => {
                 const isUnread = !readIdeaIds.has(article.id);
                 return (
-                  <ScrollReveal key={article.id || i} delay={0.1 + i * 0.05} className="h-full">
-                    <div className="group relative flex flex-col h-full border border-border rounded-xl overflow-hidden bg-bg-primary transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-[0_14px_30px_-10px_rgba(0,0,0,0.35)]">
+                  <ScrollReveal key={article.id || i} delay={0.05 + i * 0.04} className="h-full">
+                    <div className="group relative flex flex-col h-full border border-border rounded-2xl overflow-hidden bg-bg-secondary transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-[0_14px_30px_-10px_rgba(0,0,0,0.35)]">
                       {/* Top accent hairline */}
                       <div className="absolute top-0 left-0 right-0 h-[2px] z-10 bg-gradient-to-r from-accent/50 via-accent/20 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
 
-                      {/* Scan sweep on hover */}
-                      <div className="absolute top-0 left-0 w-[40%] h-[2px] z-20 bg-gradient-to-r from-transparent via-accent/80 to-transparent opacity-0 group-hover:animate-[scanSweep_0.9s_ease_forwards] pointer-events-none" />
-
-                      {/* Image */}
+                      {/* 1. Chart / image */}
                       <a
                         href={article.url || article.image}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => handleArticleClick(article.id)}
-                        className="relative block aspect-video overflow-hidden bg-bg-primary shrink-0"
+                        className="relative block aspect-[16/10] overflow-hidden bg-bg-primary shrink-0"
                       >
                         <img
                           src={article.image}
@@ -295,70 +290,64 @@ export default function IdeasPage() {
                         )}
                       </a>
 
-                      {/* Body */}
-                      <div className="p-4 flex flex-col flex-1">
-                        {/* Metadata: Date • Estimated Reading time • (UNREAD badge if unread) */}
-                        <div className="text-[0.66rem] font-bold tracking-[0.05em] uppercase text-text-muted mb-1.5 flex items-center flex-wrap gap-y-1 gap-x-1.5">
-                          <span>{formatDate(article.date)}</span>
-                          <span>•</span>
-                          <span className="inline-flex items-center gap-1 text-text-muted">
-                            <BookOpen className="w-3 h-3 text-accent/80 shrink-0" />
-                            <span>{getReadingTime(article.wordCount)}</span>
-                          </span>
-                          {isUnread && (
-                            <>
-                              <span>•</span>
-                              <span className="inline-flex items-center px-1.5 py-[1px] text-[0.58rem] font-black uppercase tracking-wider rounded bg-accent/15 text-accent border border-accent/30 shadow-sm">
-                                UNREAD
-                              </span>
-                            </>
-                          )}
-                        </div>
-
-                        {/* Company */}
-                        <div className="min-h-[1.1rem] mb-1 flex items-center">
-                          {article.company ? (
-                            <span className="text-[0.76rem] font-medium text-text-secondary flex items-center gap-1.5 truncate">
-                              <span className="w-1 h-1 rounded-full bg-accent/60 shrink-0" />
-                              <span className="truncate">{article.company}</span>
-                            </span>
-                          ) : null}
-                        </div>
-
-                        {/* Title: consistent line clamp and fixed min height */}
-                        <h3 className="text-[0.92rem] font-semibold text-text-primary leading-snug mb-2 line-clamp-2 min-h-[2.4rem]">
-                          {article.title}
-                        </h3>
-
-                        {/* Bottom section anchored with mt-auto */}
-                        <div className="mt-auto pt-2 flex flex-col gap-2">
-                          {/* Editors' Pick Badge Row (fixed height so cards align identically) */}
-                          <div className="h-4 flex items-center">
-                            {article.editorPick ? (
-                              <div className="flex items-center gap-1 text-[0.66rem] font-bold tracking-[0.06em] uppercase text-[#2962FF]">
-                                <svg className="w-3 h-3 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
-                                  <path d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1z"/>
-                                </svg>
-                                <span>EDITORS&apos; PICK</span>
-                              </div>
-                            ) : null}
-                          </div>
-
-                          {/* Action CTA button */}
+                      {/* Content Body */}
+                      <div className="p-5 flex flex-col flex-1 justify-between gap-4">
+                        <div className="space-y-2.5">
+                          {/* 2. Title — immediately below the image */}
                           <a
                             href={article.url || article.image}
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={() => handleArticleClick(article.id)}
-                            className="inline-flex items-center gap-2.5 bg-bg-primary border border-border rounded-lg px-2.5 py-1.5 w-full transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_-6px_rgba(0,0,0,0.4)] group/cta"
+                            className="block group/title"
                           >
-                            <span className="relative w-11 h-7 rounded overflow-hidden bg-bg-primary shrink-0">
-                              <img src={article.image} alt="" className="w-full h-full object-cover" loading="lazy" />
+                            <h3 className="syne font-bold text-[1.05rem] text-text-primary group-hover/title:text-accent leading-snug line-clamp-2 transition-colors">
+                              {article.title}
+                            </h3>
+                          </a>
+
+                          {/* 3-8. Metadata Line: Date • Asset • Clock + X min • Unread (All in exact same uniform grey) */}
+                          <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-xs text-text-muted">
+                            {/* 3. Publication date */}
+                            {article.date && <span>{formatDate(article.date)}</span>}
+
+                            {/* 4. Small dot separator */}
+                            {article.date && (article.company || article.ticker) && <span>•</span>}
+
+                            {/* 5. Asset / market name */}
+                            {(article.company || article.ticker) && (
+                              <span>{article.company || article.ticker}</span>
+                            )}
+
+                            {/* 6. Reading time row (Clock icon + X min) */}
+                            <span className="inline-flex items-center gap-1">
+                              <Clock className="w-3 h-3 text-text-muted shrink-0" />
+                              <span>{getReadingTimeMinutes(article.wordCount)} min</span>
                             </span>
-                            <span className="text-[0.8rem] font-semibold tracking-tight text-text-primary flex items-center gap-1">
-                              {article.url ? ideas.ctaText : "View Market Chart"}
-                              <ArrowRight className="w-3 h-3 text-accent transition-transform duration-200 group-hover/cta:translate-x-1" />
+
+                            {/* 7. Small dot separator & 8. Unread status (subtle and slightly smaller) */}
+                            {isUnread && (
+                              <>
+                                <span>•</span>
+                                <span className="text-[10.5px] tracking-wide text-text-muted">Unread</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Read on TradingView CTA inside clean rounded bordered box */}
+                        <div className="pt-1">
+                          <a
+                            href={article.url || article.image}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => handleArticleClick(article.id)}
+                            className="inline-flex items-center justify-between w-full bg-bg-primary border border-border rounded-2xl px-4 py-2.5 transition-all duration-200 hover:border-accent/50 hover:bg-bg-primary/90 group/cta shadow-sm"
+                          >
+                            <span className="text-xs sm:text-[0.82rem] font-bold text-text-primary group-hover/cta:text-accent transition-colors">
+                              {article.url ? (ideas.ctaText || "Read on TradingView") : "View Market Chart"}
                             </span>
+                            <ArrowRight className="w-3.5 h-3.5 text-text-primary group-hover/cta:text-accent transition-transform duration-200 group-hover/cta:translate-x-0.5" />
                           </a>
                         </div>
                       </div>

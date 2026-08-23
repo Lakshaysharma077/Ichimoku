@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   FileText,
   Save,
@@ -594,9 +595,14 @@ export default function AdminContentPage() {
                         </div>
 
                         <div className="flex items-center justify-between pt-2 border-t border-border/40 text-[10px] font-mono">
-                          <span className="text-text-muted truncate max-w-[140px]">
-                            {ind.tvUrl ? "🔗 TradingView Script" : "No TV URL"}
-                          </span>
+                          <Link
+                            href={`/tools/${ind.slug || ind.id}`}
+                            className="text-text-muted hover:text-accent flex items-center gap-1 transition-colors"
+                            target="_blank"
+                          >
+                            <span>Live Page</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </Link>
                           <div className="flex items-center gap-1">
                             <button
                               onClick={() => {

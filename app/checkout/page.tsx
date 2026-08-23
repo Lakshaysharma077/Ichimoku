@@ -351,29 +351,29 @@ function CheckoutContent() {
 
   // Features list for summary sidebar
   const getFeatures = () => {
-    if (plan.toLowerCase() === 'explorer') {
+    if (plan.toLowerCase() === 'explorer' || plan.toLowerCase() === 'ronin') {
       return [
-        'TK Cross Alert (Free indicator)',
-        'S/R Auto indicator',
-        'Community Discord access',
-        'Education resources'
+        'Ichimoku Kinkō Hyō indicator access',
+        'Basic cloud breakouts & signals',
+        'TradingView community script access',
+        'Community support'
       ];
     } else if (plan.toLowerCase() === 'daimyo') {
       return [
-        'ALL Free & Premium indicators',
-        'Ichimoku Edge Pro indicator',
-        'MTF Dashboard + Cloud Scanner',
+        'Full Ichimoku Kinkō Hyō suite',
+        'Multi-component equilibrium flat detection',
+        'Near-flat tolerance confluence engine',
         '1-on-1 Strategy consultation',
         'Custom indicator requests',
         'VIP Telegram alerts group'
       ];
     } else {
       return [
-        'ALL Free & Premium indicators',
-        'Ichimoku Edge Pro indicator',
-        'MTF Ichimoku Table dashboard',
-        'Kumo Cloud Scanner',
-        'Chikou Span Analyzer',
+        'Full Ichimoku Kinkō Hyō suite',
+        'Multi-component equilibrium flat detection',
+        'Near-flat tolerance confluence engine',
+        'Conditional forward projection lines',
+        'On-chart real-time status matrix',
         'Priority email support'
       ];
     }

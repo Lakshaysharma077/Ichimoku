@@ -37,6 +37,7 @@ seed_error.log
 
 # scratch
 test-db.js
+scratch/
 
 # vercel
 .vercel
