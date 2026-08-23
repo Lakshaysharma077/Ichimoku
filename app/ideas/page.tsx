@@ -119,19 +119,19 @@ export default function IdeasPage() {
   const gridItems = searchQuery ? filtered : filtered.slice(1);
 
   return (
-    <div className="pt-40 pb-24 relative overflow-hidden min-h-[100svh]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-8">
+    <div className="pt-36 pb-20 relative overflow-hidden min-h-[100svh]">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
 
         {/* ── Hero ── */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <ScrollReveal>
             <h1
-              className="syne font-extrabold text-4xl lg:text-[56px] text-text-primary mb-6 uppercase tracking-tight leading-[0.9]"
-              style={{ wordSpacing: '0.2em' }}
+              className="syne font-extrabold text-3xl sm:text-4xl lg:text-[46px] text-text-primary mb-4 uppercase tracking-tight leading-[0.95]"
+              style={{ wordSpacing: '0.15em' }}
             >
               {ideas.hero.heading}
             </h1>
-            <p className="text-lg text-text-secondary max-w-2xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base text-text-secondary max-w-xl mx-auto leading-relaxed">
               {ideas.hero.subtitle}
             </p>
           </ScrollReveal>
@@ -139,26 +139,26 @@ export default function IdeasPage() {
 
         {/* ── Header: Label + Search ── */}
         <ScrollReveal delay={0.1}>
-          <div className="flex items-center justify-between flex-wrap gap-4 mb-8">
-            <div className="flex items-center gap-3.5 flex-wrap">
-              <span className="text-[11px] font-mono font-bold text-text-muted uppercase tracking-[0.15em]">
+          <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
+            <div className="flex items-center gap-2.5 flex-wrap">
+              <span className="text-[10px] font-mono font-bold text-text-muted uppercase tracking-[0.14em]">
                 {ideas.sectionLabel}
               </span>
-              <div className="flex items-center gap-1.5 text-[10px] font-mono text-text-muted bg-bg-secondary/40 border border-[#2962FF]/20 rounded-full px-2.5 py-0.5 shadow-sm">
-                <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
+              <div className="flex items-center gap-1.5 text-[9.5px] font-mono text-text-muted bg-bg-secondary/40 border border-[#2962FF]/20 rounded-full px-2 py-0.5 shadow-sm">
+                <svg className="w-3 h-3 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
                   <path d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1z"/>
                 </svg>
                 <span>EDITORS&apos; PICK = Selected by TradingView editors</span>
               </div>
             </div>
-            <div className="flex items-center gap-2.5 bg-bg-secondary border border-border rounded-xl px-4 py-2.5 w-64 max-w-full transition-all focus-within:border-accent/50 focus-within:shadow-[0_0_0_3px_rgba(251,225,120,0.08)]">
-              <Search className="w-4 h-4 text-text-muted shrink-0" />
+            <div className="flex items-center gap-2 bg-bg-secondary border border-border rounded-xl px-3 py-1.5 w-60 max-w-full transition-all focus-within:border-accent/50 focus-within:shadow-[0_0_0_3px_rgba(251,225,120,0.08)]">
+              <Search className="w-3.5 h-3.5 text-text-muted shrink-0" />
               <input
                 type="text"
                 placeholder={ideas.searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent border-none outline-none w-full text-text-primary text-sm placeholder:text-text-muted"
+                className="bg-transparent border-none outline-none w-full text-text-primary text-xs placeholder:text-text-muted"
               />
             </div>
           </div>
@@ -173,9 +173,9 @@ export default function IdeasPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="mb-8"
+                className="mb-7"
               >
-                <div className="group relative grid grid-cols-1 md:grid-cols-[1.55fr_1fr] border border-border rounded-2xl overflow-hidden bg-bg-secondary transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_22px_48px_-16px_rgba(0,0,0,0.35)]">
+                <div className="group relative grid grid-cols-1 md:grid-cols-[1.35fr_1fr] border border-border rounded-2xl overflow-hidden bg-bg-secondary transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:border-accent/30 hover:shadow-[0_16px_36px_-12px_rgba(0,0,0,0.35)]">
                   {/* Top accent line */}
                   <div className="absolute top-0 left-0 right-0 h-[2px] z-10 bg-gradient-to-r from-accent via-accent/40 to-transparent" />
 
@@ -185,42 +185,42 @@ export default function IdeasPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => handleArticleClick(featured.id)}
-                    className="relative block overflow-hidden min-h-[240px] bg-bg-primary"
+                    className="relative block overflow-hidden min-h-[200px] md:min-h-[220px] bg-bg-primary"
                   >
                     <div className="relative h-full">
                       <img
                         src={featured.image}
                         alt={`${featured.ticker || ''} — ${featured.title}`}
-                        className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035]"
+                        className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.025]"
                       />
 
                       {/* TV ribbon mark on upper-left (only for Editor's Pick) */}
                       {featured.editorPick && (
-                        <div className="absolute top-0 left-3 z-10 w-6 h-7 bg-[#2962FF] flex items-center justify-center rounded-b-[2px] shadow-[0_2px_8px_rgba(41,98,255,0.4)]">
-                          <span className="text-white text-[10px] font-black tracking-tighter">TV</span>
+                        <div className="absolute top-0 left-2.5 z-10 w-5 h-6 bg-[#2962FF] flex items-center justify-center rounded-b-[2px] shadow-[0_2px_8px_rgba(41,98,255,0.4)]">
+                          <span className="text-white text-[9px] font-black tracking-tighter">TV</span>
                         </div>
                       )}
                     </div>
                   </a>
 
                   {/* Body */}
-                  <div className="p-8 flex flex-col justify-center gap-2">
-                    <span className="inline-flex items-center gap-2 text-[0.68rem] font-bold tracking-[0.14em] uppercase text-accent">
+                  <div className="p-6 flex flex-col justify-center gap-1.5">
+                    <span className="inline-flex items-center gap-1.5 text-[0.64rem] font-bold tracking-[0.14em] uppercase text-accent">
                       <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_0_3px_rgba(251,225,120,0.18)]" />
                       {ideas.featuredLabel}
                     </span>
 
                     {/* Metadata: Date • Estimated Reading time • Visited time */}
-                    <div className="text-[0.72rem] font-bold tracking-[0.06em] uppercase text-text-muted flex items-center flex-wrap gap-y-1 gap-x-2">
+                    <div className="text-[0.68rem] font-bold tracking-[0.05em] uppercase text-text-muted flex items-center flex-wrap gap-y-1 gap-x-1.5">
                       <span>{formatDate(featured.date)}</span>
                       <span>•</span>
                       <span className="inline-flex items-center gap-1 text-text-muted">
-                        <Clock4 className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                        <Clock4 className="w-3 h-3 text-accent/80 shrink-0" />
                         <span>{getReadingTime(featured.wordCount)}</span>
                       </span>
                       <span>•</span>
-                      <span className="inline-flex items-center gap-1.5 text-text-muted">
-                        <Clock className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                      <span className="inline-flex items-center gap-1 text-text-muted">
+                        <Clock className="w-3 h-3 text-accent/80 shrink-0" />
                         {readTimes[featured.id] ? (
                           <span className="text-[#2962FF] font-bold">
                             {formatVisitedTime(featured.id)}
@@ -232,19 +232,19 @@ export default function IdeasPage() {
                     </div>
 
                     {featured.company && (
-                      <span className="text-[0.82rem] font-medium text-text-secondary flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent/60" />
+                      <span className="text-[0.76rem] font-medium text-text-secondary flex items-center gap-1.5 mt-0.5">
+                        <span className="w-1 h-1 rounded-full bg-accent/60" />
                         {featured.company}
                       </span>
                     )}
-                    <h2 className="text-[1.55rem] font-bold text-text-primary leading-snug mt-1">
+                    <h2 className="text-[1.25rem] font-bold text-text-primary leading-snug mt-0.5 line-clamp-2">
                       {featured.title}
                     </h2>
 
                     {/* Editors' Pick Badge (only if editorPick is true) */}
                     {featured.editorPick && (
-                      <div className="flex items-center gap-1.5 text-[0.74rem] font-bold tracking-[0.06em] uppercase text-[#2962FF] mt-2 mb-1">
-                        <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
+                      <div className="flex items-center gap-1.5 text-[0.7rem] font-bold tracking-[0.06em] uppercase text-[#2962FF] mt-1">
+                        <svg className="w-3 h-3 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
                           <path d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1z"/>
                         </svg>
                         <span>EDITORS&apos; PICK</span>
@@ -257,14 +257,14 @@ export default function IdeasPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => handleArticleClick(featured.id)}
-                      className="mt-4 inline-flex items-center gap-3 bg-bg-primary border border-border rounded-xl px-3 py-2 transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_6px_16px_-8px_rgba(0,0,0,0.4)] group/cta"
+                      className="mt-3 inline-flex items-center gap-2.5 bg-bg-primary border border-border rounded-xl px-3 py-1.5 transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_-6px_rgba(0,0,0,0.4)] group/cta"
                     >
-                      <span className="relative w-16 h-10 rounded-md overflow-hidden bg-bg-primary shrink-0">
+                      <span className="relative w-12 h-8 rounded-md overflow-hidden bg-bg-primary shrink-0">
                         <img src={featured.image} alt="" className="w-full h-full object-cover" loading="lazy" />
                       </span>
-                      <span className="text-[0.88rem] font-bold tracking-tight text-text-primary flex items-center gap-1.5">
+                      <span className="text-[0.82rem] font-bold tracking-tight text-text-primary flex items-center gap-1.5">
                         {featured.url ? ideas.ctaText : "View Market Chart"}
-                        <ArrowRight className="w-3.5 h-3.5 text-accent transition-transform duration-200 group-hover/cta:translate-x-1" />
+                        <ArrowRight className="w-3 h-3 text-accent transition-transform duration-200 group-hover/cta:translate-x-1" />
                       </span>
                     </a>
                   </div>
@@ -283,11 +283,11 @@ export default function IdeasPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 items-stretch"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch"
             >
               {gridItems.map((article: any, i: number) => (
-                <ScrollReveal key={article.id || i} delay={0.1 + i * 0.06} className="h-full">
-                  <div className="group relative flex flex-col h-full border border-border rounded-2xl overflow-hidden bg-bg-primary transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_18px_40px_-12px_rgba(0,0,0,0.35)]">
+                <ScrollReveal key={article.id || i} delay={0.1 + i * 0.05} className="h-full">
+                  <div className="group relative flex flex-col h-full border border-border rounded-xl overflow-hidden bg-bg-primary transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-[0_14px_30px_-10px_rgba(0,0,0,0.35)]">
                     {/* Top accent hairline */}
                     <div className="absolute top-0 left-0 right-0 h-[2px] z-10 bg-gradient-to-r from-accent/50 via-accent/20 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -305,31 +305,31 @@ export default function IdeasPage() {
                       <img
                         src={article.image}
                         alt={`${article.ticker || ''} — ${article.title}`}
-                        className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035]"
+                        className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.025]"
                         loading="lazy"
                       />
 
                       {/* TV ribbon mark on upper-left (only for Editor's Pick) */}
                       {article.editorPick && (
-                        <div className="absolute top-0 left-2.5 z-10 w-6 h-7 bg-[#2962FF] flex items-center justify-center rounded-b-[2px] shadow-[0_2px_8px_rgba(41,98,255,0.4)]">
-                          <span className="text-white text-[10px] font-black tracking-tighter">TV</span>
+                        <div className="absolute top-0 left-2 z-10 w-5 h-6 bg-[#2962FF] flex items-center justify-center rounded-b-[2px] shadow-[0_2px_8px_rgba(41,98,255,0.4)]">
+                          <span className="text-white text-[9px] font-black tracking-tighter">TV</span>
                         </div>
                       )}
                     </a>
 
                     {/* Body */}
-                    <div className="p-5 flex flex-col flex-1">
+                    <div className="p-4 flex flex-col flex-1">
                       {/* Metadata: Date • Estimated Reading time • Visited time */}
-                      <div className="text-[0.72rem] font-bold tracking-[0.06em] uppercase text-text-muted mb-2 flex items-center flex-wrap gap-y-1 gap-x-2">
+                      <div className="text-[0.66rem] font-bold tracking-[0.05em] uppercase text-text-muted mb-1.5 flex items-center flex-wrap gap-y-1 gap-x-1.5">
                         <span>{formatDate(article.date)}</span>
                         <span>•</span>
                         <span className="inline-flex items-center gap-1 text-text-muted">
-                          <Clock4 className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                          <Clock4 className="w-3 h-3 text-accent/80 shrink-0" />
                           <span>{getReadingTime(article.wordCount)}</span>
                         </span>
                         <span>•</span>
-                        <span className="inline-flex items-center gap-1.5 text-text-muted">
-                          <Clock className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                        <span className="inline-flex items-center gap-1 text-text-muted">
+                          <Clock className="w-3 h-3 text-accent/80 shrink-0" />
                           {readTimes[article.id] ? (
                             <span className="text-[#2962FF] font-bold">
                               {formatVisitedTime(article.id)}
@@ -341,44 +341,48 @@ export default function IdeasPage() {
                       </div>
 
                       {/* Company */}
-                      {article.company && (
-                        <span className="text-[0.82rem] font-medium text-text-secondary mb-2 flex items-center gap-2">
-                          <span className="w-1 h-1 rounded-full bg-accent/60" />
-                          {article.company}
-                        </span>
-                      )}
+                      <div className="min-h-[1.1rem] mb-1 flex items-center">
+                        {article.company ? (
+                          <span className="text-[0.76rem] font-medium text-text-secondary flex items-center gap-1.5 truncate">
+                            <span className="w-1 h-1 rounded-full bg-accent/60 shrink-0" />
+                            <span className="truncate">{article.company}</span>
+                          </span>
+                        ) : null}
+                      </div>
 
-                      {/* Title */}
-                      <h3 className="text-[1.05rem] font-semibold text-text-primary leading-snug mb-3 line-clamp-2">
+                      {/* Title: consistent line clamp and fixed min height */}
+                      <h3 className="text-[0.92rem] font-semibold text-text-primary leading-snug mb-2 line-clamp-2 min-h-[2.4rem]">
                         {article.title}
                       </h3>
 
                       {/* Bottom section anchored with mt-auto */}
-                      <div className="mt-auto pt-3 flex flex-col gap-2.5">
-                        {/* Editors' Pick Badge (only for articles with editorPick: true) */}
-                        {article.editorPick && (
-                          <div className="flex items-center gap-1.5 text-[0.72rem] font-bold tracking-[0.06em] uppercase text-[#2962FF]">
-                            <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
-                              <path d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1z"/>
-                            </svg>
-                            <span>EDITORS&apos; PICK</span>
-                          </div>
-                        )}
+                      <div className="mt-auto pt-2 flex flex-col gap-2">
+                        {/* Editors' Pick Badge Row (fixed height so cards align identically) */}
+                        <div className="h-4 flex items-center">
+                          {article.editorPick ? (
+                            <div className="flex items-center gap-1 text-[0.66rem] font-bold tracking-[0.06em] uppercase text-[#2962FF]">
+                              <svg className="w-3 h-3 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
+                                <path d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1z"/>
+                              </svg>
+                              <span>EDITORS&apos; PICK</span>
+                            </div>
+                          ) : null}
+                        </div>
 
-                        {/* Action */}
+                        {/* Action CTA button */}
                         <a
                           href={article.url || article.image}
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={() => handleArticleClick(article.id)}
-                          className="inline-flex items-center gap-3 bg-bg-primary border border-border rounded-xl px-3 py-2 w-full transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_6px_16px_-8px_rgba(0,0,0,0.4)] group/cta"
+                          className="inline-flex items-center gap-2.5 bg-bg-primary border border-border rounded-lg px-2.5 py-1.5 w-full transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_-6px_rgba(0,0,0,0.4)] group/cta"
                         >
-                          <span className="relative w-16 h-10 rounded-md overflow-hidden bg-bg-primary shrink-0">
+                          <span className="relative w-11 h-7 rounded overflow-hidden bg-bg-primary shrink-0">
                             <img src={article.image} alt="" className="w-full h-full object-cover" loading="lazy" />
                           </span>
-                          <span className="text-[0.88rem] font-semibold tracking-tight text-text-primary flex items-center gap-1.5">
+                          <span className="text-[0.8rem] font-semibold tracking-tight text-text-primary flex items-center gap-1">
                             {article.url ? ideas.ctaText : "View Market Chart"}
-                            <ArrowRight className="w-3.5 h-3.5 text-accent transition-transform duration-200 group-hover/cta:translate-x-1" />
+                            <ArrowRight className="w-3 h-3 text-accent transition-transform duration-200 group-hover/cta:translate-x-1" />
                           </span>
                         </a>
                       </div>
@@ -393,12 +397,12 @@ export default function IdeasPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="text-center py-20"
+              className="text-center py-16"
             >
-              <p className="text-text-muted text-lg">{ideas.noResults}</p>
+              <p className="text-text-muted text-base">{ideas.noResults}</p>
               <button
                 onClick={() => setSearchQuery('')}
-                className="mt-4 text-accent text-sm font-bold uppercase tracking-widest hover:brightness-110 transition-all"
+                className="mt-3 text-accent text-xs font-bold uppercase tracking-widest hover:brightness-110 transition-all"
               >
                 Clear search
               </button>
