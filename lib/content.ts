@@ -418,7 +418,7 @@ export const staticContent = {
       subtitle: "Technical analysis ideas published on TradingView by Ichimoku Edge."
     },
     sectionLabel: "Published on TradingView",
-    searchPlaceholder: "Search a ticker...",
+    searchPlaceholder: "Search asset / ticker...",
     noResults: "No ideas found for this search.",
     ctaText: "Read on TradingView",
     featuredLabel: "Latest Idea",

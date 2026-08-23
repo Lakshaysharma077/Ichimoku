@@ -143,7 +143,7 @@ export default function IdeasPage() {
               <Search className="w-3.5 h-3.5 text-text-muted shrink-0" />
               <input
                 type="text"
-                placeholder={ideas.searchPlaceholder}
+                placeholder={ideas.searchPlaceholder || "Search asset / ticker..."}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-transparent border-none outline-none w-full text-text-primary text-xs placeholder:text-text-muted"
