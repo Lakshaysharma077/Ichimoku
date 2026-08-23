@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '@/components/shared/ScrollReveal';
-import { Search, ArrowRight, Clock, ExternalLink, Image as ImageIcon } from 'lucide-react';
+import { Search, ArrowRight, Clock, Clock4 } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
 
 /** Format ISO date string to readable format */
@@ -16,6 +16,13 @@ function formatDate(dateStr?: string): string {
     month: 'short',
     year: 'numeric',
   }).format(date);
+}
+
+/** Calculate estimated reading time based on article word count (~200 words/min) */
+function getReadingTime(wordCount?: number): string {
+  const words = typeof wordCount === 'number' && wordCount > 0 ? wordCount : 1000;
+  const minutes = Math.max(1, Math.ceil(words / 200));
+  return `Reading time: ${minutes} min`;
 }
 
 export default function IdeasPage() {
@@ -50,7 +57,7 @@ export default function IdeasPage() {
     }
   }, [allArticles]);
 
-  // Track window focus events to calculate reading time based on user visit
+  // Track window focus events to calculate visited time
   useEffect(() => {
     const handleFocus = () => {
       const clickedId = sessionStorage.getItem('clicked_article_id');
@@ -83,7 +90,7 @@ export default function IdeasPage() {
     sessionStorage.setItem('clicked_article_time', Date.now().toString());
   };
 
-  const formatReadingTime = (articleId: string) => {
+  const formatVisitedTime = (articleId: string) => {
     const timeMs = readTimes[articleId];
     if (!timeMs) return 'Not visited yet';
 
@@ -92,9 +99,9 @@ export default function IdeasPage() {
     const seconds = totalSeconds % 60;
 
     if (minutes > 0) {
-      return `${minutes}m ${seconds}s`;
+      return `Visited for ${minutes}m ${seconds}s`;
     }
-    return `${seconds}s`;
+    return `Visited for ${seconds}s`;
   };
 
   const filtered = useMemo(() => {
@@ -203,16 +210,20 @@ export default function IdeasPage() {
                       {ideas.featuredLabel}
                     </span>
 
-                    {/* Metadata: Date • Reading time based on user visit */}
-                    <div className="text-[0.72rem] font-bold tracking-[0.08em] uppercase text-text-muted flex items-center flex-wrap gap-y-1 gap-x-2">
+                    {/* Metadata: Date • Estimated Reading time • Visited time */}
+                    <div className="text-[0.72rem] font-bold tracking-[0.06em] uppercase text-text-muted flex items-center flex-wrap gap-y-1 gap-x-2">
                       <span>{formatDate(featured.date)}</span>
+                      <span>•</span>
+                      <span className="inline-flex items-center gap-1 text-text-muted">
+                        <Clock4 className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                        <span>{getReadingTime(featured.wordCount)}</span>
+                      </span>
                       <span>•</span>
                       <span className="inline-flex items-center gap-1.5 text-text-muted">
                         <Clock className="w-3.5 h-3.5 text-accent/80 shrink-0" />
-                        <span>Reading time: </span>
                         {readTimes[featured.id] ? (
                           <span className="text-[#2962FF] font-bold">
-                            {formatReadingTime(featured.id)}
+                            {formatVisitedTime(featured.id)}
                           </span>
                         ) : (
                           <span className="text-text-muted/60">Not visited yet</span>
@@ -272,11 +283,11 @@ export default function IdeasPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 items-stretch"
             >
               {gridItems.map((article: any, i: number) => (
-                <ScrollReveal key={article.id || i} delay={0.1 + i * 0.06}>
-                  <div className="group relative flex flex-col border border-border rounded-2xl overflow-hidden bg-bg-primary transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_18px_40px_-12px_rgba(0,0,0,0.35)]">
+                <ScrollReveal key={article.id || i} delay={0.1 + i * 0.06} className="h-full">
+                  <div className="group relative flex flex-col h-full border border-border rounded-2xl overflow-hidden bg-bg-primary transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_18px_40px_-12px_rgba(0,0,0,0.35)]">
                     {/* Top accent hairline */}
                     <div className="absolute top-0 left-0 right-0 h-[2px] z-10 bg-gradient-to-r from-accent/50 via-accent/20 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -289,7 +300,7 @@ export default function IdeasPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => handleArticleClick(article.id)}
-                      className="relative block aspect-video overflow-hidden bg-bg-primary"
+                      className="relative block aspect-video overflow-hidden bg-bg-primary shrink-0"
                     >
                       <img
                         src={article.image}
@@ -308,16 +319,20 @@ export default function IdeasPage() {
 
                     {/* Body */}
                     <div className="p-5 flex flex-col flex-1">
-                      {/* Metadata: Date • Reading time based on user visit */}
-                      <div className="text-[0.72rem] font-bold tracking-[0.08em] uppercase text-text-muted mb-1 flex items-center flex-wrap gap-y-1 gap-x-2">
+                      {/* Metadata: Date • Estimated Reading time • Visited time */}
+                      <div className="text-[0.72rem] font-bold tracking-[0.06em] uppercase text-text-muted mb-2 flex items-center flex-wrap gap-y-1 gap-x-2">
                         <span>{formatDate(article.date)}</span>
+                        <span>•</span>
+                        <span className="inline-flex items-center gap-1 text-text-muted">
+                          <Clock4 className="w-3.5 h-3.5 text-accent/80 shrink-0" />
+                          <span>{getReadingTime(article.wordCount)}</span>
+                        </span>
                         <span>•</span>
                         <span className="inline-flex items-center gap-1.5 text-text-muted">
                           <Clock className="w-3.5 h-3.5 text-accent/80 shrink-0" />
-                          <span>Reading time: </span>
                           {readTimes[article.id] ? (
                             <span className="text-[#2962FF] font-bold">
-                              {formatReadingTime(article.id)}
+                              {formatVisitedTime(article.id)}
                             </span>
                           ) : (
                             <span className="text-text-muted/60">Not visited yet</span>
@@ -325,28 +340,32 @@ export default function IdeasPage() {
                         </span>
                       </div>
 
+                      {/* Company */}
                       {article.company && (
                         <span className="text-[0.82rem] font-medium text-text-secondary mb-2 flex items-center gap-2">
                           <span className="w-1 h-1 rounded-full bg-accent/60" />
                           {article.company}
                         </span>
                       )}
-                      <h3 className="text-[1.05rem] font-semibold text-text-primary leading-snug mb-3">
+
+                      {/* Title */}
+                      <h3 className="text-[1.05rem] font-semibold text-text-primary leading-snug mb-3 line-clamp-2">
                         {article.title}
                       </h3>
 
-                      {/* Editors' Pick Badge (only for articles with editorPick: true) */}
-                      {article.editorPick && (
-                        <div className="flex items-center gap-1.5 text-[0.72rem] font-bold tracking-[0.06em] uppercase text-[#2962FF] mb-3 mt-auto">
-                          <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
-                            <path d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1z"/>
-                          </svg>
-                          <span>EDITORS&apos; PICK</span>
-                        </div>
-                      )}
+                      {/* Bottom section anchored with mt-auto */}
+                      <div className="mt-auto pt-3 flex flex-col gap-2.5">
+                        {/* Editors' Pick Badge (only for articles with editorPick: true) */}
+                        {article.editorPick && (
+                          <div className="flex items-center gap-1.5 text-[0.72rem] font-bold tracking-[0.06em] uppercase text-[#2962FF]">
+                            <svg className="w-3.5 h-3.5 fill-[#2962FF] shrink-0" viewBox="0 0 24 24">
+                              <path d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1z"/>
+                            </svg>
+                            <span>EDITORS&apos; PICK</span>
+                          </div>
+                        )}
 
-                      {/* Action */}
-                      <div className={article.editorPick ? "" : "mt-auto"}>
+                        {/* Action */}
                         <a
                           href={article.url || article.image}
                           target="_blank"
