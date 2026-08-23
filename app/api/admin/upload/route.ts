@@ -5,6 +5,16 @@ import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { randomUUID } from "crypto";
 
+const ALLOWED_MIME_TYPES = new Set([
+  "image/png",
+  "image/jpeg",
+  "image/jpg",
+  "image/webp",
+  "image/svg+xml",
+]);
+
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -19,7 +29,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const ext = file.name.split(".").pop() || "png";
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      return NextResponse.json(
+        { error: "File size exceeds maximum limit of 10MB" },
+        { status: 400 }
+      );
+    }
+
+    if (file.type && !ALLOWED_MIME_TYPES.has(file.type.toLowerCase())) {
+      return NextResponse.json(
+        { error: "Invalid file type. Only PNG, JPEG, and WebP images are allowed." },
+        { status: 400 }
+      );
+    }
+
+    const ext = file.name.split(".").pop()?.toLowerCase() || "png";
     const filename = `${randomUUID()}.${ext}`;
     const uploadDir = join(process.cwd(), "public", "uploads");
     
@@ -29,8 +53,14 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(bytes);
     await writeFile(join(uploadDir, filename), buffer);
 
-    return NextResponse.json({ url: `/uploads/${filename}` });
+    return NextResponse.json({
+      url: `/uploads/${filename}`,
+      filename,
+      size: file.size,
+    });
   } catch (error) {
+    console.error("ADMIN_UPLOAD_ERROR:", error);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }
+

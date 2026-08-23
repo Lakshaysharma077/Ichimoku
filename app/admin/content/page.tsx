@@ -26,11 +26,13 @@ import {
   ChevronRight,
   ExternalLink,
   ShieldCheck,
+  LineChart,
 } from "lucide-react";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import IndicatorModal from "@/components/tools/IndicatorModal";
 import { IndicatorData } from "@/components/tools/IndicatorCard";
+import IdeaManager from "@/components/admin/IdeaManager";
 
 // ─── Visual Field Renderers ───────────────────────────────────
 
@@ -309,6 +311,7 @@ export default function AdminContentPage() {
 
   const sections = [
     { key: "hero", label: "Hero Section", icon: Sparkles, desc: "Main homepage headline, tagline, buttons" },
+    { key: "ideas", label: "Market Analysis / Ideas", icon: LineChart, desc: "Publish new TradingView ideas, charts & analysis" },
     { key: "ichimoku", label: "Ichimoku Page", icon: Layers, desc: "Education content & component descriptions" },
     { key: "pricing", label: "Pricing Tiers", icon: DollarSign, desc: "Plan names, prices, features" },
     { key: "faq", label: "FAQ Section", icon: HelpCircle, desc: "Questions, answers, categories" },
@@ -533,6 +536,11 @@ export default function AdminContentPage() {
 
           {/* Visual Editor */}
           <div className="lg:col-span-3 space-y-6">
+            {/* Dedicated Ideas & Market Analysis Manager when ideas tab selected */}
+            {activeSection === "ideas" ? (
+              <IdeaManager />
+            ) : (
+              <>
             {/* Dedicated Tools & Indicators Manager Block when indicators or tools tab selected */}
             {(activeSection === "indicators" || activeSection === "tools") && (
               <Card className="p-6 bg-bg-secondary/60 border-accent/30 shadow-[0_0_20px_rgba(251,225,120,0.05)]">
@@ -688,6 +696,8 @@ export default function AdminContentPage() {
                 </div>
               )}
             </Card>
+            </>
+            )}
           </div>
         </div>
       </div>

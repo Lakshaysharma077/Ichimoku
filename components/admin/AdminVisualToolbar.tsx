@@ -15,7 +15,8 @@ import {
   Undo2,
   Redo2,
   GripHorizontal,
-  CreditCard
+  CreditCard,
+  LineChart,
 } from "lucide-react";
 import { clsx } from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
@@ -198,6 +199,15 @@ export default function AdminVisualToolbar() {
               {!isMobile && "EDIT"}
             </button>
           </div>
+
+          <button
+            onClick={() => router.push('/admin/ideas')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-bold bg-white/5 hover:bg-accent/20 text-white hover:text-accent border border-white/10 transition-all"
+            title="Manage Market Analysis Ideas"
+          >
+            <LineChart className="w-3.5 h-3.5" />
+            {!isMobile && "IDEAS"}
+          </button>
 
           <button
             onClick={() => router.push('/admin/payments')}

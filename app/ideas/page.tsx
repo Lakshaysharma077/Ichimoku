@@ -3,12 +3,14 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '@/components/shared/ScrollReveal';
-import { Search, ArrowRight, Clock } from 'lucide-react';
+import { Search, ArrowRight, Clock, ExternalLink, Image as ImageIcon } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
 
 /** Format ISO date string to readable format */
-function formatDate(dateStr: string): string {
-  const date = new Date(dateStr + 'T00:00:00');
+function formatDate(dateStr?: string): string {
+  if (!dateStr) return '';
+  const date = new Date(dateStr + (dateStr.includes('T') ? '' : 'T00:00:00'));
+  if (isNaN(date.getTime())) return dateStr;
   return new Intl.DateTimeFormat('en-US', {
     day: 'numeric',
     month: 'short',
@@ -20,8 +22,16 @@ export default function IdeasPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const ideas = useContent('ideas');
 
-  // Split: first = featured, rest = grid
-  const allArticles = ideas.articles;
+  // Dynamically sort articles newest-first by date
+  const allArticles = useMemo(() => {
+    const raw = Array.isArray(ideas?.articles) ? [...ideas.articles] : [];
+    return raw.sort((a: any, b: any) => {
+      const dateA = new Date(a.date || 0).getTime() || 0;
+      const dateB = new Date(b.date || 0).getTime() || 0;
+      return dateB - dateA;
+    });
+  }, [ideas?.articles]);
+
   const [readTimes, setReadTimes] = useState<Record<string, number>>({});
 
   // Load times from localStorage on mount
@@ -29,9 +39,11 @@ export default function IdeasPage() {
     if (typeof window !== 'undefined') {
       const times: Record<string, number> = {};
       allArticles.forEach((article: any) => {
-        const stored = localStorage.getItem(`read_time_${article.id}`);
-        if (stored) {
-          times[article.id] = parseInt(stored, 10);
+        if (article.id) {
+          const stored = localStorage.getItem(`read_time_${article.id}`);
+          if (stored) {
+            times[article.id] = parseInt(stored, 10);
+          }
         }
       });
       setReadTimes(times);
@@ -90,9 +102,9 @@ export default function IdeasPage() {
     if (!q) return allArticles;
     return allArticles.filter(
       (a: any) =>
-        a.ticker.toLowerCase().includes(q) ||
-        a.title.toLowerCase().includes(q) ||
-        a.company.toLowerCase().includes(q)
+        (a.ticker && a.ticker.toLowerCase().includes(q)) ||
+        (a.title && a.title.toLowerCase().includes(q)) ||
+        (a.company && a.company.toLowerCase().includes(q))
     );
   }, [allArticles, searchQuery]);
 
@@ -150,7 +162,7 @@ export default function IdeasPage() {
           {featured && (
             <ScrollReveal delay={0.15}>
               <motion.div
-                key="featured"
+                key={featured.id || "featured"}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -162,7 +174,7 @@ export default function IdeasPage() {
 
                   {/* Image */}
                   <a
-                    href={featured.url}
+                    href={featured.url || featured.image}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => handleArticleClick(featured.id)}
@@ -171,7 +183,7 @@ export default function IdeasPage() {
                     <div className="relative h-full">
                       <img
                         src={featured.image}
-                        alt={`${featured.ticker} — ${featured.title}`}
+                        alt={`${featured.ticker || ''} — ${featured.title}`}
                         className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035]"
                       />
 
@@ -228,9 +240,9 @@ export default function IdeasPage() {
                       </div>
                     )}
 
-                    {/* Action: Read on TradingView */}
+                    {/* Action */}
                     <a
-                      href={featured.url}
+                      href={featured.url || featured.image}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => handleArticleClick(featured.id)}
@@ -240,7 +252,7 @@ export default function IdeasPage() {
                         <img src={featured.image} alt="" className="w-full h-full object-cover" loading="lazy" />
                       </span>
                       <span className="text-[0.88rem] font-bold tracking-tight text-text-primary flex items-center gap-1.5">
-                        {ideas.ctaText}
+                        {featured.url ? ideas.ctaText : "View Market Chart"}
                         <ArrowRight className="w-3.5 h-3.5 text-accent transition-transform duration-200 group-hover/cta:translate-x-1" />
                       </span>
                     </a>
@@ -263,7 +275,7 @@ export default function IdeasPage() {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"
             >
               {gridItems.map((article: any, i: number) => (
-                <ScrollReveal key={article.id} delay={0.1 + i * 0.06}>
+                <ScrollReveal key={article.id || i} delay={0.1 + i * 0.06}>
                   <div className="group relative flex flex-col border border-border rounded-2xl overflow-hidden bg-bg-primary transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_18px_40px_-12px_rgba(0,0,0,0.35)]">
                     {/* Top accent hairline */}
                     <div className="absolute top-0 left-0 right-0 h-[2px] z-10 bg-gradient-to-r from-accent/50 via-accent/20 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
@@ -273,7 +285,7 @@ export default function IdeasPage() {
 
                     {/* Image */}
                     <a
-                      href={article.url}
+                      href={article.url || article.image}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => handleArticleClick(article.id)}
@@ -281,7 +293,7 @@ export default function IdeasPage() {
                     >
                       <img
                         src={article.image}
-                        alt={`${article.ticker} — ${article.title}`}
+                        alt={`${article.ticker || ''} — ${article.title}`}
                         className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.035]"
                         loading="lazy"
                       />
@@ -336,7 +348,7 @@ export default function IdeasPage() {
                       {/* Action */}
                       <div className={article.editorPick ? "" : "mt-auto"}>
                         <a
-                          href={article.url}
+                          href={article.url || article.image}
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={() => handleArticleClick(article.id)}
@@ -346,7 +358,7 @@ export default function IdeasPage() {
                             <img src={article.image} alt="" className="w-full h-full object-cover" loading="lazy" />
                           </span>
                           <span className="text-[0.88rem] font-semibold tracking-tight text-text-primary flex items-center gap-1.5">
-                            {ideas.ctaText}
+                            {article.url ? ideas.ctaText : "View Market Chart"}
                             <ArrowRight className="w-3.5 h-3.5 text-accent transition-transform duration-200 group-hover/cta:translate-x-1" />
                           </span>
                         </a>
