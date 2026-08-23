@@ -184,6 +184,12 @@ export default function IdeasPage() {
                   {/* Body Content */}
                   <div className="p-6 md:p-7 flex flex-col justify-between gap-4">
                     <div className="space-y-3">
+                      {/* Last Published Badge */}
+                      <span className="inline-flex items-center gap-1.5 text-[0.64rem] font-bold tracking-[0.14em] uppercase text-accent">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_0_3px_rgba(251,225,120,0.18)]" />
+                        Last Published
+                      </span>
+
                       {/* 2. Title — immediately below the image */}
                       <a
                         href={featured.url || featured.image}
