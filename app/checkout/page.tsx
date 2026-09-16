@@ -100,7 +100,6 @@ function QRCodeDisplay({ value }: { value: string }) {
 function CheckoutContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { data: session } = useSession();
 
   // URL Params
   const plan = searchParams.get('plan') || 'Samurai';
@@ -142,19 +141,7 @@ function CheckoutContent() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submittedPayment, setSubmittedPayment] = useState<any | null>(null);
 
-  // Auto-populate from logged-in session
-  useEffect(() => {
-    const user = session?.user;
-    if (user) {
-      const name = user.name || '';
-      const email = user.email || '';
-      const tvUsername = (user as any).tradingViewUsername || '';
 
-      if (name) setCustomerName((prev) => prev || name);
-      if (email) setCustomerEmail((prev) => prev || email);
-      if (tvUsername) setTradingViewUsername((prev) => prev || tvUsername);
-    }
-  }, [session]);
 
   // Handle Token Switch: Automatically switch network if invalid for newly selected token
   const handleSelectToken = (token: PaymentMethod) => {
@@ -218,11 +205,7 @@ function CheckoutContent() {
       return;
     }
 
-    if (!session) {
-      const authRedirectUrl = `/auth?mode=register&callbackUrl=${encodeURIComponent('/checkout?plan=' + plan + '&trial=true')}&tvUsername=${encodeURIComponent(tradingViewUsername.trim())}`;
-      router.push(authRedirectUrl);
-      return;
-    }
+
 
     if (!customerName.trim()) {
       setErrorMessage('Please enter your Full Name.');
@@ -236,12 +219,15 @@ function CheckoutContent() {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch('/api/user/trial', {
+      const res = await fetch('/api/access-requests/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          planName: plan,
+          plan,
+          isTrial: true,
           tradingViewUsername: tradingViewUsername.trim(),
+          email: customerEmail.trim(),
+          customerName: customerName.trim(),
         }),
       });
 
@@ -301,11 +287,12 @@ function CheckoutContent() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/payments/create', {
+      const response = await fetch('/api/access-requests/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           plan,
+          isTrial: false,
           amount: amountDue,
           currency: 'USD',
           billingPeriod: isYearly ? 'yearly' : 'monthly',
@@ -628,32 +615,7 @@ function CheckoutContent() {
 
               <div className="space-y-6">
 
-                {/* Unauthenticated Notification for Trial Mode */}
-                {isTrialMode && !session && (
-                  <div className="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div className="flex items-start gap-3">
-                      <Lock className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-                      <div>
-                        <h4 className="text-xs font-bold text-amber-300 uppercase font-mono tracking-wider">
-                          Account Required for 7-Day Free Trial
-                        </h4>
-                        <p className="text-xs text-text-secondary mt-0.5">
-                          You must be signed in so we can assign the 7-day trial to your account.
-                        </p>
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const authUrl = `/auth?mode=register&callbackUrl=${encodeURIComponent('/checkout?plan=' + plan + '&trial=true')}&tvUsername=${encodeURIComponent(tradingViewUsername.trim())}`;
-                        router.push(authUrl);
-                      }}
-                      className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-bg-primary font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors shrink-0"
-                    >
-                      Sign In / Register →
-                    </button>
-                  </div>
-                )}
+
 
                 {/* Step 1: Customer Information */}
                 <Card className="p-6 md:p-8 space-y-6">
@@ -782,8 +744,6 @@ function CheckoutContent() {
                             <Clock className="w-4 h-4 animate-spin" />
                             Activating 7-Day Free Trial...
                           </span>
-                        ) : !session ? (
-                          "Sign In / Register to Start Free Trial ($0.00)"
                         ) : (
                           "Start My 7-Day Free Trial ($0.00)"
                         )}

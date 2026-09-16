@@ -138,12 +138,6 @@ export default function MobileDrawer({ isOpen, onClose, links }: MobileDrawerPro
                 ))}
               </div>
 
-              <div className="pt-6 border-t border-border">
-                <Link href="/auth" onClick={onClose}>
-                  <Button className="w-full">Login / Register</Button>
-                </Link>
-              </div>
-
               <div className="flex flex-row items-center justify-between pt-4">
                 <span className="text-[11px] font-mono text-text-muted uppercase tracking-wider">Language</span>
                 <LanguageSwitcher variant="minimal" />

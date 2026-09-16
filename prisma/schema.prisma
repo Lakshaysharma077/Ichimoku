@@ -268,3 +268,27 @@ model Stat {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model IndicatorAccessRequest {
+  id                  String    @id @default(cuid())
+  email               String
+  tradingViewUsername String
+  productName         String
+  amount              Float?
+  currency            String?   @default("USD")
+  paymentMethod       String?
+  paymentStatus       String    @default("pending") // pending, submitted, verified, rejected
+  paymentReference    String?
+  transactionHash     String?
+  accessStatus        String    @default("pending") // pending, active, expired, revoked
+  isTrial             Boolean   @default(false)
+  trialStartAt        DateTime?
+  trialEndAt          DateTime?
+  accessStartAt       DateTime?
+  accessEndAt         DateTime?
+  adminNotes          String?
+  processedBy         String?
+  processedAt         DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}

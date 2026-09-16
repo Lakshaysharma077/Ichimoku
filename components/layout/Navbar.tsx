@@ -149,58 +149,51 @@ export default function Navbar() {
             <div className="flex items-center gap-4">
               <SettingsDropdown />
 
-              <div className="w-px h-3 bg-border/60" />
-
-              {session ? (
-                <div className="flex items-center gap-3">
-                  <div className="flex flex-col items-end">
-                    <span className="text-[10px] font-medium text-text-primary uppercase tracking-[0.05em] leading-none">{session.user?.name}</span>
-                    <span className="text-[8px] text-text-muted uppercase tracking-[0.15em] mt-0.5">{(session.user as any).role}</span>
-                  </div>
-                  <div className="relative group">
-                    <button className="w-7 h-7 rounded-full bg-transparent border border-border/80 overflow-hidden hover:border-accent/40 transition-colors duration-200 flex items-center justify-center">
-                      {session.user?.image ? (
-                        <img src={session.user.image} alt="" className="w-full h-full object-cover" />
-                      ) : (
-                        <span className="text-text-secondary font-medium text-[9px] uppercase">
-                          {session.user?.name?.charAt(0) || "U"}
-                        </span>
-                      )}
-                    </button>
-                    
-                    {/* Profile Dropdown */}
-                    <div className="absolute top-full right-0 pt-2 opacity-0 translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-[120]">
-                      <div className="bg-bg-primary border border-border/60 rounded-md py-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] min-w-[150px]">
-                        <Link
-                          href="/profile"
-                          className="flex items-center gap-2 px-4 py-2 text-[10px] font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary/50 transition-colors duration-150 uppercase tracking-[0.08em] font-mono"
-                        >
-                          <User className="w-3 h-3" />
-                          Profile
-                        </Link>
-                        <div className="h-px bg-border/60 mx-3 my-0.5" />
-                        <button
-                          onClick={async () => {
-                            await signOutUser();
-                            signOut();
-                          }}
-                          className="w-full flex items-center gap-2 px-4 py-2 text-[10px] font-medium text-rose-500/70 hover:text-rose-500 hover:bg-rose-500/5 transition-colors duration-150 uppercase tracking-[0.08em] font-mono"
-                        >
-                          <LogOut className="w-3 h-3" />
-                          Sign Out
-                        </button>
+              {session && (
+                <>
+                  <div className="w-px h-3 bg-border/60" />
+                  <div className="flex items-center gap-3">
+                    <div className="flex flex-col items-end">
+                      <span className="text-[10px] font-medium text-text-primary uppercase tracking-[0.05em] leading-none">{session.user?.name}</span>
+                      <span className="text-[8px] text-text-muted uppercase tracking-[0.15em] mt-0.5">{(session.user as any).role}</span>
+                    </div>
+                    <div className="relative group">
+                      <button className="w-7 h-7 rounded-full bg-transparent border border-border/80 overflow-hidden hover:border-accent/40 transition-colors duration-200 flex items-center justify-center">
+                        {session.user?.image ? (
+                          <img src={session.user.image} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-text-secondary font-medium text-[9px] uppercase">
+                            {session.user?.name?.charAt(0) || "U"}
+                          </span>
+                        )}
+                      </button>
+                      
+                      {/* Profile Dropdown */}
+                      <div className="absolute top-full right-0 pt-2 opacity-0 translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-[120]">
+                        <div className="bg-bg-primary border border-border/60 rounded-md py-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] min-w-[150px]">
+                          <Link
+                            href="/profile"
+                            className="flex items-center gap-2 px-4 py-2 text-[10px] font-medium text-text-secondary hover:text-text-primary hover:bg-bg-secondary/50 transition-colors duration-150 uppercase tracking-[0.08em] font-mono"
+                          >
+                            <User className="w-3 h-3" />
+                            Profile
+                          </Link>
+                          <div className="h-px bg-border/60 mx-3 my-0.5" />
+                          <button
+                            onClick={async () => {
+                              await signOutUser();
+                              signOut();
+                            }}
+                            className="w-full flex items-center gap-2 px-4 py-2 text-[10px] font-medium text-rose-500/70 hover:text-rose-500 hover:bg-rose-500/5 transition-colors duration-150 uppercase tracking-[0.08em] font-mono"
+                          >
+                            <LogOut className="w-3 h-3" />
+                            Sign Out
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <Link
-                  href="/auth"
-                  className="group flex items-center gap-1.5 text-[10.5px] font-medium uppercase tracking-[0.1em] text-text-secondary hover:text-accent transition-colors duration-300 ease-out font-mono"
-                >
-                  <EditableElement section="navbar" path={['loginButton']} content={navbar.loginButton} />
-                  <span className="text-[8.5px] opacity-50 group-hover:opacity-90 transition-all duration-300 ease-out group-hover:translate-x-1">→</span>
-                </Link>
+                </>
               )}
             </div>
           </div>
