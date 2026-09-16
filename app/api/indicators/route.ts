@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
         features: typeof features === "string" ? features : JSON.stringify(features || []),
         howToUse: howToUse || null,
         accessStatus: accessStatus || "Premium",
-        priceLabel: priceLabel || "$22/mo",
+        priceLabel: priceLabel || "$25 / month | $250 / year",
         tvUrl: tvUrl || "",
         category: typeof category === "string" ? category : JSON.stringify(category || ["ICHIMOKU"]),
         sortOrder: sortOrder !== undefined ? Number(sortOrder) : 0,

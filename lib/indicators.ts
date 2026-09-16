@@ -40,7 +40,7 @@ export const seedIndicators: Indicator[] = [
     ],
     howToUse: "### 1. Add to TradingView\nClick the 'Access Script on TradingView' button, then click 'Add to Favorite Scripts' on the TradingView indicator page. In TradingView charts, open Indicators (/) and click the script.\n\n### 2. Identifying Trend & Equilibrium\n- **Bullish Bias**: Price trades cleanly above the Kumo Cloud with Tenkan-sen above Kijun-sen, and Chikou Span clear of historical price action.\n- **Bearish Bias**: Price trades below the Kumo Cloud with Tenkan-sen below Kijun-sen.\n- **Equilibrium & Reversion**: Watch when price stretches far from the Kijun-sen or approaches flat Senkou Span B levels.\n\n### 3. Using Flat Level Confluence\nEnable 'Show flat levels' in indicator settings. Look for levels where both Kijun-sen and Senkou Span B flatten at identical or near-identical prices. These multi-component confluence levels act as high-probability magnets and structural pivots.\n\n### 4. Reading the On-Chart Matrix Table\nCheck the top-right matrix table at a glance for:\n- Current Price location relative to Cloud top/bottom\n- Chikou Span clearance against past price candles\n- Forward Kumo twist direction and conditional projections",
     badgeType: "PREMIUM",
-    price: "$22/mo",
+    price: "$25 / month | $250 / year",
     tvUrl: "https://www.tradingview.com/script/4EpIOEMu-Ichimoku-Kinko-Hyo/",
     category: ["ICHIMOKU", "CORE", "EQUILIBRIUM", "PINE SCRIPT V5"],
     status: "Published",

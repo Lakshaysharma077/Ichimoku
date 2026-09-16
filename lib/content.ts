@@ -11,11 +11,9 @@ export const staticContent = {
       subtext: "EDGE"
     },
     links: [
-      { name: 'Home', href: '/' },
-      { name: 'Ichimoku', href: '/ichimoku' },
       {
-        name: 'Resources',
-        href: '/education',
+        name: 'Ecosystem',
+        href: '/ichimoku',
         dropdown: [
           { name: 'Education Hub', href: '/education' },
           { name: 'Ideas', href: '/ideas' },
@@ -23,10 +21,11 @@ export const staticContent = {
           { name: 'FAQ', href: '/faq' },
         ]
       },
-      { name: 'Tools', href: '/tools' },
-      { name: 'Pricing', href: '/pricing' },
+      { name: 'Studies', href: '/ichimoku' },
+      { name: 'Tool', href: '/tools' },
+      { name: 'Store', href: '/pricing' },
     ],
-    loginButton: 'LOGIN / REGISTER',
+    loginButton: 'LOGIN',
   },
 
   // Home Page - Hero Section

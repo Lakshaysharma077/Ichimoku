@@ -37,7 +37,7 @@ export default function IndicatorModal({
   const [featureInput, setFeatureInput] = useState("");
   const [howToUse, setHowToUse] = useState("");
   const [accessStatus, setAccessStatus] = useState("Premium");
-  const [priceLabel, setPriceLabel] = useState("$22/mo");
+  const [priceLabel, setPriceLabel] = useState("$25 / month | $250 / year");
   const [tvUrl, setTvUrl] = useState("");
   const [category, setCategory] = useState("ICHIMOKU, TREND");
   const [status, setStatus] = useState("Published");
@@ -91,7 +91,7 @@ export default function IndicatorModal({
 
       setHowToUse(initialData.howToUse || "");
       setAccessStatus(initialData.accessStatus || "Premium");
-      setPriceLabel(initialData.priceLabel || "$22/mo");
+      setPriceLabel(initialData.priceLabel || "$25 / month | $250 / year");
       setTvUrl(initialData.tvUrl || "");
       setStatus(initialData.status || "Published");
 

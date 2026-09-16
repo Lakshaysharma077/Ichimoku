@@ -27,7 +27,7 @@ export default function SettingsDropdown() {
   const [currentLang, setCurrentLang] = useState(languages[0]);
   const [copied, setCopied] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { theme, setTheme, toggleTheme } = useThemeStore();
+  const { theme, setTheme } = useThemeStore();
   const { socials } = useContent('footer');
 
   useEffect(() => {
@@ -56,14 +56,15 @@ export default function SettingsDropdown() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={clsx(
-          "w-8 h-8 flex items-center justify-center transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group relative",
-          "hover:-translate-y-0.5"
+          "w-8 h-8 flex items-center justify-center transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group relative",
+          "hover:opacity-80"
         )}
+        aria-label="Settings"
       >
         <Globe 
           className={clsx(
-            "w-[18px] h-[18px] transition-all duration-700 ease-[0.23,1,0.32,1] group-hover:text-accent group-hover:scale-110",
-            isOpen ? "text-accent rotate-90" : "text-text-primary group-hover:rotate-12"
+            "w-[17px] h-[17px] transition-all duration-300 ease-out",
+            isOpen ? "text-accent rotate-12" : "text-text-secondary group-hover:text-accent group-hover:rotate-12"
           )} 
         />
       </button>
@@ -72,21 +73,57 @@ export default function SettingsDropdown() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 15, scale: 0.95, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, y: 10, scale: 0.95, filter: 'blur(10px)' }}
-            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+            initial={{ opacity: 0, y: 8, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 6, scale: 0.97 }}
+            transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
             className="absolute top-full right-0 pt-3 w-56 z-[120]"
           >
-            {/* Solid theme-aware background (No transparency) */}
-            <div className="bg-bg-secondary border border-border/50 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.03] via-transparent to-transparent pointer-events-none" />
+            <div className="bg-bg-secondary border border-border rounded-xl shadow-[0_16px_40px_rgba(0,0,0,0.25)] overflow-hidden relative">
               
-              <div className="relative z-10 flex flex-col p-4 gap-5 font-sans">
+              <div className="relative z-10 flex flex-col p-4 gap-4 font-sans">
                 
-                {/* 1. LANGUAGE (Moved to first) */}
+                {/* 1. THEME */}
                 <div className="flex flex-col gap-2.5">
-                  <span className="text-[11px] font-bold text-text-muted uppercase tracking-[0.15em] flex items-center gap-2">
+                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] font-mono">
+                    THEME
+                  </span>
+                  <div className="flex gap-1">
+                    {THEMES.map((t) => {
+                      const Icon = t.icon;
+                      const isActive = theme === t.key;
+                      return (
+                        <button
+                          key={t.key}
+                          onClick={() => setTheme(t.key as ThemeKey)}
+                          className={clsx(
+                            "flex-1 flex flex-col items-center gap-1.5 py-2 px-1 rounded-lg transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group/theme",
+                            isActive 
+                              ? "bg-accent/[0.08] border border-accent/20" 
+                              : "border border-transparent hover:bg-bg-primary/50 hover:border-border/30"
+                          )}
+                        >
+                          <Icon className={clsx(
+                            "w-3.5 h-3.5 transition-colors duration-200",
+                            isActive ? "text-accent" : "text-text-muted group-hover/theme:text-text-secondary"
+                          )} />
+                          <span className={clsx(
+                            "text-[9px] font-bold uppercase tracking-[0.1em] transition-colors duration-200",
+                            isActive ? "text-accent" : "text-text-muted group-hover/theme:text-text-secondary"
+                          )}>
+                            {t.label}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="h-px bg-border/50 w-full" />
+
+                {/* 2. LANGUAGE */}
+                <div className="flex flex-col gap-2.5">
+                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] font-mono">
                     LANGUAGE
                   </span>
                   <div className="flex flex-col gap-0.5">
@@ -94,7 +131,7 @@ export default function SettingsDropdown() {
                       <button
                         key={lang.code}
                         onClick={() => setCurrentLang(lang)}
-                        className="flex items-center justify-between py-1.5 px-2 rounded-md group transition-colors hover:bg-white/5"
+                        className="flex items-center justify-between py-1.5 px-2 rounded-md group transition-colors hover:bg-bg-primary/50"
                       >
                         <div className="flex items-center gap-2.5">
                           <img 
@@ -117,12 +154,11 @@ export default function SettingsDropdown() {
                   </div>
                 </div>
 
-                <div className="h-px bg-white/5 w-full" />
-
+                <div className="h-px bg-border/50 w-full" />
 
                 {/* 3. SOCIAL */}
                 <div className="flex flex-col gap-2.5">
-                  <span className="text-[11px] font-bold text-text-muted uppercase tracking-[0.15em] flex items-center gap-2">
+                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] font-mono">
                     SOCIAL
                   </span>
                   <div className="flex gap-1.5 px-0.5">
@@ -145,7 +181,7 @@ export default function SettingsDropdown() {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-8 h-8 rounded-lg bg-bg-primary/50 border border-white/5 flex items-center justify-center text-text-muted transition-all duration-200 ease-[0.23,1,0.32,1] hover:text-accent hover:bg-accent/5 hover:border-accent/20 hover:shadow-[0_0_12px_rgba(var(--accent),0.1)] hover:-translate-y-0.5 group/social"
+                        className="w-8 h-8 rounded-lg bg-bg-primary/50 border border-border/30 flex items-center justify-center text-text-muted transition-all duration-200 ease-[0.23,1,0.32,1] hover:text-accent hover:border-accent/20 group/social"
                         title={social.title}
                       >
                         <social.icon className="w-4 h-4 transition-transform duration-200 group-hover/social:scale-110" />
@@ -154,18 +190,18 @@ export default function SettingsDropdown() {
                   </div>
                 </div>
 
-                <div className="h-px bg-white/5 w-full" />
+                <div className="h-px bg-border/50 w-full" />
 
                 {/* 4. SHARE */}
                 <div className="flex flex-col gap-2">
-                  <span className="text-[11px] font-bold text-text-muted uppercase tracking-[0.15em] flex items-center gap-2">
+                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] font-mono">
                     SHARE
                   </span>
                   <button 
                     onClick={handleCopyLink}
                     className={clsx(
                       "flex items-center gap-2 px-2 py-1.5 rounded-md transition-all duration-300 group",
-                      copied ? "text-accent bg-accent/5" : "text-text-secondary hover:text-accent hover:bg-white/5"
+                      copied ? "text-accent bg-accent/5" : "text-text-secondary hover:text-accent hover:bg-bg-primary/50"
                     )}
                   >
                     {copied ? (

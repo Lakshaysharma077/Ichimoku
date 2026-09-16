@@ -430,28 +430,6 @@ export default function IndicatorDetailPage() {
               </div>
             </Card>
 
-            {/* Quick Specs Card */}
-            <Card className="p-4 bg-bg-secondary/40 border-border/60 text-xs font-mono space-y-2.5">
-              <div className="text-[10px] uppercase text-text-muted tracking-widest font-bold">
-                Indicator Specifications
-              </div>
-              <div className="flex justify-between py-1 border-b border-border/40 text-text-secondary">
-                <span>Platform:</span>
-                <span className="text-text-primary font-bold">TradingView</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-border/40 text-text-secondary">
-                <span>Language:</span>
-                <span className="text-text-primary font-bold">Pine Script v5</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-border/40 text-text-secondary">
-                <span>Calculations:</span>
-                <span className="text-text-primary font-bold">Classic + Equilibrium</span>
-              </div>
-              <div className="flex justify-between py-1 text-text-secondary">
-                <span>Publisher:</span>
-                <span className="text-accent font-bold">IchimokuEdge</span>
-              </div>
-            </Card>
           </div>
 
           {/* Right Main Content Pane */}

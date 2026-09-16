@@ -168,3 +168,417 @@ h2.syne {
   15%  { opacity: 1; }
   100% { transform: translateX(280%); opacity: 0; }
 }
+
+/* ─── Tools Page — Premium Research Interface ─── */
+
+/* === Shared 2-column layout === */
+
+.tools-split {
+  display: flex;
+  gap: 0;
+  min-height: calc(100vh - 260px);
+}
+
+.tools-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 160px;
+  align-self: flex-start;
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
+  padding-right: 0;
+  border-right: 1px solid var(--border);
+  scrollbar-width: none;
+}
+
+.tools-sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.tools-main {
+  flex: 1;
+  min-width: 0;
+  padding-left: 80px;
+}
+
+/* Sidebar navigation items */
+
+.tools-sidebar-item {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 20px 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 2px solid transparent;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: none;
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
+  width: 100%;
+  text-align: left;
+}
+
+.tools-sidebar-item:hover {
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.tools-sidebar-item--active {
+  color: var(--text-primary);
+  border-left-color: var(--accent);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.tools-sidebar-number {
+  opacity: 0.4;
+  min-width: 20px;
+}
+
+/* === LEVEL 1: Tool Library === */
+
+.tool-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 24px; padding-bottom: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+@media (min-width: 640px) {
+  .tool-row {
+    gap: 32px;
+    padding-top: 32px; padding-bottom: 32px;
+  }
+}
+
+.tool-row + .tool-row {
+  border-top: 1px solid var(--border);
+}
+
+.tool-row:hover .tool-row-name {
+  color: var(--accent);
+}
+
+.tool-row-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.tool-row-number {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  margin-bottom: 10px;
+  transition: color 0.3s ease;
+}
+
+.tool-row-name {
+  font-size: 22px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 12px;
+  transition: color 0.2s ease;
+}
+
+.tool-row-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 600px;
+  transition: color 0.3s ease;
+}
+
+.tool-row-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin-top: 16px;
+  transition: color 0.3s ease;
+}
+
+.tool-row-arrow {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  opacity: 0.3;
+}
+
+.tool-row:hover .tool-row-arrow {
+  color: var(--accent);
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+/* 3D Image Effect (Always Visible) */
+.tool-row-image-container {
+  width: 200px;
+  height: 110px;
+  perspective: 1000px;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tool-row-image-wrapper {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transform: rotateY(-10deg) rotateX(5deg) scale(0.98);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.5);
+  background: var(--bg-tertiary);
+  opacity: 0.7;
+}
+
+.tool-row:hover .tool-row-image-wrapper {
+  transform: rotateY(-2deg) rotateX(2deg) scale(1.05);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8);
+  opacity: 1;
+}
+
+.tool-row-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+/* === LEVEL 2: Documentation View === */
+
+/* Back link */
+.tools-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition: color 0.2s ease;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.tools-back:hover {
+  color: var(--text-primary);
+}
+
+/* Indicator header bar in doc view */
+.tools-doc-header {
+  padding-bottom: 32px;
+  margin-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tools-doc-header-name {
+  font-size: 32px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  line-height: 1.1;
+  transition: color 0.3s ease;
+}
+
+.tools-doc-header-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  transition: color 0.3s ease;
+}
+
+/* Section heading inside content area */
+.tools-section-heading {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--text-primary);
+  opacity: 0.4;
+  margin-bottom: 32px;
+  transition: color 0.3s ease;
+}
+
+/* Content title (indicator name shown inside Overview etc.) */
+.tools-content-title {
+  font-size: 28px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 24px;
+  transition: color 0.3s ease;
+}
+
+/* Field labels inside content */
+.tools-field-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-primary);
+  opacity: 0.5;
+  margin-bottom: 12px;
+  margin-top: 48px;
+  transition: color 0.3s ease;
+}
+
+.tools-field-label:first-child {
+  margin-top: 0;
+}
+
+/* Body text */
+.tools-field-body {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 640px;
+  transition: color 0.3s ease;
+  font-weight: 400;
+}
+
+/* Feature list */
+.tools-feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tools-feature-list li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.tools-feature-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--text-muted);
+}
+
+/* Pricing lines */
+.tools-price-line {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  line-height: 2;
+  transition: color 0.3s ease;
+}
+
+/* Links inside documentation */
+.tools-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+  margin-top: 12px;
+}
+
+.tools-link:hover {
+  color: var(--text-primary);
+}
+
+/* Methodology block markdown rendering */
+.tools-methodology-block h3,
+.tools-methodology-block strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.tools-methodology-block p {
+  margin-bottom: 16px;
+}
+
+/* === Mobile Responsive === */
+
+@media (max-width: 1023px) {
+  .tools-split {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .tools-sidebar {
+    width: 100%;
+    position: relative;
+    top: 0;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    padding-right: 0;
+    padding-bottom: 8px;
+    margin-bottom: 32px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tools-sidebar-item {
+    white-space: nowrap;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    padding: 12px 16px;
+    margin-left: 0;
+    flex-shrink: 0;
+    background: none !important;
+  }
+
+  .tools-sidebar-item--active {
+    border-left-color: transparent;
+    border-bottom-color: var(--accent);
+  }
+
+  .tools-main {
+    padding-left: 0;
+  }
+
+  .tool-row {
+    padding-top: 24px; padding-bottom: 24px;
+  }
+
+  .tool-row-name {
+    font-size: 18px;
+  }
+
+  .tools-doc-header-name {
+    font-size: 24px;
+  }
+}
+

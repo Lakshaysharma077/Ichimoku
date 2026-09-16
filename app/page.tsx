@@ -14,7 +14,7 @@ export default function Home() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-300"
           style={{ 
             backgroundImage: "url('/Overlay1.jpeg')", 
-            opacity: 0.13, // Increased by 10% as requested to enhance watermark presence
+            opacity: 0.13,
           }} 
         />
       </div>

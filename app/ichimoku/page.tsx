@@ -62,7 +62,7 @@ export default function IchimokuPage() {
                     <p className="shippori text-3xl text-accent font-bold tracking-wider mb-6">
                       <EditableElement section="ichimoku" path={['meaningSection', 'japaneseText']} content={ichimoku.meaningSection.japaneseText} />
                     </p>
-                    
+
                     <div className="p-5 bg-bg-primary/80 border border-border/80 rounded-2xl shadow-lg relative group overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                       <p className="txt-label mb-3">
@@ -118,7 +118,7 @@ export default function IchimokuPage() {
                   <h3 className="txt-label mb-4">
                     <EditableElement section="ichimoku" path={['meaningSection', 'breakdownTitle']} content={ichimoku.meaningSection.breakdownTitle} />
                   </h3>
-                  
+
                   {/* Flow breakdown */}
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-6">
                     {ichimoku.meaningSection.breakdowns.map((b: any, idx: number) => (
@@ -203,8 +203,8 @@ export default function IchimokuPage() {
           <div className="mt-12">
             <div className="max-w-2xl w-full p-3 bg-bg-secondary/60 backdrop-blur-md border border-border rounded-3xl overflow-hidden shadow-2xl shadow-black/20 transition-all duration-200">
               <div className="rounded-2xl overflow-hidden bg-bg-primary transition-colors duration-200">
-                <img 
-                  src={getChartImg()} 
+                <img
+                  src={getChartImg()}
                   alt="Ichimoku Chart — Five Lines Visualization"
                   className="w-full h-auto block transition-all duration-200"
                 />
@@ -237,7 +237,7 @@ export default function IchimokuPage() {
                     <li key={i} className="flex gap-4">
                       <span className={`font-bold ${rule.color}`}>{rule.icon}</span>
                       <span>
-                        <strong><EditableElement section="ichimoku" path={['cloudSection', 'rules', i.toString(), 'label']} content={rule.label} />:</strong> 
+                        <strong><EditableElement section="ichimoku" path={['cloudSection', 'rules', i.toString(), 'label']} content={rule.label} />:</strong>
                         <EditableElement section="ichimoku" path={['cloudSection', 'rules', i.toString(), 'desc']} content={rule.desc} />
                       </span>
                     </li>

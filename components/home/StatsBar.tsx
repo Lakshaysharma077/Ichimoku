@@ -46,7 +46,7 @@ export default function StatsBar() {
   const stats = useContent('stats');
   const { isEditMode } = useEditStore();
   return (
-    <section className="w-full bg-bg-secondary py-12 border-y border-border">
+    <section className="w-full py-12 border-y border-border/30 bg-bg-primary/20 backdrop-blur-[2px]">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0">
           {Array.isArray(stats) && stats.map((stat, i) => (

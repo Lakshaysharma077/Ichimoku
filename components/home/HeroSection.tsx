@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Button from '../ui/Button';
-import KanjiWatermark from '../shared/KanjiWatermark';
 import Link from 'next/link';
 import { useContent } from '@/hooks/useContent';
 import EditableElement from '../admin/EditableElement';
@@ -12,20 +11,20 @@ export default function HeroSection() {
   const words = hero.headline;
   
   return (
-    <section className="relative min-h-[100svh] flex items-center overflow-hidden pt-32">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <section className="relative min-h-[100svh] flex items-center overflow-hidden pt-28 pb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
         {/* Left Column */}
         <div className="lg:col-span-7 flex flex-col items-start z-10">
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="font-mono text-[11px] tracking-[0.3em] uppercase text-text-muted mb-4 block"
+            className="font-mono text-[10px] tracking-[0.3em] uppercase text-text-muted mb-6 block"
           >
             <EditableElement section="hero" path={['tagline']} content={hero.tagline} />
           </motion.span>
           
-          <h1 className="syne font-extrabold text-4xl lg:text-[56px] text-text-primary mb-12 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
+          <h1 className="syne font-extrabold text-4xl lg:text-[52px] text-text-primary mb-10 uppercase tracking-tight leading-[0.9]" style={{ wordSpacing: '0.2em' }}>
             {words.map((word, i) => (
               <motion.span
                 key={i}
@@ -59,7 +58,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.9 }}
-            className="text-lg text-text-secondary max-w-lg leading-relaxed mb-10"
+            className="text-base text-text-secondary max-w-md leading-relaxed mb-10"
           >
             <EditableElement section="hero" path={['description']} content={hero.description} />
           </motion.p>
@@ -68,17 +67,18 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 1 }}
-            className="flex flex-wrap gap-4 mb-12"
+            className="flex flex-wrap items-center gap-5 mb-14"
           >
             <Link href={hero.buttons.primary.href}>
               <Button size="lg">
                 <EditableElement section="hero" path={['buttons', 'primary', 'text']} content={hero.buttons.primary.text} />
               </Button>
             </Link>
-            <Link href={hero.buttons.secondary.href}>
-              <Button variant="outline" size="lg">
-                <EditableElement section="hero" path={['buttons', 'secondary', 'text']} content={hero.buttons.secondary.text} />
-              </Button>
+            <Link
+              href={hero.buttons.secondary.href}
+              className="text-[11px] font-medium uppercase tracking-[0.15em] text-text-secondary hover:text-text-primary transition-colors duration-200 font-mono"
+            >
+              <EditableElement section="hero" path={['buttons', 'secondary', 'text']} content={hero.buttons.secondary.text} />
             </Link>
           </motion.div>
           
@@ -92,29 +92,28 @@ export default function HeroSection() {
               <span className="text-sm font-bold text-text-primary">
                 <EditableElement section="hero" path={['trustBadges', 'rating']} content={hero.trustBadges.rating} />
               </span>
-              <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest">
+              <span className="font-mono text-[9px] text-text-muted uppercase tracking-widest">
                 <EditableElement section="hero" path={['trustBadges', 'traders']} content={hero.trustBadges.traders} />
               </span>
             </div>
-            <div className="h-8 w-px bg-border" />
-            <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest">
+            <div className="h-6 w-px bg-border" />
+            <span className="font-mono text-[9px] text-text-muted uppercase tracking-widest">
               <EditableElement section="hero" path={['trustBadges', 'platform']} content={hero.trustBadges.platform} />
             </span>
           </motion.div>
         </div>
         
-        {/* Right Column - Mockup */}
+        {/* Right Column - Indicator Visualization */}
         <div className="lg:col-span-5 relative">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, x: 20 }}
+            initial={{ opacity: 0, scale: 0.95, x: 10 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
             className="relative z-10"
           >
-            {/* Stylized Dashboard Mockup - Liquid Glass Style */}
-            <div className="aspect-[4/5] bg-bg-secondary/80 backdrop-blur-[30px] rounded-2xl border border-border shadow-2xl p-6 relative overflow-hidden group">
-              {/* Fake Chart Background */}
-              <div className="absolute inset-0 opacity-10 flex items-end gap-1 p-4">
+            <div className="aspect-[4/5] bg-bg-secondary/60 rounded-xl border border-border p-6 relative overflow-hidden">
+              {/* Subtle chart bars background */}
+              <div className="absolute inset-0 opacity-[0.06] flex items-end gap-1 p-4">
                 {[...Array(20)].map((_, i) => (
                   <div 
                     key={i} 
@@ -123,11 +122,8 @@ export default function HeroSection() {
                   />
                 ))}
               </div>
-
-              {/* Inner glass highlight */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent pointer-events-none" />
               
-              {/* Stat Cards Overlay */}
+              {/* Stat Cards */}
               <div className="relative space-y-4">
                 <div className="flex justify-between items-center mb-8">
                   <motion.div 
@@ -138,7 +134,7 @@ export default function HeroSection() {
                   >
                     <EditableElement section="hero" path={['mockup', 'badge']} content={hero.mockup.badge} />
                   </motion.div>
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 </div>
                 
                 {hero.mockup.stats.map((stat: any, i: number) => (
@@ -147,15 +143,12 @@ export default function HeroSection() {
                     initial={{ opacity: 0, x: -30 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 1.2 + i * 0.2 }}
-                    className="bg-bg-tertiary/60 backdrop-blur-xl p-4 border border-border rounded-xl shadow-xl hover:bg-bg-tertiary/80 transition-all duration-300 group/card relative overflow-hidden"
+                    className="bg-bg-tertiary/40 p-4 border border-border rounded-lg"
                   >
-                    {/* Inner glass glow */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent pointer-events-none opacity-0 group-hover/card:opacity-100 transition-opacity" />
-                    
-                    <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest block mb-1 relative z-10">
+                    <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest block mb-1">
                       <EditableElement section="hero" path={['mockup', 'stats', i.toString(), 'label']} content={stat.label} />
                     </span>
-                    <div className="flex items-center justify-between relative z-10">
+                    <div className="flex items-center justify-between">
                       <span className={`text-lg font-bold syne ${i === 1 ? 'text-accent' : i === 0 ? 'text-emerald-500' : 'text-text-primary'}`}>
                         <EditableElement section="hero" path={['mockup', 'stats', i.toString(), 'value']} content={stat.value} />
                       </span>
@@ -166,39 +159,35 @@ export default function HeroSection() {
                   </motion.div>
                 ))}
                 
-                {/* Visual Line */}
-                <div className="mt-12 relative h-20">
+                {/* Line chart */}
+                <div className="mt-10 relative h-20">
                   <svg viewBox="0 0 400 100" className="w-full h-full text-emerald-500 overflow-visible">
                     <motion.path
                       d="M0 80 Q 50 60, 100 70 T 200 40 T 300 50 T 400 10"
                       fill="transparent"
                       stroke="currentColor"
-                      strokeWidth="4"
+                      strokeWidth="3"
                       initial={{ pathLength: 0 }}
                       animate={{ pathLength: 1 }}
                       transition={{ duration: 2, delay: 1.5 }}
                     />
                     <motion.circle
-                      cx="400" cy="10" r="6"
+                      cx="400" cy="10" r="5"
                       fill="currentColor"
                       initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: [1, 1.5, 1] }}
+                      animate={{ opacity: 1, scale: [1, 1.4, 1] }}
                       transition={{ 
                         opacity: { delay: 3.5 },
                         scale: { delay: 3.5, duration: 2, repeat: Infinity }
                       }}
                     />
                   </svg>
-                  <div className="absolute -right-2 top-0 text-[10px] font-mono font-bold text-emerald-500 uppercase">
+                  <div className="absolute -right-2 top-0 text-[9px] font-mono font-medium text-emerald-500 uppercase">
                     <EditableElement section="hero" path={['mockup', 'chikouLabel']} content={hero.mockup.chikouLabel} />
                   </div>
                 </div>
               </div>
             </div>
-            
-            {/* Background elements */}
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-accent/10 blur-[80px] rounded-full" />
-            <div className="absolute -bottom-10 -left-10 w-60 h-60 bg-accent/5 blur-[100px] rounded-full" />
           </motion.div>
         </div>
       </div>
