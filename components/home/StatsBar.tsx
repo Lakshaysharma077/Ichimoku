@@ -48,11 +48,11 @@ export default function StatsBar() {
   return (
     <section className="w-full py-12 border-y border-border/30 bg-bg-primary/20 backdrop-blur-[2px]">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0">
+        <div className="flex flex-col lg:flex-row flex-wrap items-center justify-center gap-8 lg:gap-0">
           {Array.isArray(stats) && stats.map((stat, i) => (
             <div 
               key={i} 
-              className={`flex flex-col items-center justify-center text-center px-8 ${
+              className={`flex flex-col items-center justify-center text-center px-8 lg:px-24 ${
                 i !== stats.length - 1 ? 'lg:border-r border-border' : ''
               }`}
             >

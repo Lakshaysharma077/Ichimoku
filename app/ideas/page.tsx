@@ -3,8 +3,9 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from '@/components/shared/ScrollReveal';
-import { Search, ArrowRight, Clock } from 'lucide-react';
+import { Search, ArrowRight, Clock, BookOpen } from 'lucide-react';
 import { useContent } from '@/hooks/useContent';
+import Link from 'next/link';
 
 const COOKIE_NAME = 'read_ideas';
 
@@ -62,6 +63,15 @@ function formatAssetName(company?: string, ticker?: string): string {
     .replace(/\bTether US\b/gi, 'USDT')
     .replace(/\bTether\b/gi, 'USDT')
     .trim();
+}
+
+/** Generate slug from article data */
+function getArticleSlug(article: any): string {
+  if (article.slug) return article.slug;
+  return (article.title || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 export default function IdeasPage() {
@@ -168,10 +178,8 @@ export default function IdeasPage() {
                   <div className="absolute top-0 left-0 right-0 h-[2px] z-10 bg-gradient-to-r from-accent via-accent/40 to-transparent" />
 
                   {/* 1. Chart / Image */}
-                  <a
-                    href={featured.url || featured.image}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href={`/ideas/${getArticleSlug(featured)}`}
                     onClick={() => handleArticleClick(featured.id)}
                     className="relative block overflow-hidden min-h-[220px] md:min-h-[260px] bg-bg-primary"
                   >
@@ -189,7 +197,7 @@ export default function IdeasPage() {
                         </div>
                       )}
                     </div>
-                  </a>
+                  </Link>
 
                   {/* Body Content */}
                   <div className="p-6 md:p-7 flex flex-col justify-between gap-4">
@@ -201,17 +209,15 @@ export default function IdeasPage() {
                       </span>
 
                       {/* 2. Title — immediately below the image / badge */}
-                      <a
-                        href={featured.url || featured.image}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <Link
+                        href={`/ideas/${getArticleSlug(featured)}`}
                         onClick={() => handleArticleClick(featured.id)}
                         className="block group/title"
                       >
                         <h2 className="syne font-bold text-xl sm:text-2xl text-text-primary group-hover/title:text-accent leading-snug transition-colors line-clamp-3">
                           {featured.title}
                         </h2>
-                      </a>
+                      </Link>
 
                       {/* 3. 2-Row Metadata Section (Row 1: Asset • Date, Row 2: Reading Time • Unread) */}
                       <div className="flex flex-col gap-1 text-xs text-text-muted">
@@ -240,20 +246,36 @@ export default function IdeasPage() {
                       </div>
                     </div>
 
-                    {/* Read on TradingView CTA inside clean rounded bordered box */}
-                    <div className="pt-1">
-                      <a
-                        href={featured.url || featured.image}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    {/* CTAs: Read on TradingView (primary) + Read on Ichimoku Edge (secondary) */}
+                    <div className="space-y-2 pt-1">
+                      {/* Primary: Read on TradingView */}
+                      {featured.url && (
+                        <a
+                          href={featured.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => handleArticleClick(featured.id)}
+                          className="inline-flex items-center justify-between w-full bg-bg-primary border border-border rounded-2xl px-4 py-2.5 transition-all duration-200 hover:border-accent/50 hover:bg-bg-primary/90 group/cta shadow-sm"
+                        >
+                          <span className="text-xs sm:text-[0.82rem] font-bold text-text-primary group-hover/cta:text-accent transition-colors">
+                            {ideas.ctaText || "Read on TradingView"}
+                          </span>
+                          <ArrowRight className="w-3.5 h-3.5 text-text-primary group-hover/cta:text-accent transition-transform duration-200 group-hover/cta:translate-x-0.5" />
+                        </a>
+                      )}
+
+                      {/* Secondary: Read on Ichimoku Edge */}
+                      <Link
+                        href={`/ideas/${getArticleSlug(featured)}`}
                         onClick={() => handleArticleClick(featured.id)}
-                        className="inline-flex items-center justify-between w-full bg-bg-primary border border-border rounded-2xl px-4 py-2.5 transition-all duration-200 hover:border-accent/50 hover:bg-bg-primary/90 group/cta shadow-sm"
+                        className="inline-flex items-center justify-between w-full bg-transparent border border-border/60 rounded-2xl px-4 py-2 transition-all duration-200 hover:border-accent/40 hover:bg-bg-primary/50 group/cta2"
                       >
-                        <span className="text-xs sm:text-[0.82rem] font-bold text-text-primary group-hover/cta:text-accent transition-colors">
-                          {featured.url ? (ideas.ctaText || "Read on TradingView") : "View Market Chart"}
+                        <span className="text-[11px] sm:text-xs text-text-muted group-hover/cta2:text-text-primary transition-colors flex items-center gap-1.5">
+                          <BookOpen className="w-3 h-3 shrink-0" />
+                          {ideas.secondaryCtaText || "Read on Ichimoku Edge"}
                         </span>
-                        <ArrowRight className="w-3.5 h-3.5 text-text-primary group-hover/cta:text-accent transition-transform duration-200 group-hover/cta:translate-x-0.5" />
-                      </a>
+                        <ArrowRight className="w-3 h-3 text-text-muted group-hover/cta2:text-text-primary transition-transform duration-200 group-hover/cta2:translate-x-0.5" />
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -275,6 +297,7 @@ export default function IdeasPage() {
             >
               {gridItems.map((article: any, i: number) => {
                 const isUnread = !readIdeaIds.has(article.id);
+                const articleSlug = getArticleSlug(article);
                 return (
                   <ScrollReveal key={article.id || i} delay={0.05 + i * 0.04} className="h-full">
                     <div className="group relative flex flex-col h-full border border-border rounded-2xl overflow-hidden bg-bg-secondary transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-[0_14px_30px_-10px_rgba(0,0,0,0.35)]">
@@ -282,10 +305,8 @@ export default function IdeasPage() {
                       <div className="absolute top-0 left-0 right-0 h-[2px] z-10 bg-gradient-to-r from-accent/50 via-accent/20 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
 
                       {/* 1. Chart / image */}
-                      <a
-                        href={article.url || article.image}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <Link
+                        href={`/ideas/${articleSlug}`}
                         onClick={() => handleArticleClick(article.id)}
                         className="relative block aspect-[16/10] overflow-hidden bg-bg-primary shrink-0"
                       >
@@ -302,23 +323,21 @@ export default function IdeasPage() {
                             <span className="text-white text-[9px] font-black tracking-tighter">TV</span>
                           </div>
                         )}
-                      </a>
+                      </Link>
 
                       {/* Content Body */}
                       <div className="p-5 flex flex-col flex-1 justify-between gap-4">
                         <div className="space-y-2.5">
                           {/* 2. Title — immediately below the image */}
-                          <a
-                            href={article.url || article.image}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                          <Link
+                            href={`/ideas/${articleSlug}`}
                             onClick={() => handleArticleClick(article.id)}
                             className="block group/title"
                           >
                             <h3 className="syne font-bold text-[1.05rem] text-text-primary group-hover/title:text-accent leading-snug line-clamp-2 transition-colors">
                               {article.title}
                             </h3>
-                          </a>
+                          </Link>
 
                           {/* 3. 2-Row Metadata Section (Row 1: Asset • Date, Row 2: Reading Time • Unread) */}
                           <div className="flex flex-col gap-1 text-xs text-text-muted">
@@ -347,20 +366,33 @@ export default function IdeasPage() {
                           </div>
                         </div>
 
-                        {/* Read on TradingView CTA inside clean rounded bordered box */}
-                        <div className="pt-1">
-                          <a
-                            href={article.url || article.image}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        {/* CTAs: Read on TradingView (primary) + Read on Ichimoku Edge (secondary) */}
+                        <div className="space-y-1.5 pt-1">
+                          {/* Primary: Read on TradingView */}
+                          {article.url && (
+                            <a
+                              href={article.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => handleArticleClick(article.id)}
+                              className="inline-flex items-center justify-between w-full bg-bg-primary border border-border rounded-2xl px-4 py-2.5 transition-all duration-200 hover:border-accent/50 hover:bg-bg-primary/90 group/cta shadow-sm"
+                            >
+                              <span className="text-xs sm:text-[0.82rem] font-bold text-text-primary group-hover/cta:text-accent transition-colors">
+                                {ideas.ctaText || "Read on TradingView"}
+                              </span>
+                              <ArrowRight className="w-3.5 h-3.5 text-text-primary group-hover/cta:text-accent transition-transform duration-200 group-hover/cta:translate-x-0.5" />
+                            </a>
+                          )}
+
+                          {/* Secondary: Read on Ichimoku Edge */}
+                          <Link
+                            href={`/ideas/${articleSlug}`}
                             onClick={() => handleArticleClick(article.id)}
-                            className="inline-flex items-center justify-between w-full bg-bg-primary border border-border rounded-2xl px-4 py-2.5 transition-all duration-200 hover:border-accent/50 hover:bg-bg-primary/90 group/cta shadow-sm"
+                            className="inline-flex items-center justify-center w-full text-[10.5px] text-text-muted hover:text-text-primary transition-colors py-1 gap-1.5 group/cta2"
                           >
-                            <span className="text-xs sm:text-[0.82rem] font-bold text-text-primary group-hover/cta:text-accent transition-colors">
-                              {article.url ? (ideas.ctaText || "Read on TradingView") : "View Market Chart"}
-                            </span>
-                            <ArrowRight className="w-3.5 h-3.5 text-text-primary group-hover/cta:text-accent transition-transform duration-200 group-hover/cta:translate-x-0.5" />
-                          </a>
+                            <BookOpen className="w-3 h-3 shrink-0" />
+                            <span>{ideas.secondaryCtaText || "Read on Ichimoku Edge"}</span>
+                          </Link>
                         </div>
                       </div>
                     </div>

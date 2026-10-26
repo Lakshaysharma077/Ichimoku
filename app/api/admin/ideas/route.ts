@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { title, image, url, ticker, company, timeframe, date, editorPick, wordCount, content } = body;
+    const { title, image, url, ticker, company, timeframe, date, editorPick, wordCount, content, slug, status } = body;
 
     if (!title || !title.trim()) {
       return NextResponse.json({ error: "Title is required" }, { status: 400 });
@@ -71,18 +71,18 @@ export async function POST(req: NextRequest) {
     }
 
     const cleanTitle = title.trim();
-    const slug = cleanTitle
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
+    const articleSlug = (slug && slug.trim())
+      ? slug.trim().toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "")
+      : cleanTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
     const newId = `idea-${Date.now()}`;
     const pubDate = date && date.trim() ? date.trim() : new Date().toISOString().split("T")[0];
 
-    // Calculate word count if content string is provided
+    // Calculate word count from content if provided
     let calculatedWordCount = wordCount ? Number(wordCount) : undefined;
     if (content && typeof content === "string" && content.trim()) {
-      calculatedWordCount = content.trim().split(/\s+/).filter(Boolean).length;
+      const textOnly = content.replace(/<[^>]*>/g, '').trim();
+      calculatedWordCount = textOnly.split(/\s+/).filter(Boolean).length;
     }
 
     const newArticle = {
@@ -96,13 +96,22 @@ export async function POST(req: NextRequest) {
       url: url && url.trim() ? url.trim() : undefined,
       editorPick: Boolean(editorPick),
       wordCount: calculatedWordCount,
-      slug,
+      slug: articleSlug,
+      content: content && typeof content === "string" ? content : "",
+      status: status && status.trim() ? status.trim() : "published",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
     const currentData = await getIdeasData();
     const currentArticles = Array.isArray(currentData.articles) ? currentData.articles : [];
+
+    // Check for slug uniqueness
+    const slugExists = currentArticles.some((a: any) => a.slug === articleSlug);
+    if (slugExists) {
+      // Append timestamp to ensure uniqueness
+      newArticle.slug = `${articleSlug}-${Date.now()}`;
+    }
 
     // Prepend new article and sort newest first by date
     const updatedArticles = [newArticle, ...currentArticles].sort((a: any, b: any) => {
@@ -117,6 +126,9 @@ export async function POST(req: NextRequest) {
     };
 
     const saved = await saveIdeasData(updatedData);
+
+    // Revalidate the new article page
+    revalidatePath(`/ideas/${newArticle.slug}`);
 
     return NextResponse.json({
       success: true,
@@ -139,7 +151,7 @@ export async function PUT(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { id, title, image, url, ticker, company, timeframe, date, editorPick, wordCount, content } = body;
+    const { id, title, image, url, ticker, company, timeframe, date, editorPick, wordCount, content, slug, status } = body;
 
     if (!id) {
       return NextResponse.json({ error: "Idea ID is required for update" }, { status: 400 });
@@ -157,7 +169,22 @@ export async function PUT(req: NextRequest) {
 
     let calculatedWordCount = wordCount !== undefined ? Number(wordCount) : existing.wordCount;
     if (content && typeof content === "string" && content.trim()) {
-      calculatedWordCount = content.trim().split(/\s+/).filter(Boolean).length;
+      const textOnly = content.replace(/<[^>]*>/g, '').trim();
+      calculatedWordCount = textOnly.split(/\s+/).filter(Boolean).length;
+    }
+
+    // Process slug
+    let newSlug = existing.slug;
+    if (slug !== undefined) {
+      newSlug = slug.trim()
+        ? slug.trim().toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "")
+        : existing.slug;
+    } else if (!existing.slug && title) {
+      // Auto-generate slug if article doesn't have one yet
+      newSlug = (title.trim() || existing.title)
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
     }
 
     const updatedArticle = {
@@ -171,6 +198,9 @@ export async function PUT(req: NextRequest) {
       ...(date !== undefined && { date: date.trim() }),
       ...(editorPick !== undefined && { editorPick: Boolean(editorPick) }),
       ...(calculatedWordCount !== undefined && { wordCount: calculatedWordCount }),
+      ...(content !== undefined && { content: content }),
+      ...(status !== undefined && { status: status.trim() ? status.trim() : "published" }),
+      slug: newSlug,
       updatedAt: new Date().toISOString(),
     };
 
@@ -189,6 +219,10 @@ export async function PUT(req: NextRequest) {
     };
 
     const saved = await saveIdeasData(updatedData);
+
+    // Revalidate article pages
+    if (existing.slug) revalidatePath(`/ideas/${existing.slug}`);
+    if (newSlug && newSlug !== existing.slug) revalidatePath(`/ideas/${newSlug}`);
 
     return NextResponse.json({
       success: true,
@@ -220,6 +254,7 @@ export async function DELETE(req: NextRequest) {
     const currentData = await getIdeasData();
     const currentArticles = Array.isArray(currentData.articles) ? currentData.articles : [];
 
+    const articleToDelete = currentArticles.find((a: any) => a.id === id);
     const updatedArticles = currentArticles.filter((a: any) => a.id !== id);
 
     if (updatedArticles.length === currentArticles.length) {
@@ -232,6 +267,11 @@ export async function DELETE(req: NextRequest) {
     };
 
     const saved = await saveIdeasData(updatedData);
+
+    // Revalidate the deleted article's page
+    if (articleToDelete?.slug) {
+      revalidatePath(`/ideas/${articleToDelete.slug}`);
+    }
 
     return NextResponse.json({
       success: true,

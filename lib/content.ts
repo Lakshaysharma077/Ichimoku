@@ -55,9 +55,7 @@ export const staticContent = {
 
   // Home Page - Stats Bar
   stats: [
-    { value: 1200, label: 'Active Traders', suffix: '+' },
     { value: 12, label: 'Indicators & Scripts', suffix: '+' },
-    { value: 4.9, label: 'TradingView Rating', suffix: '★' },
     { value: 7, label: 'Free Trial, No Card', suffix: ' Days' },
   ],
 
@@ -420,11 +418,13 @@ export const staticContent = {
     searchPlaceholder: "Search asset / ticker...",
     noResults: "No ideas found for this search.",
     ctaText: "Read on TradingView",
+    secondaryCtaText: "Read on Ichimoku Edge",
     featuredLabel: "Latest Idea",
     // Articles sorted newest-first according to TradingView published dates.
     articles: [
       {
         id: "idea-8",
+        slug: "bitcoin-bulls-face-a-major-test-at-79k",
         ticker: "BTCUSD",
         timeframe: "1W",
         company: "Bitcoin / U.S. Dollar",
@@ -434,9 +434,12 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/BTCUSD/7dVPWChI-Bitcoin-Bulls-Face-a-Major-Test-at-79K/",
         editorPick: false,
         wordCount: 1150,
+        content: "",
+        status: "published" as const,
       },
       {
         id: "idea-7",
+        slug: "zcash-awakens-a-decade-long-structure-is-finally-breaking",
         ticker: "ZECUSD",
         timeframe: "1M",
         company: "Zcash / U.S. Dollar",
@@ -446,9 +449,12 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/ZECUSD/Abxl8u0p-Zcash-Awakens-A-Decade-Long-Structure-Is-Finally-Breaking/",
         editorPick: false,
         wordCount: 980,
+        content: "",
+        status: "published" as const,
       },
       {
         id: "idea-6",
+        slug: "from-one-candle-to-a-trade-decision",
         ticker: "BTCUSDT",
         timeframe: "1D",
         company: "Bitcoin / USDT",
@@ -458,9 +464,12 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/BTCUSDT/2oMliUoE-From-One-Candle-to-a-Trade-Decision/",
         editorPick: false,
         wordCount: 920,
+        content: "",
+        status: "published" as const,
       },
       {
         id: "idea-1",
+        slug: "flat-ichimoku-levels-what-they-are-and-why-they-matter",
         ticker: "BNBUSDT",
         timeframe: "1W",
         company: "Binance Coin / USDT",
@@ -470,9 +479,12 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/BNBUSDT/bp9o4Ou5-Flat-Ichimoku-Levels-What-They-Are-and-Why-They-Matter/",
         editorPick: true,
         wordCount: 1050,
+        content: "",
+        status: "published" as const,
       },
       {
         id: "idea-2",
+        slug: "lagging-span-and-trendline-interaction",
         ticker: "VIRTUALUSDT",
         timeframe: "4h",
         company: "Virtuals Protocol / USDT",
@@ -482,9 +494,12 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/VIRTUALUSDT/77VOQHQq-Lagging-Span-and-Trendline-Interaction/",
         editorPick: true,
         wordCount: 560,
+        content: "",
+        status: "published" as const,
       },
       {
         id: "idea-4",
+        slug: "how-the-lagging-span-path-reveals-hidden-resistance-behind-price",
         ticker: "EURUSD",
         timeframe: "1D",
         company: "Euro / U.S. Dollar",
@@ -494,9 +509,12 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/EURUSD/ihprmleG-How-the-Lagging-Span-path-reveals-hidden-resistance-behind-price/",
         editorPick: false,
         wordCount: 1180,
+        content: "",
+        status: "published" as const,
       },
       {
         id: "idea-3",
+        slug: "akt-ichimoku-bullish-setup-awaiting-an-ssb-breakout",
         ticker: "AKTUSDT",
         timeframe: "1D",
         company: "Akash Network / USDT",
@@ -506,9 +524,12 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/AKTUSDT/0zDnSXMI-AKT-Ichimoku-Bullish-Setup-Awaiting-an-SSB-Breakout/",
         editorPick: false,
         wordCount: 780,
+        content: "",
+        status: "published" as const,
       },
       {
         id: "idea-5",
+        slug: "btc-a-subtle-insight-historical-ichimoku-flat-levels",
         ticker: "BTCUSDT",
         timeframe: "1W",
         company: "Bitcoin / USDT",
@@ -518,6 +539,8 @@ export const staticContent = {
         url: "https://www.tradingview.com/chart/BTCUSDT/aeblQqxQ-BTC-A-Subtle-Insight-Historical-Ichimoku-Flat-Levels/",
         editorPick: false,
         wordCount: 950,
+        content: "",
+        status: "published" as const,
       }
     ]
   },
