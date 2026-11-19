@@ -9,16 +9,42 @@ export const dynamic = "force-dynamic";
 
 // Helper to fetch current ideas data from DB or fallback to staticContent
 async function getIdeasData() {
-  const content = await prisma.contentSection.findUnique({
-    where: { key: "ideas" },
-  });
+  try {
+    const content = await prisma.contentSection.findUnique({
+      where: { key: "ideas" },
+    });
 
-  if (content) {
-    try {
-      return JSON.parse(content.value);
-    } catch {
-      return staticContent.ideas;
+    if (content) {
+      try {
+        const parsed = JSON.parse(content.value);
+        if (parsed && Array.isArray(parsed.articles)) {
+          parsed.articles = parsed.articles.map((dbArticle: any) => {
+            const staticMatch = staticContent.ideas.articles.find(
+              (sa) => sa.id === dbArticle.id || sa.slug === dbArticle.slug
+            );
+            if (!dbArticle.content || dbArticle.content.trim().length < 50) {
+              if (staticMatch && staticMatch.content) {
+                return {
+                  ...dbArticle,
+                  content: staticMatch.content,
+                  wordCount: staticMatch.wordCount || dbArticle.wordCount,
+                  bias: staticMatch.bias,
+                  primaryResistance: staticMatch.primaryResistance,
+                  primarySupport: staticMatch.primarySupport,
+                  equilibriumAnchor: staticMatch.equilibriumAnchor,
+                };
+              }
+            }
+            return dbArticle;
+          });
+          return parsed;
+        }
+      } catch {
+        return staticContent.ideas;
+      }
     }
+  } catch (err) {
+    console.warn("Database lookup failed, falling back to staticContent.ideas", err);
   }
 
   return staticContent.ideas;

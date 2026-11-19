@@ -12,16 +12,15 @@ interface ScrollRevealProps {
 export default function ScrollReveal({ children, className = '', delay = 0 }: ScrollRevealProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40, rotateX: 15, scale: 0.95 }}
-      whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-      viewport={{ once: false, margin: "-50px", amount: 0.1 }}
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-20px' }}
       transition={{ 
-        duration: 0.8, 
-        delay, 
-        ease: [0.16, 1, 0.3, 1] // Custom refined ease curve
+        duration: 0.35, 
+        delay: Math.min(delay, 0.15), 
+        ease: 'easeOut'
       }}
       className={className}
-      style={{ perspective: 1000 }}
     >
       {children}
     </motion.div>

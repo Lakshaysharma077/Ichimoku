@@ -18,13 +18,16 @@ export default function KanjiBackground() {
   if (pathname.startsWith('/admin')) return null;
 
   return (
-    <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden select-none">
+    <div
+      className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden select-none"
+      style={{ transform: 'translateZ(0)', willChange: 'transform' }}
+    >
       {KANJI_ELEMENTS.map((element, index) => (
         <motion.div
           key={index}
           initial={{ opacity: 0 }}
           animate={{ opacity: element.opacity }}
-          transition={{ duration: 2, delay: index * 0.3 }}
+          transition={{ duration: 1.2, delay: index * 0.15 }}
           className="absolute shippori-mincho whitespace-nowrap text-text-primary"
           style={{
             top: element.top,
@@ -32,6 +35,7 @@ export default function KanjiBackground() {
             right: element.right,
             fontSize: element.size,
             filter: 'blur(1px)',
+            transform: 'translateZ(0)',
           }}
         >
           {element.char}

@@ -8,16 +8,54 @@ export const dynamic = "force-dynamic";
 
 // Helper to fetch all ideas data (same pattern as the API route)
 async function getIdeasData() {
-  const content = await prisma.contentSection.findUnique({
-    where: { key: "ideas" },
-  });
+  try {
+    const content = await prisma.contentSection.findUnique({
+      where: { key: "ideas" },
+    });
 
-  if (content) {
-    try {
-      return JSON.parse(content.value);
-    } catch {
-      return staticContent.ideas;
+    if (content) {
+      try {
+        const parsed = JSON.parse(content.value);
+        if (parsed && Array.isArray(parsed.articles)) {
+          // Merge with staticContent to guarantee rich content is never missing
+          parsed.articles = parsed.articles.map((dbArticle: any) => {
+            const staticMatch = staticContent.ideas.articles.find(
+              (sa) => sa.id === dbArticle.id || sa.slug === dbArticle.slug
+            );
+            if (!dbArticle.content || dbArticle.content.trim().length < 50) {
+              if (staticMatch && staticMatch.content) {
+                return {
+                  ...dbArticle,
+                  content: staticMatch.content,
+                  wordCount: staticMatch.wordCount || dbArticle.wordCount,
+                  bias: staticMatch.bias,
+                  primaryResistance: staticMatch.primaryResistance,
+                  primarySupport: staticMatch.primarySupport,
+                  equilibriumAnchor: staticMatch.equilibriumAnchor,
+                };
+              }
+            }
+            if (staticMatch) {
+              return {
+                ...staticMatch,
+                ...dbArticle,
+                content: dbArticle.content?.trim()?.length >= 50 ? dbArticle.content : staticMatch.content,
+                bias: dbArticle.bias || staticMatch.bias,
+                primaryResistance: dbArticle.primaryResistance || staticMatch.primaryResistance,
+                primarySupport: dbArticle.primarySupport || staticMatch.primarySupport,
+                equilibriumAnchor: dbArticle.equilibriumAnchor || staticMatch.equilibriumAnchor,
+              };
+            }
+            return dbArticle;
+          });
+          return parsed;
+        }
+      } catch {
+        return staticContent.ideas;
+      }
     }
+  } catch (err) {
+    console.warn("DB lookup failed in ideas page, using staticContent fallback", err);
   }
 
   return staticContent.ideas;
@@ -39,6 +77,15 @@ async function getArticleBySlug(slug: string) {
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-+|-+$/g, "");
       return generatedSlug === slug;
+    });
+  }
+
+  // Fallback: match by id or TradingView URL key
+  if (!article) {
+    article = articles.find((a: any) => {
+      if (a.id && a.id.toLowerCase() === slug.toLowerCase()) return true;
+      if (a.url && a.url.toLowerCase().includes(slug.toLowerCase())) return true;
+      return false;
     });
   }
 
@@ -103,11 +150,48 @@ export default async function ArticlePage({
 }: {
   params: { slug: string };
 }) {
-  const article = await getArticleBySlug(params.slug);
+  const data = await getIdeasData();
+  const articles: any[] = Array.isArray(data.articles) ? data.articles : [];
 
-  if (!article) {
+  let currentIndex = articles.findIndex((a: any) => a.slug === params.slug);
+  if (currentIndex === -1) {
+    currentIndex = articles.findIndex((a: any) => {
+      const generatedSlug = (a.title || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+      return generatedSlug === params.slug;
+    });
+  }
+
+  if (currentIndex === -1) {
+    currentIndex = articles.findIndex((a: any) => {
+      if (a.id && a.id.toLowerCase() === params.slug.toLowerCase()) return true;
+      if (a.url && a.url.toLowerCase().includes(params.slug.toLowerCase())) return true;
+      return false;
+    });
+  }
+
+  if (currentIndex === -1) {
     notFound();
   }
 
-  return <ArticlePageClient article={article} slug={params.slug} />;
+  const article = articles[currentIndex];
+  const prevArticle = currentIndex > 0 ? articles[currentIndex - 1] : null;
+  const nextArticle = currentIndex < articles.length - 1 ? articles[currentIndex + 1] : null;
+
+  // Filter 3 related articles (excluding current)
+  const relatedArticles = articles
+    .filter((_: any, idx: number) => idx !== currentIndex)
+    .slice(0, 3);
+
+  return (
+    <ArticlePageClient
+      article={article}
+      slug={params.slug}
+      prevArticle={prevArticle}
+      nextArticle={nextArticle}
+      relatedArticles={relatedArticles}
+    />
+  );
 }

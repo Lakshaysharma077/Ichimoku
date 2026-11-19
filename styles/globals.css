@@ -55,8 +55,13 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-bg-primary text-text-primary transition-colors duration-300 ease-in-out;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
@@ -785,6 +790,105 @@ h2.syne {
 
 .article-body table tr:last-child td {
   border-bottom: none;
+}
+
+/* ─── Custom Article Callouts & Structure Components ─── */
+.article-body .callout-box {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin: 28px 0;
+  box-shadow: 0 4px 16px -4px rgba(0,0,0,0.25);
+}
+
+.article-body .callout-box.tip {
+  border-left-color: #10b981;
+}
+
+.article-body .callout-box.warning {
+  border-left-color: #f59e0b;
+}
+
+.article-body .callout-box.info {
+  border-left-color: #3b82f6;
+}
+
+.article-body .callout-title {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.article-body .setup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.article-body .setup-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: border-color 0.2s ease;
+}
+
+.article-body .setup-card:hover {
+  border-color: var(--accent);
+}
+
+.article-body .setup-card-label {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.article-body .setup-card-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.article-body .pill-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  margin-right: 6px;
+}
+
+.article-body .pill-badge.bullish {
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.article-body .pill-badge.bearish {
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.article-body .pill-badge.neutral {
+  border-color: rgba(251, 225, 120, 0.4);
+  color: #fbe178;
+  background: rgba(251, 225, 120, 0.08);
 }
 
 /* First heading in article body should not have extra top margin */
